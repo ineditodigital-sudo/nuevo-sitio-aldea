@@ -1,0 +1,105 @@
+{
+  "nav": {
+    "about": "About Aldea",
+    "offer": "What we offer",
+    "locations": "Locations",
+    "blog": "Blog",
+    "cta": "Book your tour",
+    "solutions": {
+      "private": "Private Office",
+      "coworking": "Coworking",
+      "virtual": "Virtual Address",
+      "desk": "Private Desk",
+      "custom": "Custom Offices",
+      "all": "See all"
+    },
+    "locationsList": {
+      "ags": "Aguascalientes",
+      "leon": "León Guanajuato",
+      "slp": "San Luis Potosí",
+      "qro": "Querétaro",
+      "all": "See all"
+    }
+  },
+  "hero": {
+    "title": "Your workspace, without the hassle",
+    "subtitle": "Private offices, shared spaces and personalized service so your only concern is growing your business.",
+    "cta": "Contact us",
+    "cta2": "View locations"
+  },
+  "solutions": {
+    "eyebrow": "Solutions",
+    "title": "Solutions for every need",
+    "subtitle": "From entrepreneurs to large companies, we have the ideal space for every need.",
+    "more": "Learn more",
+    "seeAll": "See everything we offer",
+    "items": [
+      { "title": "Private office", "text": "Fully-equipped office rentals with capacity from 1 to more than 100 people.", "href": "/en/solutions/private-office" },
+      { "title": "Coworking", "text": "Work wherever and whenever you want: unlimited access to shared spaces with every amenity.", "href": "/en/solutions/coworking" },
+      { "title": "Virtual Address", "text": "Project a professional image with a business address, parcel handling and meeting rooms.", "href": "/en/solutions/virtual-address" }
+    ]
+  },
+  "clients": {
+    "title": "They already trust Aldea",
+    "subtitle": "Companies like yours are already at Aldea. Global and national brands operate here seeking efficiency, location and personalized service.",
+    "logos": ["Banco Azteca", "Royale", "Edenred", "AT&T", "Google", "Cemex", "NTT Data", "Mecalux", "Fínamo", "Plata", "Chubb", "Banorte", "Inmobilia", "Opzione"]
+  },
+  "features": {
+    "items": [
+      { "title": "First-class facilities", "text": "Modern spaces with meeting rooms, common areas and services included.", "img": "/img/espacio-01.webp" },
+      { "title": "Strategic locations", "text": "Located in strategic spots to project professionalism and ease access.", "img": "/img/leon-01.webp" },
+      { "title": "Service that makes the difference", "text": "We support you every day with personalized service, visitor reception and parcel handling.", "img": "/img/slp-01.webp" }
+    ]
+  },
+  "locations": {
+    "eyebrow": "Find offices",
+    "title": "Private offices near you",
+    "subtitle": "Strategic locations, professional design and all-inclusive. Find your ideal space with us!",
+    "more": "See more",
+    "all": "See all buildings",
+    "items": [
+      { "name": "Aldea Poliforum", "city": "León, Guanajuato", "address": "Blvd. Mariano Escobedo #2920 Ed.N Piso 5. Plaza Forum Center, Col. El Tlacuache, CP. 37500 León, Gto", "img": "/img/leon-02.webp", "href": "/en/locations/leon-guanajuato" },
+      { "name": "Aldea Park", "city": "San Luis Potosí", "address": "Blvd. Antonio Rocha Cordero #157, Fracc. Desarrollo del Pedregal, CP 78427, San Luis Potosí", "img": "/img/slp-02.webp", "href": "/en/locations/san-luis-potosi" },
+      { "name": "Aldea Galerías", "city": "Aguascalientes", "address": "Av. Independencia #1861 Ed. 5. Col. Galerías Business Square, C.P. 20120", "img": "/img/slp-03.webp", "href": "/en/locations/aguascalientes" },
+      { "name": "Aldea Centro Sur", "city": "Querétaro", "address": "Blvd. Bernardo Quintana 502, Centro Sur, 76090 Santiago de Querétaro, Qro.", "img": "/img/espacio-01.webp", "href": "/en/locations/queretaro" }
+    ]
+  },
+  "testimonials": {
+    "title": "What our clients say",
+    "items": [
+      { "name": "Eitzel Galindo", "company": "Edenred", "quote": "We loved that Aldea was so well located. It's easy for everyone to get here and we have everything nearby: banks, restaurants, clients… that makes daily life much more practical." },
+      { "name": "Eduardo Velázquez", "company": "Banco Azteca", "quote": "Honestly, coming to work without thinking about coffee, cleaning or whether the printer works… that's priceless. Everything is ready and that gives us peace of mind." },
+      { "name": "Enrique del Campo", "company": "Cemex", "quote": "What we've liked most is how the team treats us. They're always attentive, they solve things fast and with a great attitude. You can tell they really care about helping you." },
+      { "name": "Miguel Barrientos", "company": "Opzione", "quote": "When we started we were only three people. Now we're six and still at Aldea. They've been super flexible with the space and supported us at every stage." },
+      { "name": "Salvador Marín", "company": "Royale International", "quote": "We had very specific network requirements, and Aldea helped us set up our VPN with no trouble. Plus, having backup internet gives us peace of mind." }
+    ]
+  },
+  "contact": {
+    "title": "Let's talk about your next workspace",
+    "subtitle": "Leave us your details and one of our advisors will get in touch to understand your needs.",
+    "phoneLabel": "Or call us at",
+    "phone": "+52 449 454 0709",
+    "name": "Name",
+    "email": "Email",
+    "phoneField": "Phone",
+    "message": "What are you looking for?",
+    "send": "Send",
+    "privacy": "By submitting you accept our privacy policy."
+  },
+  "footer": {
+    "tagline": "Offices for rent and coworking. Work your way.",
+    "nav": "Navigation",
+    "links": {
+      "home": "Home",
+      "about": "About Aldea",
+      "locations": "Locations",
+      "solutions": "Solutions",
+      "terms": "Terms and conditions",
+      "privacy": "Privacy policy",
+      "faq": "FAQ",
+      "blog": "Blog"
+    },
+    "social": "Follow us on social media!",
+    "rights": "All rights reserved."
+  }
+}

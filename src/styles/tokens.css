@@ -1,0 +1,67 @@
+/* ============================================================
+   ALDEA — Design Tokens (v0 · refresh 2026)
+   Marca base extraída del sitio actual:
+   - Azul marca:  #182943
+   - Tipografía:  Futura (títulos) → Jost como web-font equivalente
+                  Raleway (texto secundario)
+   Paleta ampliada = propuesta nueva, ajustable con las referencias.
+   ============================================================ */
+:root {
+  /* Marca */
+  --navy-900: #0f1c30;
+  --navy-800: #182943;   /* color oficial de marca */
+  --navy-700: #24385a;
+  --navy-600: #33507b;
+  --navy-100: #eef2f8;
+  --navy-50:  #f6f8fc;
+
+  /* Acento (propuesta — cálido, humano) */
+  --accent-600: #c8892f;
+  --accent-500: #e0a13c;
+  --accent-100: #fbeed6;
+
+  /* Neutros */
+  --cream:   #f7f4ee;
+  --white:   #ffffff;
+  --ink:     #1a2233;
+  --muted:   #5b6577;
+  --line:    #e4e8ef;
+
+  /* Semánticos */
+  --bg:          var(--white);
+  --bg-alt:      var(--navy-50);
+  --text:        var(--ink);
+  --text-invert: #eaf0fa;
+  --brand:       var(--navy-800);
+  --brand-strong:var(--navy-900);
+  --accent:      var(--accent-500);
+
+  /* Tipografía */
+  --font-head: 'Jost', 'Futura', 'Century Gothic', system-ui, sans-serif;
+  --font-body: 'Raleway', system-ui, -apple-system, sans-serif;
+
+  /* Escala tipográfica (fluida) */
+  --fs-hero:  clamp(2.5rem, 5.5vw, 4.5rem);
+  --fs-h1:    clamp(2rem, 4vw, 3.25rem);
+  --fs-h2:    clamp(1.6rem, 3vw, 2.5rem);
+  --fs-h3:    clamp(1.2rem, 2vw, 1.6rem);
+  --fs-lead:  clamp(1.05rem, 1.5vw, 1.3rem);
+  --fs-body:  1rem;
+  --fs-small: 0.875rem;
+
+  /* Layout */
+  --container: 1200px;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --radius-sm: 10px;
+  --radius:    18px;
+  --radius-lg: 28px;
+
+  /* Sombras */
+  --shadow-sm: 0 2px 10px rgba(24,41,67,.06);
+  --shadow:    0 12px 34px rgba(24,41,67,.10);
+  --shadow-lg: 0 30px 70px rgba(24,41,67,.18);
+
+  /* Motion */
+  --ease: cubic-bezier(.22,.61,.36,1);
+  --dur: .45s;
+}

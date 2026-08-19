@@ -1,0 +1,13 @@
+# Enruta todas las peticiones /api/* al front controller index.php
+RewriteEngine On
+RewriteBase /api/
+
+# No reescribir archivos/carpetas que existan de verdad
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
+
+# Proteger archivos sensibles
+<FilesMatch "\.(sql|md|example\.php)$">
+  Require all denied
+</FilesMatch>

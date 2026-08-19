@@ -1,0 +1,105 @@
+{
+  "nav": {
+    "about": "Acerca de Aldea",
+    "offer": "Lo que ofrecemos",
+    "locations": "Ubicaciones",
+    "blog": "Blog",
+    "cta": "Agenda tu tour",
+    "solutions": {
+      "private": "Oficina Privada",
+      "coworking": "Coworking",
+      "virtual": "Domicilio Virtual",
+      "desk": "Escritorio Privado",
+      "custom": "Oficinas Personalizadas",
+      "all": "Ver todas"
+    },
+    "locationsList": {
+      "ags": "Aguascalientes",
+      "leon": "León Guanajuato",
+      "slp": "San Luis Potosí",
+      "qro": "Querétaro",
+      "all": "Ver todas"
+    }
+  },
+  "hero": {
+    "title": "Tu espacio de trabajo sin complicaciones",
+    "subtitle": "Oficinas privadas, espacios compartidos y atención personalizada para que tú solo te preocupes de hacer crecer tu negocio.",
+    "cta": "Contáctanos",
+    "cta2": "Ver ubicaciones"
+  },
+  "solutions": {
+    "eyebrow": "Soluciones",
+    "title": "Soluciones para cada necesidad",
+    "subtitle": "Desde emprendedores hasta grandes empresas, tenemos el espacio ideal para cada necesidad.",
+    "more": "Conoce más",
+    "seeAll": "Ver todo lo que ofrecemos",
+    "items": [
+      { "title": "Oficina privada", "text": "Renta de oficinas equipadas con capacidad de 1 a más de 100 personas.", "href": "/soluciones/oficina-privada" },
+      { "title": "Coworking", "text": "Trabaja donde quieras, cuando quieras: acceso ilimitado a espacios compartidos con todas las amenidades.", "href": "/soluciones/coworking" },
+      { "title": "Domicilio Virtual", "text": "Proyecta una imagen profesional con domicilio fiscal, gestión de paquetería y salas para reuniones.", "href": "/soluciones/domicilio-virtual" }
+    ]
+  },
+  "clients": {
+    "title": "Ya confían en Aldea",
+    "subtitle": "Empresas como la tuya ya están en Aldea. Aquí operan marcas globales y nacionales que buscan eficiencia, ubicación y atención personalizada.",
+    "logos": ["Banco Azteca", "Royale", "Edenred", "AT&T", "Google", "Cemex", "NTT Data", "Mecalux", "Fínamo", "Plata", "Chubb", "Banorte", "Inmobilia", "Opzione"]
+  },
+  "features": {
+    "items": [
+      { "title": "Instalaciones de primer nivel", "text": "Espacios modernos, con salas de juntas, zonas comunes y servicios incluidos.", "img": "/img/espacio-01.webp" },
+      { "title": "Ubicaciones estratégicas", "text": "Ubicados en puntos estratégicos para proyectar profesionalismo y facilitar el acceso.", "img": "/img/leon-01.webp" },
+      { "title": "Atención que hace la diferencia", "text": "Te acompañamos día a día con atención personalizada, recepción de visitas y paquetería.", "img": "/img/slp-01.webp" }
+    ]
+  },
+  "locations": {
+    "eyebrow": "Encuentra oficinas",
+    "title": "Oficinas privadas cerca de ti",
+    "subtitle": "Ubicaciones estratégicas, diseño profesional y todo incluido. ¡Encuentra tu espacio ideal con nosotros!",
+    "more": "Ver más",
+    "all": "Ver todos los edificios",
+    "items": [
+      { "name": "Aldea Poliforum", "city": "León, Guanajuato", "address": "Blvd. Mariano Escobedo #2920 Ed.N Piso 5. Plaza Forum Center, Col. El Tlacuache, CP. 37500 León, Gto", "img": "/img/leon-02.webp", "href": "/ubicaciones/leon-guanajuato" },
+      { "name": "Aldea Park", "city": "San Luis Potosí", "address": "Blvd. Antonio Rocha Cordero #157, Fracc. Desarrollo del Pedregal, CP 78427, San Luis Potosí", "img": "/img/slp-02.webp", "href": "/ubicaciones/san-luis-potosi" },
+      { "name": "Aldea Galerías", "city": "Aguascalientes", "address": "Av. Independencia #1861 Ed. 5. Col. Galerías Business Square, C.P. 20120", "img": "/img/slp-03.webp", "href": "/ubicaciones/aguascalientes" },
+      { "name": "Aldea Centro Sur", "city": "Querétaro", "address": "Blvd. Bernardo Quintana 502, Centro Sur, 76090 Santiago de Querétaro, Qro.", "img": "/img/espacio-01.webp", "href": "/ubicaciones/queretaro" }
+    ]
+  },
+  "testimonials": {
+    "title": "Lo que dicen nuestros clientes",
+    "items": [
+      { "name": "Eitzel Galindo", "company": "Edenred", "quote": "Nos encantó que Aldea estuviera tan bien ubicado. Llegar es fácil para todos y tenemos todo cerca: bancos, restaurantes, clientes… eso hace la vida diaria mucho más práctica." },
+      { "name": "Eduardo Velázquez", "company": "Banco Azteca", "quote": "La verdad, venir a trabajar sin pensar en el café, la limpieza o si la impresora sirve… eso no tiene precio. Todo está listo y eso nos da paz mental." },
+      { "name": "Enrique del Campo", "company": "Cemex", "quote": "Lo que más nos ha gustado es el trato del equipo. Siempre están al pendiente, te resuelven rápido y con buena actitud. Se siente que realmente les importa ayudarte." },
+      { "name": "Miguel Barrientos", "company": "Opzione", "quote": "Cuando empezamos éramos solo tres personas. Ahora somos seis y seguimos en Aldea. Han sido súper flexibles con el espacio y nos han acompañado en cada etapa." },
+      { "name": "Salvador Marín", "company": "Royale International", "quote": "Teníamos requisitos muy específicos de red, y en Aldea nos apoyaron a configurar nuestra VPN sin problema. Además, contar con internet de respaldo nos da tranquilidad." }
+    ]
+  },
+  "contact": {
+    "title": "Hablemos sobre tu próximo espacio de trabajo",
+    "subtitle": "Déjanos tus datos y uno de nuestros asesores se pondrá en contacto contigo para entender tus necesidades.",
+    "phoneLabel": "O márcanos al",
+    "phone": "+52 449 454 0709",
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "phoneField": "Teléfono",
+    "message": "¿Qué estás buscando?",
+    "send": "Enviar",
+    "privacy": "Al enviar aceptas nuestras políticas de privacidad."
+  },
+  "footer": {
+    "tagline": "Oficinas en renta y coworking. Trabaja a tu manera.",
+    "nav": "Navegación",
+    "links": {
+      "home": "Inicio",
+      "about": "Acerca de Aldea",
+      "locations": "Ubicaciones",
+      "solutions": "Soluciones",
+      "terms": "Términos y condiciones",
+      "privacy": "Políticas de privacidad",
+      "faq": "Preguntas frecuentes",
+      "blog": "Blog"
+    },
+    "social": "¡Síguenos en nuestras redes!",
+    "rights": "Todos los derechos reservados."
+  }
+}
