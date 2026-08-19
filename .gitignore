@@ -16,3 +16,12 @@ server/config.php
 Thumbs.db
 *.local
 *.log
+
+# Credenciales — NUNCA subir
+credenciales*.txt
+*credencial*
+*.credentials
+accesos*.txt
+
+# Config del CMS de producción — contiene credenciales de la base
+sitio-produccion/cms/config.php
