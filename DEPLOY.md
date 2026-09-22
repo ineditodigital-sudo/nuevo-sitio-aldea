@@ -1,5 +1,9 @@
 # Despliegue en cPanel — Aldea 2026
 
+> **OBSOLETO.** Este documento describe el prototipo de React/Vite que se abandono.
+> El sitio real es `sitio-produccion/` (PHP) y se despliega con la herramienta de
+> [`deploy/`](deploy/README.md). Se conserva solo como referencia historica.
+
 Arquitectura: **frontend estático (React/Vite) + API PHP + MySQL**. Todo vive en el mismo dominio.
 
 ```

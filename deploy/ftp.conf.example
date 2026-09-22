@@ -1,0 +1,10 @@
+# Copia este archivo como ftp.conf y pon los datos reales.
+# ftp.conf esta en .gitignore y NUNCA debe subirse al repositorio.
+# Pide las credenciales a quien lleve el proyecto.
+
+host       = 000.000.00.00
+user       = usuario@dominio
+pass       = LA_CONTRASENA
+remote_dir = public_html/carpeta-del-sitio
+tls        = si
+site_url   = https://temporal.aldea.work
