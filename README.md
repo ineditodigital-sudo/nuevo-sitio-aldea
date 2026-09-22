@@ -72,6 +72,23 @@ Cada texto lleva `data-es` y `data-en`. El selector ES/EN del header cambia el i
 ### Para editar contenido
 No hace falta nada local: se entra a `/admin/` y se edita. Es lo que hace el cliente.
 
+### Levantar una copia con el contenido
+
+El código por sí solo dibuja un sitio vacío: **todo el texto y las imágenes viven en la
+base de datos**, no en archivos. Para tener una copia igual a la publicada:
+
+1. `cms/schema.sql` — crea las 13 tablas.
+2. `cms/contenido.sql` — carga las páginas, los 1,040 bloques de contenido, las sedes,
+   las soluciones, el blog, los testimonios y los ajustes.
+
+Ese segundo archivo se regenera desde el CMS cuando haga falta. **No incluye la tabla
+`leads`** (datos personales de prospectos) ni `users` (contraseñas del panel): esos se
+quedan solo en el servidor.
+
+Los `cms/migracion-*.sql` son el historial de cómo se fue construyendo ese contenido,
+en orden cronológico. Sirven para entender por qué algo quedó como quedó, pero para
+levantar una copia basta con los dos archivos de arriba.
+
 ### Para tocar código
 
 1. Clona el repo.
