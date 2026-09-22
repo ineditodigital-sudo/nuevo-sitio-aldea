@@ -20,6 +20,8 @@ function aldea_icon_lib(){
    'phone'=>'<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19 19 0 0 1-8.3-3 19 19 0 0 1-6-6 19 19 0 0 1-3-8.4A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7l.8 3a2 2 0 0 1-.5 1.9L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 1.9-.5l3 .8a2 2 0 0 1 1.7 2z"/>',
    'mail'=>'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
    'clock'=>'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+   'furniture'=>'<path d="M6 13V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v5"/><path d="M4 18v-3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"/><path d="M3 18h18M6 18v2M18 18v2"/>',
+   'support'=>'<path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="2" y="13" width="4" height="6" rx="1.5"/><rect x="18" y="13" width="4" height="6" rx="1.5"/><path d="M20 19a3 3 0 0 1-3 3h-3"/>',
   ];
 }
 function aldea_icon($k,$cls=''){ $l=aldea_icon_lib(); $inner=$l[$k]??$l['star']; return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"'.($cls?' class="'.$cls.'"':'').'>'.$inner.'</svg>'; }

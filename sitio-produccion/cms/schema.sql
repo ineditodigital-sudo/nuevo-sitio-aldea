@@ -179,6 +179,7 @@ CREATE TABLE IF NOT EXISTS `redirects` (
 CREATE TABLE IF NOT EXISTS `leads` (
   `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(160) NOT NULL, `email` VARCHAR(200) NULL, `phone` VARCHAR(60) NULL,
+  `company` VARCHAR(160) NULL, `city` VARCHAR(80) NULL, `team_size` VARCHAR(20) NULL,
   `message` TEXT NULL, `source` VARCHAR(160) NULL, `url` VARCHAR(400) NULL,
   `ip` VARCHAR(64) NULL, `status` ENUM('new','contacted','archived') DEFAULT 'new',
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

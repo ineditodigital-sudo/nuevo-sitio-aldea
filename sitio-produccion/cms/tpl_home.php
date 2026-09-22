@@ -18,72 +18,133 @@ $mt=$p&&$p['seo_title_es']?$p['seo_title_es']:'ALDEA | Oficinas en Renta y Cowor
 $md=$p&&$p['seo_desc_es']?$p['seo_desc_es']:'Oficinas en renta y coworking todo incluido con atencion personalizada en el Bajio. Trabaja a tu manera.';
 $mten=($p&&$p['seo_title_en'])?$p['seo_title_en']:'ALDEA | Offices for Rent and Coworking';
 $mden=($p&&$p['seo_desc_en'])?$p['seo_desc_en']:'All-inclusive offices for rent and coworking with personal service in the Bajio. Work your way.';
+$GLOBALS['BODY_CLASS']='has-nhero'; // header claro sobre el hero oscuro
 site_head($mt,$md,'/',$p?(bool)$p['noindex']:false,$mten,$mden);
 site_header();
 echo block_styles($__pid);
 ?>
 <main>
-<section class="xhero" id="hero"><div class="container xhero-grid">
-<div class="xhero-copy reveal">
-<h1><span <?=ha('hero.title')?>><?=ht('hero.title')?></span><br><span class="xhi"><span <?=ha('hero.title2')?>><?=ht('hero.title2')?></span></span></h1>
-<p class="lead" <?=ha('hero.lead')?>><?=ht('hero.lead')?></p>
-<div class="hero-cta"><a href="<?=esc(href_('hero.cta1','/contacto/'))?>" class="btn btn-primary" <?=ha('hero.cta1')?>><?=ht('hero.cta1')?></a><a href="<?=esc(href_('hero.cta2','/ubicaciones/'))?>" class="btn btn-ghost" <?=ha('hero.cta2')?>><?=ht('hero.cta2')?></a></div></div>
-<div class="xhero-art reveal"><div class="xstage" id="xstage">
-<svg class="xdash" viewBox="0 0 500 520" fill="none" preserveAspectRatio="none"><path d="M120 120 C 40 210, 70 390, 210 440" stroke="currentColor" stroke-width="2" stroke-dasharray="2 8" stroke-linecap="round"/><path d="M300 80 C 470 120, 470 320, 360 470" stroke="currentColor" stroke-width="2" stroke-dasharray="2 8" stroke-linecap="round"/></svg>
-<div class="xphoto xphoto-a xfloat" data-z="20" data-depth="14" data-amp="10" data-sp="0.9"><img class="on" src="<?=esc(himg('hero.photo_a','/img/loc-leon.webp'))?>" alt="Oficina Aldea"/><img src="/img/sol-coworking.webp" alt=""/><img src="/img/sala.webp" alt=""/></div>
-<div class="xphoto xphoto-b xfloat" data-z="6" data-depth="9" data-amp="8" data-sp="0.7"><img class="on" src="<?=esc(himg('hero.photo_b','/img/espacio.webp'))?>" alt="Espacio de trabajo Aldea"/><img src="/img/sol-privada.webp" alt=""/><img src="/img/loc-slp.webp" alt=""/></div>
-<div class="xcard xcard-1 xfloat" data-z="64" data-depth="34" data-amp="9" data-sp="1.1" data-rot="-2"><span class="xcard-ic"><?=render_icon(hes('hero.floatcard_icon','pin'))?></span><div><b <?=ha('hero.floatcard_title','Presencia en el Bajío')?>><?=ht('hero.floatcard_title','Presencia en el Bajío')?></b><small <?=ha('hero.floatcard_sub','León · SLP · Ags · Querétaro')?>><?=ht('hero.floatcard_sub','León · SLP · Ags · Querétaro')?></small></div></div>
-<div class="xchip xchip-1 xfloat" data-z="76" data-depth="42" data-amp="11" data-sp="1.3"><i><?=render_icon(hes('hero.floatchip_icon','sparkle'))?></i> <span <?=ha('hero.floatchip_text','Todo incluido, sin letras pequeñas')?>><?=ht('hero.floatchip_text','Todo incluido, sin letras pequeñas')?></span></div>
-<div class="xlog xfloat" data-z="52" data-depth="28" data-amp="8" data-sp="1.0" data-rot="2"><div class="xlog-top"><b <?=ha('hero.floatlog_title','Espacios que crecen contigo')?>><?=ht('hero.floatlog_title','Espacios que crecen contigo')?></b></div><div class="xlog-bar"><span <?=ha('hero.floatlog_sub','Oficinas · Coworking · Domicilio virtual')?>><?=ht('hero.floatlog_sub','Oficinas · Coworking · Domicilio virtual')?></span></div></div>
-</div></div></div>
+
+<!-- 1. HERO — imagen de gran formato (carrusel opcional). El texto y los CTAs no cambian. -->
+<section class="nhero" id="hero">
+  <div class="nhero-media" data-hero>
+<?php
+$__slides=[];
+foreach(['photo_a','photo_b','photo_c','photo_d'] as $__k){ $__u=himg('hero.'.$__k,''); if($__u!=='')$__slides[]=$__u; }
+if(!$__slides)$__slides=['/img/home-hero.webp'];
+foreach($__slides as $__i=>$__u) echo '<img class="nhero-img'.($__i===0?' on':'').'" src="'.esc($__u).'" alt="'.($__i===0?'Espacios de trabajo Aldea':'').'"'.($__i===0?'':' loading="lazy"').'>';
+?>
+    <span class="nhero-scrim"></span>
+  </div>
+  <div class="container nhero-in">
+    <div class="nhero-copy reveal">
+      <h1><span <?=ha('hero.title')?>><?=ht('hero.title')?></span> <span class="xhi"><span <?=ha('hero.title2')?>><?=ht('hero.title2')?></span></span></h1>
+      <p class="lead" <?=ha('hero.lead')?>><?=ht('hero.lead')?></p>
+      <p class="nhero-sub" <?=ha('hero.lead2','Para equipos desde 1 hasta más de 100 personas en Querétaro, León, San Luis Potosí y Aguascalientes.')?>><?=ht('hero.lead2','Para equipos desde 1 hasta más de 100 personas en Querétaro, León, San Luis Potosí y Aguascalientes.')?></p>
+      <div class="hero-cta">
+        <a href="<?=esc(href_('hero.cta1','#ubicaciones'))?>" class="btn btn-primary" <?=ha('hero.cta1','Ver ubicaciones')?>><?=ht('hero.cta1','Ver ubicaciones')?></a>
+        <a href="<?=esc(href_('hero.cta2','#soluciones'))?>" class="btn btn-clear" <?=ha('hero.cta2','Conoce nuestros espacios')?>><?=ht('hero.cta2','Conoce nuestros espacios')?></a>
+      </div>
+    </div>
+  </div>
 </section>
-<section class="section" id="nosotros"><div class="container"><div class="sec-head reveal"><span class="chip" <?=ha('nosotros.chip')?>><?=ht('nosotros.chip')?></span>
-<h2 <?=ha('nosotros.title')?>><?=ht('nosotros.title')?></h2>
-<p class="lead" <?=ha('nosotros.lead')?>><?=ht('nosotros.lead')?></p></div>
-<div class="bento">
-<figure class="b-img b-lg reveal"><img src="<?=esc(himg('nosotros.img_main','/img/about.webp'))?>" alt=""/><figcaption <?=ha('nosotros.img_main_cap','Una comunidad que trabaja unida')?>><?=ht('nosotros.img_main_cap','Una comunidad que trabaja unida')?></figcaption></figure>
-<article class="b-card b-dark reveal" style="<?=($__c1=hes('nosotros.card1_bg'))?'background:'.esc($__c1):''?>"><div class="b-ico"><?=render_icon(hes('nosotros.card1_icon','building'))?></div><h3 <?=ha('nosotros.card1_title','Instalaciones propias')?>><?=ht('nosotros.card1_title','Instalaciones propias')?></h3><p <?=ha('nosotros.card1_text','Espacios modernos con salas de juntas, zonas comunes y servicios incluidos.')?>><?=ht('nosotros.card1_text','Espacios modernos con salas de juntas, zonas comunes y servicios incluidos.')?></p></article>
-<article class="b-card b-blue reveal" style="<?=($__c2=hes('nosotros.card2_bg'))?'background:'.esc($__c2):''?>"><div class="b-ico"><?=render_icon(hes('nosotros.card2_icon','user'))?></div><h3 <?=ha('nosotros.card2_title','Atencion personalizada')?>><?=ht('nosotros.card2_title','Atencion personalizada')?></h3><p <?=ha('nosotros.card2_text','Recepcion de visitas, paqueteria y soporte cercano cada dia.')?>><?=ht('nosotros.card2_text','Recepcion de visitas, paqueteria y soporte cercano cada dia.')?></p></article>
-<figure class="b-img reveal"><img src="<?=esc(himg('nosotros.img_2','/img/sala.webp'))?>" alt=""/></figure>
-<figure class="b-img reveal"><img src="<?=esc(himg('nosotros.img_3','/img/espacio.webp'))?>" alt=""/></figure></div></div></section>
-<section class="section bg-soft" id="soluciones"><div class="container"><div class="sec-head center reveal"><span class="chip">Soluciones</span><h2 <?=ha('soluciones.title')?>><?=ht('soluciones.title')?></h2><p class="lead" <?=ha('soluciones.lead')?>><?=ht('soluciones.lead')?></p></div><div class="sol-grid">
+
+<!-- 2. CLIENTES -->
+<?php render_clients(hes('clients.title','Empresas que confían en Aldea'),hen('clients.title','Companies that trust Aldea'),12); ?>
+
+<!-- 3. ESPACIOS DE TRABAJO -->
+<section class="section bg-soft" id="soluciones"><div class="container"><div class="sec-head center reveal"><h2 <?=ha('soluciones.title','Encuentra el espacio que necesitas')?>><?=ht('soluciones.title','Encuentra el espacio que necesitas')?></h2><p class="lead" <?=ha('soluciones.lead')?>><?=ht('soluciones.lead')?></p></div><div class="sol-grid">
 <?php
 $__sol=cms_pdo()->query("SELECT * FROM solutions WHERE published=1 AND in_menu=1 ORDER BY sort,id LIMIT 4")->fetchAll();
-foreach($__sol as $s){ echo '<a class="solc reveal" href="/'.esc($s['slug']).'/"><div class="solc-img"><img src="'.esc($s['hero_image']).'" alt="'.esc(($s['hero_image_alt']??'')?:$s['title_es']).'"/></div><div class="solc-b"><h3 data-es="'.esc($s['title_es']).'" data-en="'.esc($s['title_en']?:$s['title_es']).'">'.esc($s['title_es']).'</h3><p data-es="'.esc($s['excerpt_es']).'" data-en="'.esc($s['excerpt_en']?:$s['excerpt_es']).'">'.esc($s['excerpt_es']).'</p><span class="arrow" data-es="Conoce mas &rarr;" data-en="Learn more &rarr;">Conoce mas &rarr;</span></div></a>'; }
+foreach($__sol as $s){ echo '<a class="solc reveal" href="/'.esc($s['slug']).'/"><div class="solc-img"><img src="'.esc($s['hero_image']).'" alt="'.esc(($s['hero_image_alt']??'')?:$s['title_es']).'"/></div><div class="solc-b"><h3 data-es="'.esc($s['title_es']).'" data-en="'.esc($s['title_en']?:$s['title_es']).'">'.esc($s['title_es']).'</h3><p data-es="'.esc($s['excerpt_es']).'" data-en="'.esc($s['excerpt_en']?:$s['excerpt_es']).'">'.esc($s['excerpt_es']).'</p><span class="arrow" data-es="Conoce más &rarr;" data-en="Learn more &rarr;">Conoce más &rarr;</span></div></a>'; }
 ?>
-</div><div class="sec-foot reveal" style="text-align:center;margin-top:2.5rem"><a href="/lo-que-ofrecemos/" class="btn btn-ghost" data-es="Ver todas las soluciones" data-en="See all solutions">Ver todas las soluciones</a></div></div></section>
+</div></div></section>
+
+<!-- 4. SERVICIOS INCLUIDOS -->
 <section class="section" id="amenidades"><div class="container">
-<div class="sec-head center reveal"><span class="chip" data-es="Todo incluido" data-en="All included">Todo incluido</span>
-<h2 <?=ha('amenidades.title')?>><?=ht('amenidades.title')?></h2>
+<div class="sec-head center reveal">
+<h2 <?=ha('amenidades.title','Tú te ocupas de tu empresa. Nosotros de tu oficina.')?>><?=ht('amenidades.title','Tú te ocupas de tu empresa. Nosotros de tu oficina.')?></h2>
 <p class="lead" <?=ha('amenidades.lead')?>><?=ht('amenidades.lead')?></p></div>
-<?php render_amenities($__pid); ?></div></section>
-<section class="section bg-navy" id="precios"><div class="container"><div class="sec-head center on-dark reveal"><span class="chip chip-light">Precios</span><h2 <?=ha('precios.title')?>><?=ht('precios.title')?></h2><p class="lead" <?=ha('precios.lead')?>><?=ht('precios.lead')?></p></div>
+<?php render_amenities($__pid); ?>
+<p class="amen-note reveal" <?=ha('amenidades.nota','Los servicios incluidos pueden variar según la solución y ubicación contratada.')?>><?=ht('amenidades.nota','Los servicios incluidos pueden variar según la solución y ubicación contratada.')?></p>
+</div></section>
+
+<!-- 5. UBICACIONES -->
+<section class="section bg-soft" id="ubicaciones"><div class="container"><div class="sec-head center reveal"><h2 <?=ha('ubicaciones.title','Encuentra tu Aldea')?>><?=ht('ubicaciones.title','Encuentra tu Aldea')?></h2><p class="lead" <?=ha('ubicaciones.lead')?>><?=ht('ubicaciones.lead')?></p></div><?php loc_cards('','home'); ?></div></section>
+
+<!-- 6. OFICINAS CORPORATIVAS -->
+<section class="section corp" id="corporativas"><div class="container"><div class="corp-in reveal">
+<div class="corp-copy">
+<span class="chip chip-light" <?=ha('corporativas.chip','PARA EQUIPOS DE +100 PERSONAS')?>><?=ht('corporativas.chip','PARA EQUIPOS DE +100 PERSONAS')?></span>
+<h2 <?=ha('corporativas.title','Oficinas Corporativas a la Medida')?>><?=ht('corporativas.title','Oficinas Corporativas a la Medida')?></h2>
+<p <?=ha('corporativas.text1','Diseñamos, adecuamos, equipamos y operamos espacios de trabajo exclusivos para grandes equipos.')?>><?=ht('corporativas.text1','Diseñamos, adecuamos, equipamos y operamos espacios de trabajo exclusivos para grandes equipos.')?></p>
+<p <?=ha('corporativas.text2','Desarrollamos cada proyecto alrededor de las necesidades reales de tu empresa: distribución, infraestructura, mobiliario, tecnología, servicios y operación.')?>><?=ht('corporativas.text2','Desarrollamos cada proyecto alrededor de las necesidades reales de tu empresa: distribución, infraestructura, mobiliario, tecnología, servicios y operación.')?></p>
+<a href="<?=esc(href_('corporativas.cta',corp_url()))?>" class="btn btn-accent" <?=ha('corporativas.cta','Conoce más →')?>><?=ht('corporativas.cta','Conoce más →')?></a>
+</div>
+<ol class="corp-steps">
 <?php
-$__lp=cms_pdo()->query("SELECT * FROM locations WHERE published=1 ORDER BY sort,id")->fetchAll();
-$__def=$__lp?$__lp[0]:['price_virtual'=>'2,400','price_cowork'=>'2,700','price_privada'=>'7,400'];
-echo '<div class="city-tabs reveal" id="cityTabs">';
-foreach($__lp as $i=>$l){ $c=strtolower(preg_replace('/[^a-z]/i','',substr($l['city_es'],0,3))); echo '<button data-city="'.esc($c).'" data-v="'.esc($l['price_virtual']).'" data-w="'.esc($l['price_cowork']).'" data-p="'.esc($l['price_privada']).'" data-soon="'.($l['soon']?'1':'0').'"'.($i===0?' class="on"':'').'>'.esc($l['city_es']).'</button>'; }
-echo '</div>';
-echo '<p class="soon-note" id="soonNote"'.($__def&&!empty($__def['soon'])?'':' hidden').' data-es="Apertura proxima. Aparta tu espacio!" data-en="Opening soon. Reserve your space!">Apertura proxima. Aparta tu espacio!</p>';
+$__cs=[['step1','Entendemos tu operación','We map your operation'],['step2','Diseñamos la solución','We design the solution'],['step3','Adecuamos y equipamos','We fit out and equip'],['step4','Operamos tu oficina','We run your office']];
+foreach($__cs as $__i=>$__s) echo '<li><span class="corp-n">'.($__i+1).'</span><b '.ha('corporativas.'.$__s[0],$__s[1]).'>'.ht('corporativas.'.$__s[0],$__s[1]).'</b></li>';
 ?>
-<div class="plans reveal">
-<article class="plan"><h3 <?=ha('precios.plan1_title','Domicilio Virtual')?>><?=ht('precios.plan1_title','Domicilio Virtual')?></h3><p class="plan-d" <?=ha('precios.plan1_desc','Presencia profesional sin oficina fisica.')?>><?=ht('precios.plan1_desc','Presencia profesional sin oficina fisica.')?></p><p class="plan-price"><span data-es="Desde" data-en="From">Desde</span> <b>$<span id="p-virtual"><?=esc($__def['price_virtual'])?></span></b> <small>+ IVA / <span data-es="mes" data-en="mo">mes</span></small></p><ul><li <?=ha('precios.plan1_f1','Domicilio fiscal y comercial')?>><?=ht('precios.plan1_f1','Domicilio fiscal y comercial')?></li><li <?=ha('precios.plan1_f2','Recepcion de paqueteria')?>><?=ht('precios.plan1_f2','Recepcion de paqueteria')?></li><li <?=ha('precios.plan1_f3','Uso de salas por hora')?>><?=ht('precios.plan1_f3','Uso de salas por hora')?></li></ul><a href="<?=esc(href_('precios.plan1_btn','/domicilio-virtual/'))?>" class="btn btn-ghost w" <?=ha('precios.plan1_btn','Ver mas')?>><?=ht('precios.plan1_btn','Ver mas')?></a></article>
-<article class="plan plan-pop"><span class="pop" data-es="Mas popular" data-en="Most popular">Mas popular</span><h3 <?=ha('precios.plan2_title','Coworking')?>><?=ht('precios.plan2_title','Coworking')?></h3><p class="plan-d" <?=ha('precios.plan2_desc','Espacio flexible con todo lo esencial.')?>><?=ht('precios.plan2_desc','Espacio flexible con todo lo esencial.')?></p><p class="plan-price"><span data-es="Desde" data-en="From">Desde</span> <b>$<span id="p-cowork"><?=esc($__def['price_cowork'])?></span></b> <small>+ IVA / <span data-es="mes" data-en="mo">mes</span></small></p><ul><li <?=ha('precios.plan2_f1','Acceso a espacios compartidos')?>><?=ht('precios.plan2_f1','Acceso a espacios compartidos')?></li><li <?=ha('precios.plan2_f2','Internet de alta velocidad')?>><?=ht('precios.plan2_f2','Internet de alta velocidad')?></li><li <?=ha('precios.plan2_f3','Cafe y amenidades incluidas')?>><?=ht('precios.plan2_f3','Cafe y amenidades incluidas')?></li></ul><a href="<?=esc(href_('precios.plan2_btn','/coworking/'))?>" class="btn btn-accent w" <?=ha('precios.plan2_btn','Ver mas')?>><?=ht('precios.plan2_btn','Ver mas')?></a></article>
-<article class="plan"><h3 <?=ha('precios.plan3_title','Oficina Privada')?>><?=ht('precios.plan3_title','Oficina Privada')?></h3><p class="plan-d" <?=ha('precios.plan3_desc','Tu propio espacio, totalmente equipado.')?>><?=ht('precios.plan3_desc','Tu propio espacio, totalmente equipado.')?></p><p class="plan-price"><span data-es="Desde" data-en="From">Desde</span> <b>$<span id="p-privada"><?=esc($__def['price_privada'])?></span></b> <small>+ IVA / <span data-es="mes" data-en="mo">mes</span></small></p><ul><li <?=ha('precios.plan3_f1','Oficina equipada y privada')?>><?=ht('precios.plan3_f1','Oficina equipada y privada')?></li><li <?=ha('precios.plan3_f2','Capacidad de 1 a 100+')?>><?=ht('precios.plan3_f2','Capacidad de 1 a 100+')?></li><li <?=ha('precios.plan3_f3','Todos los servicios incluidos')?>><?=ht('precios.plan3_f3','Todos los servicios incluidos')?></li></ul><a href="<?=esc(href_('precios.plan3_btn','/oficina-privada/'))?>" class="btn btn-ghost w" <?=ha('precios.plan3_btn','Ver mas')?>><?=ht('precios.plan3_btn','Ver mas')?></a></article></div></div></section>
-<section class="section" id="ubicaciones"><div class="container"><div class="sec-head reveal"><span class="chip">Ubicaciones</span><h2 <?=ha('ubicaciones.title')?>><?=ht('ubicaciones.title')?></h2><p class="lead" <?=ha('ubicaciones.lead')?>><?=ht('ubicaciones.lead')?></p></div><?php loc_cards(); ?></div></section>
-<?php render_clients(); ?>
+</ol>
+</div></div></section>
+
+<!-- 7. TESTIMONIOS -->
 <section class="section testi" id="testimonios"><div class="container"><div class="sec-head center on-dark reveal"><span class="chip chip-light">Testimonios</span><h2 <?=ha('testimonios.title')?>><?=ht('testimonios.title')?></h2></div><div class="car testi-car" data-car><button class="car-arw car-prev" data-prev aria-label="Anterior"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button><div class="car-track testi-track" data-track>
 <?php
-$__t=cms_pdo()->query("SELECT t.*, c.logo AS clogo FROM testimonials t LEFT JOIN clients c ON c.id=t.client_id WHERE t.published=1 ORDER BY t.sort,t.id")->fetchAll();
+$__t=cms_pdo()->query("SELECT t.*, c.logo AS clogo FROM testimonials t LEFT JOIN clients c ON c.id=t.client_id WHERE t.published=1 ORDER BY t.sort,t.id LIMIT 3")->fetchAll();
 foreach($__t as $t){ $av=$t['avatar']?:''; $co=($t['company_logo']??'')?:($t['clogo']?:''); echo '<figure class="tcard reveal"><div class="q">&ldquo;</div><blockquote>'.esc($t['quote_es']).'</blockquote><figcaption>'.($av?'<img src="'.esc($av).'" alt=""/>':'').'<span><b>'.esc($t['name']).'</b><small>'.esc($t['company']).'</small></span>'.($co?'<img class="tco" src="'.esc($co).'" alt="'.esc($t['company']).'"/>':'').'</figcaption></figure>'; }
 ?>
 </div><button class="car-arw car-next" data-next aria-label="Siguiente"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button></div></div></section>
-<section class="section contact" id="contacto"><div class="container contact-in"><div class="contact-copy reveal"><span class="chip">Contacto</span><h2 <?=ha('contacto.title')?>><?=ht('contacto.title')?></h2><p class="lead" <?=ha('contacto.lead')?>><?=ht('contacto.lead')?></p><p class="contact-phone"><span data-es="O marcanos al" data-en="Or call us at">O marcanos al</span> <a href="<?=esc(href_('contacto.phone','tel:+524494540709'))?>" data-blk="contacto.phone"><?=ht('contacto.phone')?></a></p><p class="contact-phone"><span data-es="O escribenos a" data-en="Or email us at">O escribenos a</span> <a href="<?=esc(href_('contacto.email','mailto:contacto@aldea.work'))?>" data-blk="contacto.email"><?=ht('contacto.email')?></a></p></div><form class="contact-form reveal" onsubmit="return aldeaSubmit(event)" data-source="home">
+
+<!-- 8. ALDEA EN NUMEROS -->
+<section class="section nums" id="numeros"><div class="container">
+<div class="sec-head center reveal"><h2 <?=ha('numeros.title','Aldea en números')?>><?=ht('numeros.title','Aldea en números')?></h2></div>
+<div class="num-grid reveal">
+<?php
+$__nums=[['n1','4','Ciudades','Cities'],['n2','2017','Desde','Since'],['n3','+X','Empresas','Companies'],['n4','+X','Miembros','Members'],['n5','+X','m² de espacio','sq m of space']];
+foreach($__nums as $__n){
+  echo '<div class="num"><b '.ha('numeros.'.$__n[0].'_value',$__n[1]).'>'.ht('numeros.'.$__n[0].'_value',$__n[1]).'</b>'
+      .'<span '.ha('numeros.'.$__n[0].'_label',$__n[2]).'>'.ht('numeros.'.$__n[0].'_label',$__n[2]).'</span></div>';
+}
+?>
+</div>
+<?php if(($__nc=ht('numeros.cta','Conoce Aldea →'))!==''): ?>
+<p class="num-cta reveal"><a href="<?=esc(href_('numeros.cta','/acerca-de-aldea/'))?>" class="arrow" <?=ha('numeros.cta','Conoce Aldea →')?>><?=$__nc?></a></p>
+<?php endif; ?>
+</div></section>
+
+<!-- 9. FORMULARIO -->
+<section class="section bg-soft contact" id="contacto"><div class="container contact-in"><div class="contact-copy reveal"><span class="chip">Contacto</span>
+<h2 <?=ha('contacto.title','Hablemos sobre tu próximo espacio de trabajo')?>><?=ht('contacto.title','Hablemos sobre tu próximo espacio de trabajo')?></h2>
+<p class="lead" <?=ha('contacto.lead','Déjanos tus datos y nuestro equipo comercial se pondrá en contacto contigo para conocer lo que necesitas.')?>><?=ht('contacto.lead','Déjanos tus datos y nuestro equipo comercial se pondrá en contacto contigo para conocer lo que necesitas.')?></p>
+<p class="contact-ask" data-es="¿Prefieres hablar con nosotros?" data-en="Would you rather talk to us?">¿Prefieres hablar con nosotros?</p>
+<p class="contact-phone"><a href="<?=esc(href_('contacto.phone','tel:+524494540709'))?>" class="contact-tel" data-blk="contacto.phone"><?=ht('contacto.phone','+52 449 454 0709')?></a></p>
+<p class="contact-phone"><span data-es="O escríbenos a" data-en="Or email us at">O escríbenos a</span> <a href="<?=esc(href_('contacto.email','mailto:contacto@aldea.work'))?>" data-blk="contacto.email"><?=ht('contacto.email')?></a></p></div>
+<form class="contact-form reveal" onsubmit="return aldeaSubmit(event)" data-source="home">
 <input name="name" type="text" required placeholder="Nombre" data-ph-es="Nombre" data-ph-en="Name"/>
-<input name="email" type="email" required placeholder="Correo electronico" data-ph-es="Correo electronico" data-ph-en="Email"/>
-<input name="phone" type="tel" placeholder="Telefono" data-ph-es="Telefono" data-ph-en="Phone"/>
-<textarea name="message" rows="4" placeholder="Que estas buscando?" data-ph-es="Que estas buscando?" data-ph-en="What are you looking for?"></textarea>
-<button type="submit" class="btn btn-accent w" data-es="Enviar" data-en="Send">Enviar</button>
-<small id="formMsg" data-es="Al enviar aceptas nuestras politicas de privacidad." data-en="By submitting you accept our privacy policy.">Al enviar aceptas nuestras politicas de privacidad.</small></form></div></section>
+<input name="company" type="text" placeholder="Empresa" data-ph-es="Empresa" data-ph-en="Company"/>
+<input name="phone" type="tel" placeholder="Teléfono / WhatsApp" data-ph-es="Teléfono / WhatsApp" data-ph-en="Phone / WhatsApp"/>
+<input name="email" type="email" required placeholder="Correo" data-ph-es="Correo" data-ph-en="Email"/>
+<select name="city" required>
+  <option value="" disabled selected data-es="Ciudad de interés" data-en="City of interest">Ciudad de interés</option>
+  <option value="Querétaro">Querétaro</option>
+  <option value="León">León</option>
+  <option value="San Luis Potosí">San Luis Potosí</option>
+  <option value="Aguascalientes">Aguascalientes</option>
+  <option value="Proyecto Corporativo" data-es="Proyecto Corporativo" data-en="Corporate project">Proyecto Corporativo</option>
+</select>
+<select name="team_size" required>
+  <option value="" disabled selected data-es="Número de personas" data-en="Number of people">Número de personas</option>
+  <option value="1">1</option>
+  <option value="2-5">2–5</option>
+  <option value="6-10">6–10</option>
+  <option value="11-20">11–20</option>
+  <option value="21-50">21–50</option>
+  <option value="51-100">51–100</option>
+  <option value="+100">+100</option>
+</select>
+<button type="submit" class="btn btn-accent w" data-es="Enviar solicitud" data-en="Send request">Enviar solicitud</button>
+<small id="formMsg" data-es="Al enviar aceptas nuestras políticas de privacidad." data-en="By submitting you accept our privacy policy.">Al enviar aceptas nuestras políticas de privacidad.</small></form></div></section>
 </main>
 <?php site_footer(); site_scripts();

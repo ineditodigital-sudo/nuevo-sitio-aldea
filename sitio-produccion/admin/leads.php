@@ -64,7 +64,10 @@ echo '<div class="adm-help"><span class="adm-help-ic">i</span><span>Los <b>prosp
   <?php foreach($recent as $l): $stc=$STL[$l['status']]??$STL['new']; ?>
     <div class="lead-it">
       <span class="lead-av"><?=e(strtoupper(mb_substr($l['name']?:'?',0,1)))?></span>
-      <div class="lead-main"><b><?=e($l['name'])?></b><small><?=e($l['email'])?><?=$l['phone']?' · '.e($l['phone']):''?></small></div>
+      <div class="lead-main"><b><?=e($l['name'])?><?=!empty($l['company'])?' <span style="font-weight:400;color:#5c6880">· '.e($l['company']).'</span>':''?></b><small><?=e($l['email'])?><?=$l['phone']?' · '.e($l['phone']):''?><?php
+        $extra=[]; if(!empty($l['city']))$extra[]=$l['city']; if(!empty($l['team_size']))$extra[]=$l['team_size'].' pers.';
+        if($extra)echo ' · '.e(implode(' · ',$extra));
+      ?></small></div>
       <span class="lead-src" title="Pagina de origen"><?=e($l['source']?:'web')?></span>
       <span class="lead-dt"><?=e(substr((string)$l['created_at'],0,10))?></span>
       <form method="post" class="lead-stform">

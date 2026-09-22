@@ -25,3 +25,16 @@ accesos*.txt
 
 # Config del CMS de producción — contiene credenciales de la base
 sitio-produccion/cms/config.php
+
+# Deploy — credenciales FTP y respaldos del servidor. NUNCA subir.
+deploy/ftp.conf
+deploy/bak/
+deploy/dumps/
+
+# Python del script de deploy
+__pycache__/
+*.pyc
+
+# Briefs internos del cliente — material confidencial, no va al repo publico
+BRIEFS CAMBIOS/
+Briefs cambios/

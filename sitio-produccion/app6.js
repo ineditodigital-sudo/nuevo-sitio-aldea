@@ -157,3 +157,118 @@ document.querySelectorAll('[data-car]').forEach(function(wrap){
     wrap.addEventListener('mouseenter',stop);wrap.addEventListener('mouseleave',start);start();
   }
 });
+
+// ---- Hero Home: carrusel de imagenes (solo cambia la imagen; texto y CTAs fijos) ----
+(function(){
+  var box=document.querySelector('[data-hero]'); if(!box) return;
+  var imgs=[].slice.call(box.querySelectorAll('.nhero-img'));
+  if(imgs.length<2) return;
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var i=0;
+  setInterval(function(){
+    imgs[i].classList.remove('on');
+    i=(i+1)%imgs.length;
+    imgs[i].classList.add('on');
+  },6000);
+})();
+
+// ================= PAGINA DE SEDE =================
+// Lightbox del mosaico: fotos + video de la sede en la misma galeria.
+(function(){
+  var mos=document.querySelector('[data-galeria]'); if(!mos) return;
+  var items=[]; try{ items=JSON.parse(mos.getAttribute('data-galeria'))||[]; }catch(e){ return; }
+  if(!items.length) return;
+
+  var box=document.createElement('div'); box.className='lgx'; box.hidden=true;
+  box.innerHTML='<button class="lgx-x" aria-label="Cerrar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>'+
+    '<button class="lgx-nav lgx-prev" aria-label="Anterior"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>'+
+    '<div class="lgx-stage"></div>'+
+    '<button class="lgx-nav lgx-next" aria-label="Siguiente"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>'+
+    '<span class="lgx-count"><b>1</b>/'+items.length+'</span>';
+  document.body.appendChild(box);
+  var stage=box.querySelector('.lgx-stage'), cur=box.querySelector('.lgx-count b'), i=0;
+
+  function esYoutube(u){ return /youtube\.com|youtu\.be/i.test(u); }
+  function esVimeo(u){ return /vimeo\.com/i.test(u); }
+  function embed(u){
+    var m=u.match(/(?:youtu\.be\/|v=)([\w-]{6,})/);
+    if(esYoutube(u)&&m) return 'https://www.youtube-nocookie.com/embed/'+m[1]+'?autoplay=1&rel=0';
+    var v=u.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+    if(esVimeo(u)&&v) return 'https://player.vimeo.com/video/'+v[1]+'?autoplay=1';
+    return null;
+  }
+  function pinta(n){
+    i=(n+items.length)%items.length;
+    var it=items[i]; cur.textContent=i+1;
+    if(it.tipo==='video'){
+      var e=embed(it.src);
+      stage.innerHTML = e
+        ? '<iframe class="lgx-video" src="'+e+'" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>'
+        : '<video class="lgx-video" src="'+it.src+'" controls autoplay playsinline></video>';
+    } else {
+      stage.innerHTML='<img class="lgx-img" src="'+it.src+'" alt="">';
+    }
+  }
+  function abre(n){ pinta(n); box.hidden=false; document.body.style.overflow='hidden'; }
+  function cierra(){ box.hidden=true; stage.innerHTML=''; document.body.style.overflow=''; }
+
+  mos.querySelectorAll('[data-i]').forEach(function(b){
+    b.addEventListener('click',function(){ abre(parseInt(b.getAttribute('data-i'),10)||0); });
+  });
+  box.querySelector('.lgx-x').addEventListener('click',cierra);
+  box.querySelector('.lgx-prev').addEventListener('click',function(e){ e.stopPropagation(); pinta(i-1); });
+  box.querySelector('.lgx-next').addEventListener('click',function(e){ e.stopPropagation(); pinta(i+1); });
+  box.addEventListener('click',function(e){ if(e.target===box) cierra(); });
+  document.addEventListener('keydown',function(e){
+    if(box.hidden) return;
+    if(e.key==='Escape') cierra();
+    else if(e.key==='ArrowLeft') pinta(i-1);
+    else if(e.key==='ArrowRight') pinta(i+1);
+  });
+})();
+
+// "Cotizar" de cada espacio: baja al formulario y preselecciona el producto.
+document.querySelectorAll('.esp-cta').forEach(function(b){
+  b.addEventListener('click',function(){
+    var sel=document.getElementById('prodSel');
+    if(sel){
+      var v=b.getAttribute('data-producto');
+      for(var k=0;k<sel.options.length;k++){ if(sel.options[k].value===v){ sel.selectedIndex=k; break; } }
+      sel.classList.add('campo-listo');
+      setTimeout(function(){ sel.classList.remove('campo-listo'); },1600);
+    }
+    var f=document.getElementById('formulario');
+    if(f) f.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+
+// Modal "Agenda tu visita"
+(function(){
+  var m=document.getElementById('vmodal'); if(!m) return;
+  function abre(){ m.hidden=false; document.body.style.overflow='hidden';
+    var f=m.querySelector('input[name=visit_date]');
+    if(f && !f.min){ var d=new Date(); d.setDate(d.getDate()+1);
+      f.min=d.toISOString().slice(0,10); }
+  }
+  function cierra(){ m.hidden=true; document.body.style.overflow=''; }
+  document.querySelectorAll('[data-visita]').forEach(function(b){ b.addEventListener('click',abre); });
+  m.querySelectorAll('[data-vclose]').forEach(function(b){ b.addEventListener('click',cierra); });
+  document.addEventListener('keydown',function(e){ if(!m.hidden && e.key==='Escape') cierra(); });
+})();
+
+// Campañas: guarda los UTM de la primera visita y los adjunta a los formularios.
+(function(){
+  var CLAVES=['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
+  var q=new URLSearchParams(location.search), hay=false, datos={};
+  CLAVES.forEach(function(k){ var v=q.get(k); if(v){ datos[k]=v; hay=true; } });
+  try{
+    if(hay) sessionStorage.setItem('aldea_utm',JSON.stringify(datos));
+    else datos=JSON.parse(sessionStorage.getItem('aldea_utm')||'{}');
+  }catch(e){}
+  document.querySelectorAll('form[data-utm]').forEach(function(f){
+    CLAVES.forEach(function(k){
+      if(!datos[k]) return;
+      var h=document.createElement('input'); h.type='hidden'; h.name=k; h.value=datos[k]; f.appendChild(h);
+    });
+  });
+})();

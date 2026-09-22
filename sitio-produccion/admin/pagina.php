@@ -25,7 +25,17 @@ if($_SERVER['REQUEST_METHOD']==='POST' && csrf_ok()){
   header('Location: '.$_SERVER['SCRIPT_NAME'].'?id='.$pid); exit;
 }
 
-$blocks=$pdo->query("SELECT * FROM blocks WHERE page_id=$pid ORDER BY FIELD(section,'hero','nosotros','soluciones','amenidades','precios','ubicaciones','clients','testimonios','contacto','body'),sort,id")->fetchAll();
+$__orden="'hero','page','clients','empresas','soluciones','amenidades',"
+        ."'quees','lista','incluye','pasos','flex','porque','espacios',"
+        ."'operacion','equipo','proceso','renta','servicios','tech',"
+        ."'galeria','proyecto','ubicaciones','mapa','corporativas',"
+        ."'testimonios','testi','numeros','personas','valores','vivealdea',"
+        ."'contacto','form','visita','faq',"
+        ."'nosotros','precios','body'";
+// FIELD() devuelve 0 si la seccion no esta en la lista, y 0 ordena antes
+// que 1: sin este IF, una seccion nueva se colaria delante de Portada.
+$blocks=$pdo->query("SELECT * FROM blocks WHERE page_id=$pid
+  ORDER BY IF(FIELD(section,$__orden)=0,900,FIELD(section,$__orden)),sort,id")->fetchAll();
 $isLegal=$page['type']==='legal';
 // metadatos por seccion: [nombre, descripcion (que parte del sitio), icono svg-path]
 $SM=[
@@ -36,13 +46,40 @@ $SM=[
  'precios'=>['Precios','Titulo de la seccion de precios por ciudad.','<path d="M20 12V7H4v10h8"/><circle cx="12" cy="12" r="2"/><path d="M17 15l2 2 4-4"/>'],
  'ubicaciones'=>['Ubicaciones','Titulo de la seccion de sedes.','<path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>'],
  'clients'=>['Clientes','Titulo del carrusel de empresas.','<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>'],
+ 'corporativas'=>['Oficinas Corporativas','Bloque del Home para proyectos de +100 personas.','<path d="M3 21h18M5 21V5l7-2v18M12 21V9l7 3v9"/><path d="M8 8h.01M8 12h.01M15 14h.01"/>'],
+ 'numeros'=>['Aldea en numeros','Las cifras que aparecen en el Home. Valida los datos antes de publicar.','<path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/>'],
+ 'personas'=>['Las personas','Foto y texto de la seccion sobre el equipo.','<path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/>'],
+ 'valores'=>['Nuestros valores','Las cinco frases y el nombre de cada valor.','<path d="M12 3l1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6 6.9 18.2l1.9-5.8L4 8.8h6.1z"/>'],
+ 'vivealdea'=>['Asi se vive Aldea','La galeria de fotos del equipo. Sin fotos, la seccion no se muestra.','<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 17-5-5-4 4-2-2-4 4"/>'],
  'testimonios'=>['Testimonios','Titulo de la seccion de opiniones.','<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'],
- 'tech'=>['Tecnologia','Seccion "Tecnologia confiable" (global, en todas las sedes).','<rect x="4" y="9" width="16" height="11" rx="2"/><path d="M8 9V6M16 9V6M9 13v3M15 13v3"/>'],
- 'contacto'=>['Contacto','Textos y datos del bloque de contacto.','<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>'],
- 'benefits'=>['Beneficios','Los 3 beneficios que aparecen en las paginas de servicios.','<path d="M20 6 9 17l-5-5"/>'],
- 'cta'=>['Llamado a la accion (CTA)','El bloque de cierre que invita a agendar tour (servicios y blog).','<path d="M13 2 3 14h9l-1 8 10-12h-9z"/>'],
+ 'tech'=>['Tecnologia (sin uso)','Ya no se muestra: cada pagina tiene ahora su propia seccion de Tecnologia.','<rect x="4" y="9" width="16" height="11" rx="2"/><path d="M8 9V6M16 9V6M9 13v3M15 13v3"/>'],
+ 'contacto'=>['Contacto','Telefono y correo que se muestran en los formularios de servicios y sedes.','<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>'],
+ 'benefits'=>['Beneficios (sin uso)','Quedo del diseno anterior de las paginas de servicio. Ya no se muestra.','<path d="M20 6 9 17l-5-5"/>'],
+ 'cta'=>['Llamado a la accion (CTA)','Bloque de cierre. Hoy solo aparece al final de los articulos del blog.','<path d="M13 2 3 14h9l-1 8 10-12h-9z"/>'],
  'body'=>['Contenido','El cuerpo principal de esta pagina.','<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>'],
+ 'empresas'=>['Empresas que confian','Titulo de la franja de logos de clientes.','<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>'],
+ 'quees'=>['Que es esta solucion','Explicacion con foto y los bloques de apoyo.','<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>'],
+ 'lista'=>['Bloque de argumentos','La lista de puntos y su frase de cierre.','<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>'],
+ 'incluye'=>['Que incluye','Las dos columnas de lo que incluye la membresia.','<path d="M20 6 9 17l-5-5"/>'],
+ 'pasos'=>['Pasos','El proceso en tres pasos.','<path d="M4 18h4v-4H4zM10 14h4V8h-4zM16 10h4V4h-4z"/>'],
+ 'flex'=>['Flexibilidad y plazos','Texto sobre contratacion y sus etiquetas.','<path d="M12 3l1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6 6.9 18.2l1.9-5.8L4 8.8h6.1z"/>'],
+ 'galeria'=>['Galeria','Titulo y subtexto. Las fotos se cambian en Servicios.','<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 17-5-5-4 4-2-2-4 4"/>'],
+ 'form'=>['Formulario','Titulo, texto y boton del formulario de la pagina.','<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h6"/>'],
+ 'faq'=>['Preguntas frecuentes','Las preguntas y respuestas del acordeon.','<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3 2.4V13"/><path d="M12 17h.01"/>'],
+ 'porque'=>['Por que esta sede','Texto de la sede y sus tres diferenciadores.','<path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>'],
+ 'espacios'=>['Espacios disponibles','Las cuatro tarjetas con precio. Los precios se editan en Ubicaciones.','<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>'],
+ 'servicios'=>['Servicios incluidos','Los servicios con icono que se listan en la pagina.','<path d="M20 6 9 17l-5-5"/>'],
+ 'mapa'=>['Mapa y ubicacion','Titulo de la seccion del mapa.','<path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>'],
+ 'visita'=>['Agenda tu visita','Textos de la ventana para agendar una visita.','<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/>'],
+ 'testi'=>['Testimonios de la sede','Citas propias de esta sede. Vacio = seccion oculta.','<path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/>'],
+ 'operacion'=>['Alrededor de tu operacion','Texto, foto y los cinco ejes del proyecto.','<path d="M3 21h18M5 21V5l7-2v18M12 21V9l7 3v9"/><path d="M8 8h.01M8 12h.01M15 14h.01"/>'],
+ 'equipo'=>['Un solo equipo','El alcance que cubre Aldea y su frase de cierre.','<path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/>'],
+ 'proceso'=>['Como trabajamos','Las cinco etapas del proyecto.','<path d="M4 18h4v-4H4zM10 14h4V8h-4zM16 10h4V4h-4z"/>'],
+ 'renta'=>['Todo en una renta','La formula y los beneficios.','<circle cx="12" cy="12" r="9"/><path d="M15 9.5A3 3 0 0 0 12 8c-2 0-3 1-3 2s1 2 3 2 3 1 3 2-1 2-3 2a3 3 0 0 1-3-1.5M12 6v12"/>'],
+ 'proyecto'=>['Del proyecto al espacio','La secuencia visual. Sin fotos, la seccion no se muestra.','<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 17-5-5-4 4-2-2-4 4"/>'],
 ];
+// 'page' guarda ajustes tecnicos (que plantilla usa), no contenido editable
+$blocks=array_values(array_filter($blocks,function($b){ return $b['section']!=='page'; }));
 $groups=[]; foreach($blocks as $b){ $groups[$b['section']][]=$b; }
 $secs=array_keys($groups);
 
@@ -126,6 +163,7 @@ function pf_field($b,$isLegal){ $id=$b['id']; $t=$b['type']; $adv=($t==='richtex
 <input type="hidden" name="csrf" value="<?=csrf()?>">
 <div class="ed-wrap">
   <nav class="ed-nav">
+    <p class="ed-nav-tip">Cada boton es una <b>seccion de la pagina</b>, en el mismo orden en que se ve en el sitio. Haz clic para editarla.</p>
     <?php $first=true; foreach($secs as $sec): $m=$SM[$sec]??[ucfirst($sec),'',$SM['body'][2]]; ?>
     <button type="button" class="ed-navi<?=$first?' on':''?>" data-go="s_<?=e($sec)?>">
       <span class="ed-navi-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><?=$m[2]?></svg></span>
@@ -179,10 +217,22 @@ function pf_field($b,$isLegal){ $id=$b['id']; $t=$b['type']; $adv=($t==='richtex
 <div class="pg2-save"><span class="pg2-save-t">Los cambios se publican al guardar</span><button class="btn" id="pgsave">Guardar cambios</button></div>
 </form>
 <style>
-.ed-pv{position:fixed;top:0;right:0;width:46vw;max-width:860px;height:100vh;background:#fff;box-shadow:-6px 0 30px rgba(15,25,50,.14);z-index:1200;display:flex;flex-direction:column;overflow:hidden;transform:translateX(101%);transition:transform .28s ease}
+/* El ancho del panel y el hueco que deja se toman de la misma variable:
+   si no coinciden, la cabecera del panel queda debajo de la vista previa. */
+:root{--pvw:min(42vw,760px)}
+.ed-pv{position:fixed;top:0;right:0;width:var(--pvw);height:100vh;background:#fff;box-shadow:-6px 0 30px rgba(15,25,50,.14);z-index:1200;display:flex;flex-direction:column;overflow:hidden;transform:translateX(101%);transition:transform .28s ease}
 body.pv-on .ed-pv{transform:none}
-body.pv-on main{padding-right:46vw}
+body.pv-on main{padding-right:var(--pvw)}
+/* Con la vista previa abierta el espacio es estrecho: el indice de secciones
+   pasa a barra horizontal para que el formulario use todo el ancho. */
+body.pv-on .ed-wrap{grid-template-columns:1fr}
+body.pv-on .ed-nav{position:static;flex-direction:row;flex-wrap:wrap;gap:.35rem}
+body.pv-on .ed-navi{width:auto}
+body.pv-on .pf-cardgrid{grid-template-columns:1fr}
 .ed-pvtoggle{border-color:#0f1f3a}
+.ed-nav-tip{font-size:.78rem;line-height:1.45;color:#7a849a;padding:.5rem .7rem .7rem;margin:0;border-bottom:1px solid #eef1f6;margin-bottom:.35rem}
+.ed-nav-tip b{color:#3a4459}
+body.pv-on .ed-nav-tip{flex:1 1 100%;border-bottom:0;padding-bottom:.4rem;margin-bottom:.2rem}
 body.pv-on .ed-pvtoggle{background:#0f1f3a;color:#fff}
 .ed-pvbar{display:flex;align-items:center;gap:.55rem;padding:.55rem .9rem;border-bottom:1px solid #eef1f6;background:#f8fafc;flex:0 0 auto}
 .ed-pvbar b{font-size:.9rem;color:#0f1f3a}
@@ -190,11 +240,11 @@ body.pv-on .ed-pvtoggle{background:#0f1f3a;color:#fff}
 .ed-pvx{background:none;border:0;font-size:1.15rem;line-height:1;cursor:pointer;color:#8a93a5}
 .ed-pvscroll{flex:1 1 0;min-height:0;overflow-y:auto;overflow-x:hidden;background:#fff;-webkit-overflow-scrolling:touch}
 #edPvFrame{display:block;width:100%;border:0;background:#fff;pointer-events:none}
-@media(max-width:1100px){.ed-pv{width:100vw;max-width:none}body.pv-on main{padding-right:0}}
+@media(max-width:1100px){:root{--pvw:100vw}body.pv-on main{padding-right:0}}
 </style>
 <div id="edPv" class="ed-pv">
-  <div class="ed-pvbar"><b>Vista previa en vivo</b><span class="ed-pvhint">Clic en una seccion (izquierda) para saltar a ella. Se actualiza al guardar.</span><button type="button" id="edPvReload" class="btn btn-ghost btn-sm">Refrescar</button><a href="<?=($page['slug']===''||$page['slug']==='__global')?'/':'/'.e($page['slug']).'/'?>" target="_blank" class="btn btn-ghost btn-sm">Abrir &#8599;</a><button type="button" id="edPvClose" class="ed-pvx" title="Cerrar">&times;</button></div>
-  <div class="ed-pvscroll" id="edPvScroll"><iframe id="edPvFrame" src="<?=($page['slug']===''||$page['slug']==='__global')?'/':'/'.e($page['slug']).'/'?>?pv=1" title="Vista previa" scrolling="no"></iframe></div>
+  <div class="ed-pvbar"><b>Vista previa en vivo</b><span class="ed-pvhint">Clic en una seccion (izquierda) para saltar a ella. Se actualiza al guardar.</span><button type="button" id="edPvReload" class="btn btn-ghost btn-sm">Refrescar</button><a href="<?=$page['slug']===''?'/':($page['slug']==='__global'?'/oficina-privada/':'/'.e($page['slug']).'/')?>" target="_blank" class="btn btn-ghost btn-sm">Abrir &#8599;</a><button type="button" id="edPvClose" class="ed-pvx" title="Cerrar">&times;</button></div>
+  <div class="ed-pvscroll" id="edPvScroll"><iframe id="edPvFrame" src="<?=$page['slug']===''?'/':($page['slug']==='__global'?'/oficina-privada/':'/'.e($page['slug']).'/')?>?pv=1" title="Vista previa" scrolling="no"></iframe></div>
 </div>
 <script>
 (function(){

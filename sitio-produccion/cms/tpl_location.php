@@ -1,4 +1,13 @@
 <?php /* $loc en scope */
+// Si la sede tiene contenido ampliado (pagina oculta "loc:<slug>" con bloques),
+// se usa la plantilla por secciones del brief. Si no, sigue el diseno generico.
+$__lp=cms_pdo()->prepare("SELECT id FROM pages WHERE slug=?"); $__lp->execute(['loc:'.$loc['slug']]);
+$__lpid=$__lp->fetchColumn();
+if($__lpid){
+  $LB=[];
+  foreach(cms_pdo()->query("SELECT * FROM blocks WHERE page_id=".(int)$__lpid) as $r) $LB[$r['section'].'.'.$r['skey']]=$r;
+  if($LB){ include __DIR__.'/tpl_location_full.php'; return; }
+}
 $gal=json_decode($loc['gallery']?:'[]',true); if(!$gal)$gal=array_filter([$loc['hero_image']]);
 $near=json_decode($loc['nearby']?:'{}',true); if(!is_array($near))$near=[];
 $city=$loc['city_es']; $addr=$loc['address_es'];
@@ -8,7 +17,7 @@ $__inten=$loc['intro_en']?:$loc['intro_es']; $__adren=$loc['address_en']?:$loc['
 site_head(($loc['seo_title_es']?:$loc['title_es'].' - Aldea Networking'),mb_strimwidth(strip_tags((string)$loc['intro_es']),0,150,'…'),'/'.$loc['slug'].'/',false,$__ten,($loc['seo_desc_en']?:''));
 site_header();
 $L='<svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>'; $R='<svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>';
-$soonflag = $loc['soon'] ? '<span class="subhero-flag" data-es="Proximamente - Apertura proxima" data-en="Coming soon">Proximamente - Apertura proxima</span>' : '';
+$soonflag = $loc['soon'] ? '<span class="subhero-flag" data-es="Próximamente - Apertura próxima" data-en="Coming soon">Próximamente - Apertura próxima</span>' : '';
 // LOCHERO
 echo '<section class="lochero"><div class="container lochero-in"><div class="lochero-info reveal">';
 echo '<div class="crumb"><a href="/" data-es="Inicio" data-en="Home">Inicio</a> / <a href="/ubicaciones/" data-es="Ubicaciones" data-en="Locations">Ubicaciones</a> / <span data-es="'.esc($city).'" data-en="'.esc($__cityen).'">'.esc($city).'</span></div>';
