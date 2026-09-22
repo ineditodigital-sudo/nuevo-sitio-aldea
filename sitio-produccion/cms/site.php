@@ -74,6 +74,61 @@ function site_head($title,$desc='',$canon='',$noindex=false,$title_en='',$desc_e
   if($lang==='en') ob_start(); // el cuerpo se traduce al vaciar en site_scripts()
 }
 
+// --- Datos estructurados (schema.org) ---
+// Le dicen a Google que Aldea es una empresa con cuatro sedes fisicas, con su
+// direccion y telefono. Es lo que hace que aparezca la ficha en la busqueda local.
+function jsonld($d){ echo '<script type="application/ld+json">'.json_encode($d,JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE).'</script>'; }
+function site_base(){ return 'https://'.($_SERVER['HTTP_HOST']??'temporal.aldea.work'); }
+
+// La base guarda la direccion en una sola linea; schema.org la quiere troceada.
+function dir_schema($dir,$ciudad){
+  $dir=trim((string)$dir); $cp='';
+  if(preg_match('/\b(\d{5})\b/',$dir,$m)) $cp=$m[1];
+  $calle=$cp!==''?preg_replace('/,?\s*(C\.?P\.?)?\s*\b'.$cp.'\b.*$/u','',$dir):$dir;
+  $calle=preg_replace('/[,\s]*(C\.?P\.?)?[,\s]*$/u','',$calle);
+  // El estado no esta en la base: se deduce de la ciudad.
+  $estados=['León'=>'Guanajuato','Leon'=>'Guanajuato','Querétaro'=>'Querétaro','Queretaro'=>'Querétaro',
+            'San Luis Potosí'=>'San Luis Potosí','San Luis Potosi'=>'San Luis Potosí',
+            'Aguascalientes'=>'Aguascalientes'];
+  return array_filter(['@type'=>'PostalAddress','streetAddress'=>$calle,'addressLocality'=>$ciudad,
+    'addressRegion'=>$estados[$ciudad]??$ciudad,'postalCode'=>$cp,'addressCountry'=>'MX']);
+}
+
+function jsonld_sede($loc){
+  $b=site_base(); $url=$b.'/'.$loc['slug'].'/';
+  jsonld(array_filter([
+    '@context'=>'https://schema.org','@type'=>'LocalBusiness','@id'=>$url,
+    'name'=>'Aldea Networking — '.$loc['name'],
+    'description'=>mb_strimwidth(strip_tags((string)($loc['intro_es']??'')),0,300,'…'),
+    'url'=>$url,
+    'image'=>$b.'/img/og/'.$loc['slug'].'.jpg',
+    'address'=>dir_schema($loc['address_es']??'',$loc['city_es']??''),
+    'telephone'=>setting('phone','+52 449 454 0709'),
+    'email'=>setting('email','contacto@aldea.work'),
+    'priceRange'=>'$$',
+    'parentOrganization'=>['@type'=>'Organization','name'=>'Aldea Networking','url'=>$b.'/'],
+  ]));
+}
+
+function jsonld_organizacion(){
+  $b=site_base();
+  $sedes=[];
+  foreach(cms_pdo()->query("SELECT slug FROM locations WHERE published=1 ORDER BY sort,id") as $r)
+    $sedes[]=['@type'=>'LocalBusiness','@id'=>$b.'/'.$r['slug'].'/'];
+  jsonld(array_filter([
+    '@context'=>'https://schema.org','@type'=>'Organization','@id'=>$b.'/#organizacion',
+    'name'=>setting('site_name','Aldea Networking'),
+    'url'=>$b.'/',
+    'logo'=>$b.'/img/logo-azul.svg',
+    'image'=>$b.'/img/og/default.jpg',
+    'description'=>'Oficinas privadas, coworking, escritorios privados y domicilio virtual en Leon, San Luis Potosi, Aguascalientes y Queretaro.',
+    'contactPoint'=>['@type'=>'ContactPoint','contactType'=>'sales',
+      'telephone'=>setting('phone','+52 449 454 0709'),
+      'email'=>setting('email','contacto@aldea.work'),
+      'areaServed'=>'MX','availableLanguage'=>['es','en']],
+    'subOrganization'=>$sedes,
+  ]));
+}
 function site_header(){
   $pdo=cms_pdo();
   $nav=$pdo->query("SELECT * FROM menu_items WHERE menu='header' AND published=1 ORDER BY sort,id")->fetchAll();

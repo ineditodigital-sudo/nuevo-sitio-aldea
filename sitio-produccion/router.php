@@ -26,5 +26,5 @@ try{
   $st=$pdo->prepare("SELECT * FROM pages WHERE slug=? AND published=1 AND type IN ('simple','legal','faq','contact')"); $st->execute([$slug]); $pg=$st->fetch();
   if($pg){ include __DIR__.'/cms/tpl_page.php'; exit; }
   if(serve_static($slug)) exit;
-  http_response_code(404); echo '<h1>404 - No encontrado</h1>';
+  include __DIR__.'/cms/tpl_404.php';
 }catch(Throwable $e){ if(!serve_static($slug)){ http_response_code(500); echo 'Error: '.htmlspecialchars($e->getMessage()); } }

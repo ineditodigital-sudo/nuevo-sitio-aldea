@@ -34,6 +34,24 @@ costaría el posicionamiento que ya tiene; solo cambió lo que ve el usuario).
 
 ## 1. Datos que faltan
 
+### URGENTE: la fecha de apertura de Centro Sur ya paso
+La sede de Queretaro sigue anunciandose como **"Proximamente"** con el aviso
+*"Apertura prevista: 15 de junio de 2026"*. Hoy es **22 de septiembre de 2026**: esa
+fecha paso hace tres meses.
+
+Quien entre al sitio va a pensar que la apertura se cayo o que la pagina esta
+abandonada. Ademas la etiqueta "Proximamente" aparece en las tarjetas de sede de
+todo el sitio (Home, Ubicaciones, Contacto y las cuatro soluciones).
+
+**Que preguntar:** ¿ya abrio Aldea Centro Sur?
+- Si abrio: se quita el aviso y la etiqueta, y la sede pasa a operar como las otras
+  tres. Son dos campos en el panel (`hero.aviso` y la casilla "Proximamente" de la
+  ficha de la sede).
+- Si se pospuso: hace falta la fecha nueva.
+
+Es lo unico del sitio que hoy se contradice a si mismo, asi que conviene resolverlo
+antes de enseñarlo.
+
 ### Precio de Escritorio Privado — RESUELTO el 24 de agosto de 2026
 Confirmado por el cliente y cargado en la base. Ya no aparece "Precio a consultar".
 
@@ -43,6 +61,12 @@ Confirmado por el cliente y cargado en la base. Ya no aparece "Precio a consulta
 | Aldea Poliforum (León) | $8,600 | $3,100 | **$3,900** | $2,400 |
 | Aldea Park (SLP) | $8,600 | $3,100 | **$3,900** | $2,400 |
 | Aldea Galerías (Ags) | $7,400 | $2,700 | **$3,400** | $2,400 |
+
+### Horarios de atencion de cada sede
+Las cuatro sedes ya publican datos estructurados (schema.org) para que Google
+muestre la ficha de negocio local. Falta un campo que Google valora mucho y que no
+esta en la base: el **horario de atencion**. Si es el mismo en las cuatro, basta un
+dato; si varia, hace falta el de cada una.
 
 ### Condiciones de estacionamiento — las 4 sedes
 El brief de sedes dice literalmente "incluir aquí las condiciones finales". Las cuatro
@@ -272,6 +296,15 @@ Estos no son de contenido, son de accesos y cuentas. Vienen de
 ---
 
 ## Ya resuelto (no preguntar)
+
+- **Open Graph y Twitter Cards (22 de septiembre de 2026)** → 15 etiquetas por pagina
+  y 11 imagenes de 1200x630 en `/img/og/`. Antes, compartir cualquier enlace daba una
+  vista previa vacia.
+- **Pagina 404 (22 de septiembre)** → antes era un `<h1>` pelado de 28 bytes. Ahora
+  lleva cabecera, pie y atajos a soluciones, sedes y el resto; devuelve 404 de verdad
+  y no se indexa.
+- **Datos estructurados (22 de septiembre)** → `Organization` en el Home y
+  `LocalBusiness` en las cuatro sedes, con direccion troceada, telefono y correo.
 
 - **Cotejo de los 8 briefs contra el sitio (24 de agosto de 2026)** → las 11 páginas con
   brief coinciden en orden de secciones y en textos. Se encontraron y corrigieron dos

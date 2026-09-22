@@ -27,6 +27,7 @@ site_head(($loc['seo_title_es']?:$loc['name'].' - Aldea Networking'),
           '/'.$loc['slug'].'/',false,
           ($loc['seo_title_en']?:$loc['name'].' - Aldea Networking'),($loc['seo_desc_en']?:''));
 site_header();
+jsonld_sede($loc);   // ficha de negocio local para Google
 echo '<main>';
 
 /* ---------- 1. HERO + MOSAICO DE GALERIA ---------- */

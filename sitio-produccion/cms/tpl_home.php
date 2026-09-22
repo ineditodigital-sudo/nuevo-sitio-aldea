@@ -21,6 +21,7 @@ $mden=($p&&$p['seo_desc_en'])?$p['seo_desc_en']:'All-inclusive offices for rent 
 $GLOBALS['BODY_CLASS']='has-nhero'; // header claro sobre el hero oscuro
 site_head($mt,$md,'/',$p?(bool)$p['noindex']:false,$mten,$mden);
 site_header();
+jsonld_organizacion();   // ficha de empresa + sus cuatro sedes
 echo block_styles($__pid);
 ?>
 <main>
