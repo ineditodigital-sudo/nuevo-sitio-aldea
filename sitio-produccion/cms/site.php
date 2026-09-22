@@ -39,6 +39,33 @@ function site_head($title,$desc='',$canon='',$noindex=false,$title_en='',$desc_e
   echo '<link rel="alternate" hreflang="en" href="https://'.$host.esc($enPath).'">';
   echo '<link rel="alternate" hreflang="x-default" href="https://'.$host.esc($esPath).'">';
   if($noindex)echo '<meta name="robots" content="noindex, nofollow">';
+  // --- Open Graph / Twitter: como se ve el enlace cuando alguien lo comparte ---
+  // La imagen sale de /img/og/<slug>.jpg; si la pagina no tiene una propia se
+  // usa default.jpg. Son 1200x630 en JPG, la medida que piden Facebook y
+  // LinkedIn y el formato que WhatsApp dibuja sin fallar (con WebP a veces no).
+  // Una plantilla puede imponer la suya con $GLOBALS['og_image'].
+  $__slug=preg_replace('/[^a-z0-9-]/','',strtolower(trim($esPath,'/')));
+  $__ogRel='/img/og/'.($__slug===''?'default':$__slug).'.jpg';
+  if(!is_file(($_SERVER['DOCUMENT_ROOT']??'').$__ogRel)) $__ogRel='/img/og/default.jpg';
+  if(!empty($GLOBALS['og_image'])) $__ogRel=$GLOBALS['og_image'];
+  $__ogUrl='https://'.$host.$__ogRel;
+  $__ogDesc=$d?:($lang==='en'
+    ? 'Private offices, coworking, private desks and virtual address in Leon, San Luis Potosi, Aguascalientes and Queretaro.'
+    : 'Oficinas privadas, coworking, escritorios privados y domicilio virtual en Leon, San Luis Potosi, Aguascalientes y Queretaro.');
+  echo '<meta property="og:type" content="'.esc($GLOBALS['og_type']??'website').'">';
+  echo '<meta property="og:site_name" content="Aldea Networking">';
+  echo '<meta property="og:locale" content="'.($lang==='en'?'en_US':'es_MX').'">';
+  echo '<meta property="og:locale:alternate" content="'.($lang==='en'?'es_MX':'en_US').'">';
+  echo '<meta property="og:title" content="'.esc($t).'">';
+  echo '<meta property="og:description" content="'.esc($__ogDesc).'">';
+  echo '<meta property="og:url" content="https://'.$host.esc($canonSelf).'">';
+  echo '<meta property="og:image" content="'.esc($__ogUrl).'">';
+  echo '<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">';
+  echo '<meta property="og:image:alt" content="'.esc($t).'">';
+  echo '<meta name="twitter:card" content="summary_large_image">';
+  echo '<meta name="twitter:title" content="'.esc($t).'">';
+  echo '<meta name="twitter:description" content="'.esc($__ogDesc).'">';
+  echo '<meta name="twitter:image" content="'.esc($__ogUrl).'">';
   if($g=setting('gtm_id')) echo "<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','".esc($g)."');</script>";
   echo '<link rel="icon" href="/img/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
   $__v=(int)@filemtime($_SERVER['DOCUMENT_ROOT'].'/s6.css');
