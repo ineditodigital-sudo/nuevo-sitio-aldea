@@ -62,6 +62,16 @@ Confirmado por el cliente y cargado en la base. Ya no aparece "Precio a consulta
 | Aldea Park (SLP) | $8,600 | $3,100 | **$3,900** | $2,400 |
 | Aldea Galerías (Ags) | $7,400 | $2,700 | **$3,400** | $2,400 |
 
+### Fotos de Centro Sur: todas son de la obra
+Las cinco fotos de la sede de Queretaro se tomaron antes de abrir. Las tres de
+exterior muestran andamios, malla de construccion y el podio sin terminar; solo las
+dos de interior se ven acabadas.
+
+Mientras tanto se reordeno la galeria para que abra con un interior terminado y se
+dejo fuera la peor, y la ficha de la sede tambien usa un interior (como las otras
+tres). Pero **hacen falta fotos del edificio ya terminado**, sobre todo si la sede
+ya esta operando.
+
 ### Horarios de atencion de cada sede
 Las cuatro sedes ya publican datos estructurados (schema.org) para que Google
 muestre la ficha de negocio local. Falta un campo que Google valora mucho y que no
