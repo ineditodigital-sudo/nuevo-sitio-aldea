@@ -68,7 +68,8 @@ if(shas('quees.title')){
   // Mensaje destacado opcional: sugiere otra solucion cuando encaja mejor
   if(shas('quees.destacado')){
     $__h=sh_('quees.destacado','');
-    $__in2=render_icon('sparkle').'<span '.sa('quees.destacado').'>'.st('quees.destacado').'</span>';
+    // Sin icono decorativo: si lleva enlace, una flecha al final indica a donde lleva
+    $__in2='<span '.sa('quees.destacado').'>'.st('quees.destacado').'</span>'.($__h?aldea_icon('arrow-right'):'');
     echo $__h ? '<a class="nota-cruzada" href="'.esc($__h).'">'.$__in2.'</a>' : '<p class="nota-cruzada">'.$__in2.'</p>';
   }
   echo '</div></div></section>';

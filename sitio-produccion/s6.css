@@ -1026,3 +1026,42 @@ body:has(.phero) .hdr:not(.scr) .hdr-ar{color:#fff}
 @media(pointer:coarse){.hdr-logo{display:inline-flex;align-items:center;min-height:44px}}
 /* El carrusel de lugares cercanos ensanchaba la columna del mapa a 360 px: la columna ya no crece mas que el contenedor */
 @media(max-width:900px){.locmap-grid{grid-template-columns:minmax(0,1fr)}.locmap-side{min-width:0}}
+
+/* =====================================================================
+   MOVIL, tercera pasada: Oficinas Corporativas e indices
+   ===================================================================== */
+/* Campo de fecha a 16 px (el font:inherit del formulario le ganaba) y boton de pausa de 44 px */
+.contact-form .cf-month input[type=month]{font-size:16px}
+.renta-pausa{width:44px;height:44px}
+/* Datos opcionales del formulario corporativo: siempre visibles en escritorio */
+.cf-extra{display:flex;flex-direction:column;gap:.8rem}
+.cf-mas{display:none}
+/* Nota que sugiere otra solucion: la flecha al final; sin levantarse en pantallas tactiles */
+.nota-cruzada svg{margin-left:auto}
+@media(hover:none){a.nota-cruzada:hover{transform:none}}
+@media(max-width:640px){
+  /* Formulario corporativo: 6 campos visibles; cargo, fecha y mensaje a peticion */
+  .cf-extra:not(.abierto){display:none}
+  .cf-mas{display:inline-flex;align-items:center;gap:.5rem;align-self:flex-start;min-height:44px;padding:0;background:none;border:0;font-family:var(--fh);font-weight:600;font-size:.98rem;color:var(--navy-800);cursor:pointer}
+  .cf-mas svg{width:18px;height:18px;color:var(--blue-600)}
+  .cf-mas[hidden]{display:none}
+  /* Foto del formulario: una franja, para llegar pronto a los campos */
+  .formx-media{aspect-ratio:16/7;min-height:0}
+  /* /ubicaciones/: las cuatro sedes en rejilla de 2 x 2 (foto, ciudad y nombre) */
+  .lgrid:not(.swipe){grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem .8rem}
+  .lgrid.n3:not(.swipe){grid-template-columns:minmax(0,1fr)}
+  .lgrid:not(.swipe) .lcard{gap:.6rem}
+  .lgrid:not(.swipe) .lcard-img{aspect-ratio:4/5}
+  .lgrid:not(.swipe) .lcard h2,.lgrid:not(.swipe) .lcard h3{font-size:1.05rem}
+  .lgrid:not(.swipe) .lcard-city{font-size:.82rem}
+  .lgrid:not(.swipe) .lcard-go{font-size:.9rem}
+  /* /lo-que-ofrecemos/: tarjetas horizontales (foto a la izquierda, nombre y descripcion a la derecha) */
+  .sgrid:not(.swipe){grid-template-columns:minmax(0,1fr);gap:.9rem}
+  .sgrid:not(.swipe) .scard{display:grid;grid-template-columns:38% minmax(0,1fr)}
+  .sgrid:not(.swipe) .scard-img{aspect-ratio:auto;height:100%;min-height:150px}
+  .sgrid:not(.swipe) .scard-b{padding:1rem 1rem 1.1rem;gap:.35rem}
+  .sgrid:not(.swipe) .scard h3{font-size:1.1rem}
+  .sgrid:not(.swipe) .scard p{font-size:.9rem;line-height:1.45}
+}
+/* Fila "Cargo | Fecha": la fecha lleva etiqueta arriba; se alinean abajo para que Cargo no se estire */
+.cf-extra .cf-2{align-items:end}

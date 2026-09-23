@@ -396,3 +396,12 @@ document.querySelectorAll('.esp-cta').forEach(function(b){
   fines.forEach(function(el){ io.observe(el); });
   pinta();
 })();
+
+// Formulario corporativo en movil: "Agregar detalles (opcional)" muestra cargo, fecha y mensaje
+document.querySelectorAll('.cf-mas').forEach(function(b){
+  b.addEventListener('click',function(){
+    var x=document.getElementById(b.getAttribute('aria-controls')); if(!x) return;
+    x.classList.add('abierto'); b.setAttribute('aria-expanded','true'); b.hidden=true;
+    var c=x.querySelector('input,select,textarea'); if(c) c.focus();
+  });
+});
