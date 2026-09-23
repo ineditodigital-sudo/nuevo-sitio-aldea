@@ -78,10 +78,11 @@ El código por sí solo dibuja un sitio vacío: **todo el texto y las imágenes 
 base de datos**, no en archivos. Para tener una copia igual a la publicada:
 
 1. `cms/schema.sql` — crea las 13 tablas.
-2. `cms/contenido.sql` — carga las páginas, los 1,040 bloques de contenido, las sedes,
+2. `cms/contenido.sql` — carga las páginas, los 1,070 bloques de contenido, las sedes,
    las soluciones, el blog, los testimonios y los ajustes.
 
-Ese segundo archivo se regenera desde el CMS cuando haga falta. **No incluye la tabla
+Ese segundo archivo se regenera desde el CMS con `python deploy/deploy.py dump` y luego
+`python deploy/exportar-contenido.py` (ver [deploy/README.md](deploy/README.md)). **No incluye la tabla
 `leads`** (datos personales de prospectos) ni `users` (contraseñas del panel): esos se
 quedan solo en el servidor.
 
@@ -106,7 +107,7 @@ python deploy.py sql migracion.sql   # ejecuta una migración en el servidor
 
 Cada `push` respalda en `deploy/bak/<fecha>` lo que va a sobrescribir, y `restore` lo revierte. Los comandos completos están en [deploy/README.md](deploy/README.md).
 
-**No hay entorno local.** Se trabaja contra `temporal.aldea.work`, que es el entorno de pruebas; el sitio del cliente sigue siendo `aldea.work` hasta el cambio de dominio.
+Para ver el sitio en tu máquina sin MySQL está [local/README.md](local/README.md). Los cambios se revisan en `temporal.aldea.work`, que es el entorno de pruebas; el sitio del cliente sigue siendo `aldea.work` hasta el cambio de dominio.
 
 ---
 

@@ -29,6 +29,17 @@ python deploy.py sql cms/mi-migracion.sql
 python deploy.py restore 20260820-154500
 ```
 
+## Exportar el contenido al repositorio
+
+`sitio-produccion/cms/contenido.sql` es la copia del contenido publicado (ver el README de la raíz). Después de una migración o de cambios grandes en el panel, se regenera así:
+
+```bash
+python deploy.py dump
+python exportar-contenido.py dumps/<fecha>-manual.json ../sitio-produccion/cms/contenido.sql <AAAA-MM-DD>
+```
+
+Deja fuera `leads` y `users`, igual que antes.
+
 ## Cómo protege el trabajo
 
 - **Todo push respalda primero.** Lo que se va a sobrescribir se baja a `bak/<fecha-hora>/` antes de subir nada. `restore` lo devuelve.

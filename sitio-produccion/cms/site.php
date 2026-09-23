@@ -156,20 +156,55 @@ function site_header(){
   echo '</nav><div class="hdr-act"><div class="lang" id="lang" data-es-url="'.esc($__es).'" data-en-url="'.esc($__en).'"><button data-lang="es" class="'.($__l==='es'?'on':'').'">ES</button><span>/</span><button data-lang="en" class="'.($__l==='en'?'on':'').'">EN</button></div>';
   echo '<a href="/contacto/" class="btn btn-primary hdr-cta" data-es="Cotizar" data-en="Get a quote">Cotizar</a><button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button></div></div></header>';
 }
-// $style='home' -> tarjeta simplificada: ciudad, nombre de la sede y un enlace (sin direccion ni precio).
-// $cta_es/$cta_en permiten cambiar la etiqueta ("Ver sede", "Ver oficinas"...).
-function loc_cards($exclude='',$style='',$cta_es='Ver sede',$cta_en='See location'){
-  $locs=cms_pdo()->query("SELECT * FROM locations WHERE published=1 ORDER BY sort,id")->fetchAll();
-  echo '<div class="loc-grid">';
-  foreach($locs as $l){ if($l['slug']===$exclude)continue;
-    $soon=$l['soon']?'<span class="locc-soon" data-es="Próximamente" data-en="Coming soon">Próximamente</span>':'';
-    $img='<div class="locc-img"><img src="'.esc($l['hero_image']).'" alt="'.esc(($l['hero_image_alt']??'')?:$l['name']).'"><span class="locc-tag" data-es="'.esc($l['city_es']).'" data-en="'.esc($l['city_en']?:$l['city_es']).'">'.esc($l['city_es']).'</span>'.$soon.'</div>';
-    if($style==='home'){
-      echo '<a class="locc locc-simple reveal" href="/'.esc($l['slug']).'/">'.$img.'<div class="locc-b"><h3>'.esc($l['name']).'</h3><span class="arrow" data-es="'.esc($cta_es).' &rarr;" data-en="'.esc($cta_en?:$cta_es).' &rarr;">'.esc($cta_es).' &rarr;</span></div></a>';
-      continue;
+// Imagen con tamanos alternos: si junto a /img/.../foto.webp existen foto-sm.webp (960 px)
+// y foto-xl.webp (2560 px), el navegador descarga el que corresponde a la pantalla.
+function pic($src,$alt='',$sizes='100vw',$extra=''){
+  $src=(string)$src; $set=[];
+  if(preg_match('#^(/img/.+)\.webp$#',$src,$m)){
+    $root=$_SERVER['DOCUMENT_ROOT']??'';
+    if(is_file($root.$m[1].'-sm.webp')){
+      $set[]=$m[1].'-sm.webp 960w'; $set[]=$src.' 1920w';
+      if(is_file($root.$m[1].'-xl.webp')) $set[]=$m[1].'-xl.webp 2560w';
     }
-    // Sin precio: los briefs eliminan los comparativos de precios por ciudad.
-    echo '<a class="locc reveal" href="/'.esc($l['slug']).'/">'.$img.'<div class="locc-b"><h3>'.esc($l['name']).'</h3><p>'.esc(mb_strimwidth((string)$l['address_es'],0,80,'…')).'</p><span class="arrow" data-es="'.esc($cta_es).' &rarr;" data-en="'.esc($cta_en?:$cta_es).' &rarr;">'.esc($cta_es).' &rarr;</span></div></a>';
+  }
+  return '<img src="'.esc($src).'"'.($set?' srcset="'.esc(implode(', ',$set)).'" sizes="'.esc($sizes).'"':'').' alt="'.esc($alt).'"'.($extra!==''?' '.$extra:'').'>';
+}
+// Banner de pagina: foto a sangre, sin esquinas ni filtro de color. $inner = titulo, texto y botones.
+function page_hero($img,$alt,$inner){
+  echo '<section class="phero" id="hero" data-pv="hero">'.pic($img,$alt,'100vw','class="phero-img" fetchpriority="high"')
+      .'<div class="container"><div class="phero-copy">'.$inner.'</div></div></section>';
+}
+// Carrusel: flechas bajo la pista. Las activa app6.js ([data-rail]).
+function rail_ctrl(){
+  return '<div class="rail-ctrl"><button type="button" class="rail-btn" data-rail-prev aria-label="Anterior">'.aldea_icon('arrow-left').'</button>'
+        .'<button type="button" class="rail-btn" data-rail-next aria-label="Siguiente">'.aldea_icon('arrow-right').'</button></div>';
+}
+// Columnas sin huecos: escoge cuantas columnas dividen la lista completa (escritorio / tableta / movil).
+function cols_vars($n){
+  $n=max(1,(int)$n);
+  $d=$n%4===0?4:($n%5===0?5:($n%3===0?3:min(4,$n)));
+  $t=$n%3===0?3:($n%2===0?2:min(3,$n));
+  $m=$n===1?1:2;
+  return '--cd:'.$d.';--ct:'.$t.';--cm:'.$m;
+}
+function jsonld_breadcrumbs($items){
+  $b=site_base(); $l=[];
+  foreach($items as $i=>$it) $l[]=['@type'=>'ListItem','position'=>$i+1,'name'=>$it[0],'item'=>$b.$it[1]];
+  jsonld(['@context'=>'https://schema.org','@type'=>'BreadcrumbList','itemListElement'=>$l]);
+}
+// Tarjetas de sede: la foto manda; ciudad, nombre y un enlace debajo.
+// $cta_es/$cta_en cambian la etiqueta ("Ver sede", "Ver oficinas"...). $style se conserva por compatibilidad.
+function loc_cards($exclude='',$style='',$cta_es='Ver sede',$cta_en='See location',$h='h3'){
+  $locs=cms_pdo()->query("SELECT * FROM locations WHERE published=1 ORDER BY sort,id")->fetchAll();
+  $locs=array_values(array_filter($locs,function($l)use($exclude){ return $l['slug']!==$exclude; }));
+  echo '<div class="lgrid'.(count($locs)===3?' n3':'').'">';
+  foreach($locs as $l){
+    $soon=$l['soon']?'<span class="lcard-soon" data-es="Próximamente" data-en="Coming soon">Próximamente</span>':'';
+    echo '<a class="lcard reveal" href="/'.esc($l['slug']).'/">'
+        .'<div class="lcard-img">'.pic($l['hero_image'],($l['hero_image_alt']??'')?:$l['name'],'(max-width:520px) 100vw, (max-width:980px) 50vw, 25vw','loading="lazy"').'</div>'
+        .'<div><span class="lcard-city" data-es="'.esc($l['city_es']).'" data-en="'.esc($l['city_en']?:$l['city_es']).'">'.esc($l['city_es']).'</span>'
+        .'<'.$h.'>'.esc($l['name']).'</'.$h.'>'.$soon
+        .'<span class="lcard-go"><span data-es="'.esc($cta_es).'" data-en="'.esc($cta_en?:$cta_es).'">'.esc($cta_es).'</span>'.aldea_icon('arrow-right').'</span></div></a>';
   }
   echo '</div>';
 }
@@ -182,41 +217,49 @@ function site_footer(){
   $leg=$pdo->query("SELECT * FROM menu_items WHERE menu='footer' AND published=1 ORDER BY sort,id")->fetchAll();
   echo '<footer class="ftr"><div class="container ftr-grid ftr-grid-4">';
   echo '<div class="ftr-brand"><img src="/img/logo-blanco.svg" alt="Aldea" class="ftr-logo"><p data-es="Oficinas en renta y coworking. Trabaja a tu manera." data-en="Offices for rent and coworking. Work your way.">Oficinas en renta y coworking. Trabaja a tu manera.</p></div>';
-  echo '<div class="ftr-col"><h4 data-es="Espacios de trabajo" data-en="Workspaces">Espacios de trabajo</h4>';
+  echo '<div class="ftr-col"><h2 data-es="Espacios de trabajo" data-en="Workspaces">Espacios de trabajo</h2>';
   foreach($sol as $s) echo '<a href="/'.esc($s['slug']).'/" data-es="'.esc($s['title_es']).'" data-en="'.esc($s['title_en']?:$s['title_es']).'">'.esc($s['title_es']).'</a>';
   echo '</div>';
-  echo '<div class="ftr-col"><h4 data-es="Ubicaciones" data-en="Locations">Ubicaciones</h4>';
+  echo '<div class="ftr-col"><h2 data-es="Ubicaciones" data-en="Locations">Ubicaciones</h2>';
   foreach($loc as $l) echo '<a href="/'.esc($l['slug']).'/" data-es="'.esc($l['city_es']).'" data-en="'.esc($l['city_en']?:$l['city_es']).'">'.esc($l['city_es']).'</a>';
   echo '</div>';
-  echo '<div class="ftr-col"><h4>Aldea</h4>'
+  echo '<div class="ftr-col"><h2>Aldea</h2>'
     .'<a href="'.esc(corp_url()).'" data-es="Oficinas Corporativas" data-en="Corporate Offices">Oficinas Corporativas</a>'
     .'<a href="/acerca-de-aldea/" data-es="Acerca de Aldea" data-en="About Aldea">Acerca de Aldea</a>'
     .'<a href="/contacto/" data-es="Contacto" data-en="Contact">Contacto</a>'
     .'<a href="/blog/">Blog</a></div>';
-  echo '<div class="ftr-col"><h4>Legal</h4>';
+  echo '<div class="ftr-col"><h2>Legal</h2>';
   foreach($leg as $l) echo '<a href="'.esc($l['href']).'" data-es="'.esc($l['label_es']).'" data-en="'.esc($l['label_en']).'">'.esc($l['label_es']).'</a>';
-  echo '</div></div><div class="container ftr-bot"><span>&copy; <span id="yr"></span> Aldea Networking. <span data-es="Todos los derechos reservados." data-en="All rights reserved.">Todos los derechos reservados.</span></span><span class="ftr-note" data-es="Sitio dinamico" data-en="Dynamic site">Sitio dinamico</span></div></footer>';
+  echo '</div></div><div class="container ftr-bot"><span>&copy; <span id="yr"></span> Aldea Networking. <span data-es="Todos los derechos reservados." data-en="All rights reserved.">Todos los derechos reservados.</span></span></div></footer>';
 }
 function site_scripts(){ if(site_lang()==='en'){ $h=ob_get_clean(); echo tr_en($h); } if(!empty($_GET['pv'])){ echo '<style>html,body{overflow:visible !important;height:auto !important}.reveal{opacity:1 !important;transform:none !important}[data-pv]{scroll-margin-top:84px}[data-pv].pv-flash{outline:3px solid #e0a13c;outline-offset:6px;border-radius:10px;transition:outline .15s}</style><script>window.addEventListener("message",function(e){var d=e.data||{};if(d&&d.aldeaPv){var el=document.querySelector("[data-pv=\x27"+d.aldeaPv+"\x27]")||document.querySelector("[data-pv]");if(el){el.scrollIntoView({behavior:"smooth",block:"start"});el.classList.add("pv-flash");setTimeout(function(){el.classList.remove("pv-flash");},1700);}}},false);</script>'; }
   echo '</body></html>'; }
-// $cta_es vacio => el hero se dibuja sin boton (lo pide el brief de Acerca de Aldea)
+// Banner estandar de las paginas internas (misma pieza que el hero del Inicio, mas bajo).
+// $crumb y $chip se conservan en la firma por compatibilidad: ya no se dibujan
+// (las migas de pan salen en datos estructurados y la etiqueta sobre el titulo sobra).
+// $cta_es vacio => el banner se dibuja sin boton (lo pide el brief de Acerca de Aldea)
 function banner($crumb,$chip,$h1es,$h1en,$lees,$leen,$img,$cta_es='Cotizar',$cta_en='Get a quote',$cta_href='/contacto/'){
-  $cta = trim((string)$cta_es)!==''
-    ? '<div class="hero-cta" style="margin-top:1.4rem"><a href="'.esc($cta_href?:'/contacto/').'" class="btn btn-accent" data-es="'.esc($cta_es).'" data-en="'.esc($cta_en?:$cta_es).'">'.esc($cta_es).'</a></div>'
-    : '';
-  echo '<section class="subhero" id="pv-hero" data-pv="hero"><div class="container subhero-in"><div class="subhero-copy reveal"><div class="crumb">'.$crumb.'</div><span class="chip" data-es="'.esc($chip).'" data-en="'.esc($chip).'">'.esc($chip).'</span><h1 data-es="'.esc($h1es).'" data-en="'.esc($h1en).'">'.esc($h1es).'</h1><p class="lead" data-es="'.esc($lees).'" data-en="'.esc($leen).'">'.esc($lees).'</p>'.$cta.'</div><div class="subhero-media reveal"><span class="subhero-blob"></span><img src="'.(strpos($img,"/")===0?esc($img):"/img/".esc($img).".webp").'" alt=""></div></div></section>';
+  $src=strpos((string)$img,'/')===0?$img:'/img/'.$img.'.webp';
+  $in='<h1 data-es="'.esc($h1es).'" data-en="'.esc($h1en?:$h1es).'">'.esc($h1es).'</h1>';
+  if(trim((string)$lees)!=='') $in.='<p class="lead" data-es="'.esc($lees).'" data-en="'.esc($leen?:$lees).'">'.esc($lees).'</p>';
+  if(trim((string)$cta_es)!=='') $in.='<div class="hero-cta"><a href="'.esc($cta_href?:'/contacto/').'" class="btn btn-accent" data-es="'.esc($cta_es).'" data-en="'.esc($cta_en?:$cta_es).'">'.esc($cta_es).'</a></div>';
+  page_hero($src,'',$in);
 }
+// Empresas: titulo a la izquierda y logos en una cinta continua, sin contenedores.
 // $tes/$ten: titulo editable (el Home lo manda desde el bloque clients.title). $limit: maximo de logos (0 = todos)
 function render_clients($tes='',$ten='',$limit=0){
   $sql="SELECT * FROM clients WHERE published=1 ORDER BY sort,id".($limit>0?" LIMIT ".(int)$limit:"");
   $cl=cms_pdo()->query($sql)->fetchAll();
-  $L='<svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>'; $R='<svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>';
-  if($tes==='')$tes='Empresas que ya confian en Aldea';
+  if(!$cl) return;
+  if($tes==='')$tes='Empresas que ya confían en Aldea';
   if($ten==='')$ten='Companies that already trust Aldea';
-  echo '<section class="clients" id="clientes"><div class="container"><p class="clients-t reveal" data-es="'.esc($tes).'" data-en="'.esc($ten).'" data-blk="clients.title">'.esc($tes).'</p>';
-  echo '<div class="car clients-car reveal" data-car data-auto><button class="car-arw car-prev" data-prev aria-label="Anterior">'.$L.'</button><div class="car-track clients-track" data-track>';
-  foreach($cl as $c) echo '<span class="client-chip"><img class="clg" src="'.esc($c['logo']).'" alt="'.esc(($c['logo_alt']??'')?:$c['name']).'" loading="lazy"></span>';
-  echo '</div><button class="car-arw car-next" data-next aria-label="Siguiente">'.$R.'</button></div></div></section>';
+  $a=''; $b='';
+  foreach($cl as $c){
+    $a.='<img src="'.esc($c['logo']).'" alt="'.esc(($c['logo_alt']??'')?:$c['name']).'" loading="lazy">';
+    $b.='<img src="'.esc($c['logo']).'" alt="" loading="lazy">';
+  }
+  echo '<section class="logos" id="clientes"><div class="container logos-in"><p class="logos-t" data-es="'.esc($tes).'" data-en="'.esc($ten).'" data-blk="clients.title">'.esc($tes).'</p>';
+  echo '<div class="logos-mq"><div class="logos-run"><div>'.$a.'</div><div aria-hidden="true">'.$b.'</div></div></div></div></section>';
 }
 function block_styles($pid){
   $css='';
@@ -237,7 +280,7 @@ function gblk(){ static $m=null; if($m===null){ $m=[]; $pid=cms_pdo()->query("SE
 function gv($k,$d=''){ $m=gblk(); return isset($m[$k])&&$m[$k]['value_es']!==''&&$m[$k]['value_es']!==null?$m[$k]['value_es']:$d; }
 function gvn($k,$d=''){ $m=gblk(); return isset($m[$k])&&$m[$k]['value_en']!==''&&$m[$k]['value_en']!==null?$m[$k]['value_en']:gv($k,$d); }
 function gh($k,$d=''){ $m=gblk(); return isset($m[$k])&&$m[$k]['href']!==''&&$m[$k]['href']!==null?$m[$k]['href']:$d; }
-function amen_defaults(){ return [['wifi','Internet','Internet'],['furniture','Mobiliario','Furniture'],['sparkle','Limpieza','Cleaning'],['pin','Recepción','Reception'],['shield','Seguridad','Security'],['users','Salas de juntas','Meeting rooms'],['heart','Áreas comunes','Common areas'],['coffee','Café y bebidas','Coffee & drinks'],['box','Paquetería','Parcel handling'],['support','Soporte','Support']]; }
+function amen_defaults(){ return [['wifi','Internet','Internet'],['furniture','Mobiliario','Furniture'],['spray','Limpieza','Cleaning'],['desk','Recepción','Reception'],['shield','Seguridad','Security'],['presentation','Salas de juntas','Meeting rooms'],['sofa','Áreas comunes','Common areas'],['coffee','Café y bebidas','Coffee & drinks'],['mailbox','Paquetería','Parcel handling'],['support','Soporte','Support']]; }
 function render_benefits(){
   $icons=array('<path d="M20 6 9 17l-5-5"/>','<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>','<path d="M20.8 5.6a5.5 5.5 0 0 0-7.8 0L12 6.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/>');
   $def=array(array('Todo incluido','All included','Internet, salas, cafe, limpieza y mas, sin costos ocultos.','Internet, rooms, coffee, cleaning and more, with no hidden costs.'),array('Contratos flexibles','Flexible terms','Escala tu espacio segun crece tu equipo, sin ataduras.','Scale your space as your team grows, with no strings attached.'),array('Atencion personalizada','Personalized service','Un equipo pendiente de ti cada dia, con recepcion y soporte.','A team that looks out for you every day, with reception and support.'));
@@ -252,16 +295,17 @@ function render_cta(){
   $tes=gv('cta.cta_titulo','Encuentra tu espacio ideal en Aldea'); $ten=gvn('cta.cta_titulo','Find your ideal space at Aldea');
   $pes=gv('cta.cta_texto','Cuéntanos qué necesita tu equipo y te ayudamos a encontrar el espacio adecuado en la sede que mejor te convenga.'); $pen=gvn('cta.cta_texto','Tell us what your team needs and we will help you find the right space at the location that suits you best.');
   $bes=gv('cta.cta_boton','Cotizar'); $ben=gvn('cta.cta_boton','Get a quote'); $href=gh('cta.cta_boton','/contacto/');
-  echo '<section class="section"><div class="container"><div class="ctaband reveal"><h2 data-es="'.esc($tes).'" data-en="'.esc($ten).'">'.esc($tes).'</h2><p data-es="'.esc($pes).'" data-en="'.esc($pen).'">'.esc($pes).'</p><a href="'.esc($href).'" class="btn btn-accent" data-es="'.esc($bes).'" data-en="'.esc($ben).'">'.esc($bes).'</a></div></div></section>';
+  echo '<section class="section bg-soft"><div class="container"><div class="cta-row reveal"><div><h2 data-es="'.esc($tes).'" data-en="'.esc($ten).'">'.esc($tes).'</h2><p class="lead" data-es="'.esc($pes).'" data-en="'.esc($pen).'">'.esc($pes).'</p></div><a href="'.esc($href).'" class="btn btn-accent" data-es="'.esc($bes).'" data-en="'.esc($ben).'">'.esc($bes).'</a></div></div></section>';
 }
-function render_amenities($pid=null){
+function render_amenities($pid=null,$vars=null){
   if($pid===null)$pid=cms_pdo()->query("SELECT id FROM pages WHERE slug=''")->fetchColumn();
   $st=cms_pdo()->prepare("SELECT skey,value_es,value_en FROM blocks WHERE page_id=? AND section='amenidades'"); $st->execute([$pid]);
   $m=[]; foreach($st as $r)$m[$r['skey']]=$r;
-  echo '<div class="amen-grid reveal">';
-  foreach(amen_defaults() as $i=>$a){ $k=$i+1; $ic=$m["amen{$k}_icon"]['value_es']??$a[0]; $es=$m["amen{$k}_text"]['value_es']??$a[1]; $en=($m["amen{$k}_text"]['value_en']??'')?:$a[2];
-    echo '<div class="amen"><i>'.render_icon($ic).'</i><span data-es="'.esc($es).'" data-en="'.esc($en).'" data-blk="amenidades.amen'.$k.'_text">'.esc($es).'</span></div>'; }
-  echo '</div>';
+  $am=amen_defaults();
+  echo '<ul class="ilist reveal" style="'.($vars?:cols_vars(count($am))).'">';
+  foreach($am as $i=>$a){ $k=$i+1; $ic=$m["amen{$k}_icon"]['value_es']??$a[0]; $es=$m["amen{$k}_text"]['value_es']??$a[1]; $en=($m["amen{$k}_text"]['value_en']??'')?:$a[2];
+    echo '<li><span class="ico">'.render_icon($ic).'</span><span data-es="'.esc($es).'" data-en="'.esc($en).'" data-blk="amenidades.amen'.$k.'_text">'.esc($es).'</span></li>'; }
+  echo '</ul>';
 }
 function render_tech($city){
   $sub=str_replace('{ciudad}',$city,gv('tech.lead','Tu trabajo merece una infraestructura solida para trabajar sin interrupciones en {ciudad}.'));
