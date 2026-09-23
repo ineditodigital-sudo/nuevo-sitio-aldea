@@ -24,6 +24,7 @@ $hero=$sol['hero_image']?:($imgs[0]??'/img/sol-privada.webp');
 $__fotos=array_values(array_filter($imgs,function($u)use($hero){ return $u!==$hero; }));
 $foto=function($i) use($__fotos,$hero){ return $__fotos? $__fotos[$i % count($__fotos)] : $hero; };
 $titulo=$sol['title_es'];
+$__alt=L($titulo,(string)($sol['title_en']??'')); // para los textos alternos de las fotos
 
 site_head(($sol['seo_title_es']?:$titulo.' - Aldea Networking'),($sol['seo_desc_es']?:$sol['excerpt_es']),'/'.$sol['slug'].'/',false,(($sol['seo_title_en']?:($sol['title_en']?:$titulo)).' - Aldea Networking'),($sol['seo_desc_en']?:($sol['excerpt_en']?:'')));
 site_header();
@@ -37,7 +38,7 @@ $__in.='<div class="hero-cta">';
 if(shas('hero.cta1')) $__in.='<a href="'.esc(sh_('hero.cta1','#formulario')).'" class="btn btn-accent" '.sa('hero.cta1').'>'.st('hero.cta1').'</a>';
 if(shas('hero.cta2')) $__in.='<a href="'.esc(sh_('hero.cta2','#incluye')).'" class="btn btn-clear" '.sa('hero.cta2').'>'.st('hero.cta2').'</a>';
 $__in.='</div>';
-page_hero($hero,($sol['hero_image_alt']??'')?:$titulo,$__in);
+page_hero($hero,L(($sol['hero_image_alt']??'')?:$titulo,$__alt),$__in);
 
 /* ---------- 2. EMPRESAS QUE TRABAJAN DESDE ALDEA ---------- */
 if(shas('empresas.title')) render_clients(sv('empresas.title'),sn('empresas.title'),10);
@@ -45,7 +46,7 @@ if(shas('empresas.title')) render_clients(sv('empresas.title'),sn('empresas.titl
 /* ---------- 3. QUE ES ---------- */
 if(shas('quees.title')){
   echo '<section class="section" id="quees"><div class="container duo reveal">';
-  echo '<figure class="duo-media">'.pic(sv('quees.img',$foto(0)),strip_tags(sv('quees.img_alt',$titulo)),'(max-width:900px) 100vw, 58vw','loading="lazy"').'</figure>';
+  echo '<figure class="duo-media">'.pic(sv('quees.img',$foto(0)),strip_tags(alt2(sv('quees.img_alt',$titulo),$SB['quees.img_alt']['value_en']??'',$__alt)),'(max-width:900px) 100vw, 58vw','loading="lazy"').'</figure>';
   echo '<div class="duo-copy"><h2 '.sa('quees.title').'>'.st('quees.title').'</h2>';
   echo '<p '.sa('quees.text').'>'.st('quees.text').'</p>';
   // El segundo parrafo del banner vive aqui: el banner se queda con titulo, texto y botones.
@@ -78,7 +79,7 @@ if(shas('quees.title')){
 /* ---------- 4. LISTA PARA TRABAJAR DESDE EL PRIMER DIA ---------- */
 if(shas('lista.title')){
   echo '<section class="section bg-soft" id="lista"><div class="container duo rev reveal">';
-  echo '<figure class="duo-media">'.pic($foto(1),$titulo,'(max-width:900px) 100vw, 58vw','loading="lazy"').'</figure>';
+  echo '<figure class="duo-media">'.pic($foto(1),$__alt,'(max-width:900px) 100vw, 58vw','loading="lazy"').'</figure>';
   echo '<div class="duo-copy"><h2 '.sa('lista.title').'>'.st('lista.title').'</h2>';
   if(shas('lista.text')) echo '<p '.sa('lista.text').'>'.st('lista.text').'</p>';
   echo srows(slist('lista.item',8));
@@ -108,7 +109,7 @@ if(shas('pasos.title')){
 /* ---------- 7. FLEXIBILIDAD ---------- */
 if(shas('flex.title')){
   echo '<section class="section" id="flex"><div class="container duo reveal">';
-  echo '<figure class="duo-media">'.pic($foto(2),$titulo,'(max-width:900px) 100vw, 58vw','loading="lazy"').'</figure>';
+  echo '<figure class="duo-media">'.pic($foto(2),$__alt,'(max-width:900px) 100vw, 58vw','loading="lazy"').'</figure>';
   echo '<div class="duo-copy"><h2 '.sa('flex.title').'>'.st('flex.title').'</h2>';
   if(shas('flex.text')) echo '<p class="lead" '.sa('flex.text').'>'.st('flex.text').'</p>';
   if(shas('flex.text2')) echo '<p '.sa('flex.text2').'>'.st('flex.text2').'</p>';
@@ -139,8 +140,8 @@ if(shas('galeria.title') && $imgs){
   if($__n>$__v) echo '<button type="button" class="sec-link" data-gal-todas>'.aldea_icon('grid').'<span data-es="Ver las '.$__n.' fotos" data-en="See all '.$__n.' photos">Ver las '.$__n.' fotos</span></button>';
   echo '</div><div class="mosaic m'.$__v.' reveal">';
   for($k=0;$k<$__v;$k++){
-    echo '<figure><button type="button" data-i="'.$k.'" aria-label="Ampliar foto '.($k+1).'">'
-        .pic($__items[$k]['src'],$titulo.' en Aldea, foto '.($k+1),$k===0?'(max-width:760px) 100vw, 50vw':'(max-width:760px) 50vw, 25vw','loading="lazy"').'</button></figure>';
+    echo '<figure><button type="button" data-i="'.$k.'" aria-label="'.L('Ampliar foto','Enlarge photo').' '.($k+1).'">'
+        .pic($__items[$k]['src'],$__alt.L(' en Aldea, foto ',' at Aldea, photo ').($k+1),$k===0?'(max-width:760px) 100vw, 50vw':'(max-width:760px) 50vw, 25vw','loading="lazy"').'</button></figure>';
   }
   echo '</div></div></section>';
 }
@@ -160,7 +161,7 @@ if(shas('form.title')){
   // Telefono y correo salen de Ajustes: un solo lugar para las 9 paginas
   $tel=setting('phone','+52 449 454 0709'); $telh='tel:'.preg_replace('/[^0-9+]/','',$tel);
   echo '<section class="section" id="formulario"><div class="container"><div class="formx reveal">';
-  echo '<figure class="formx-media">'.pic($foto(3),$titulo,'(max-width:900px) 100vw, 45vw','loading="lazy"').'</figure>';
+  echo '<figure class="formx-media">'.pic($foto(3),$__alt,'(max-width:900px) 100vw, 45vw','loading="lazy"').'</figure>';
   echo '<div class="formx-body"><h2 '.sa('form.title').'>'.st('form.title').'</h2>';
   if(shas('form.lead')) echo '<p class="lead" '.sa('form.lead').'>'.st('form.lead').'</p>';
   echo '<form class="contact-form" onsubmit="return aldeaSubmit(event)" data-source="'.esc($sol['slug']).'" data-utm>';

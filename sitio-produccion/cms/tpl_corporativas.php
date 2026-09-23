@@ -29,7 +29,7 @@ $__in.='<div class="hero-cta">';
 if(chas('hero.cta1')) $__in.='<a href="'.esc(ch_('hero.cta1','#formulario')).'" class="btn btn-accent" '.ca('hero.cta1').'>'.ct('hero.cta1').'</a>';
 if(chas('hero.cta2')) $__in.='<a href="'.esc(ch_('hero.cta2','#proceso')).'" class="btn btn-clear" '.ca('hero.cta2').'>'.ct('hero.cta2').'</a>';
 $__in.='</div>';
-page_hero(cv('hero.img','/img/corporativas/proyecto/planta-abierta.webp'),strip_tags(cv('hero.img_alt','Oficina corporativa desarrollada por Aldea')),$__in);
+page_hero(cv('hero.img','/img/corporativas/proyecto/planta-abierta.webp'),strip_tags(alt2(cv('hero.img_alt','Oficina corporativa desarrollada por Aldea'),$PB['hero.img_alt']['value_en']??'','Corporate office developed by Aldea')),$__in);
 
 /* ---------- 2. EMPRESAS ---------- */
 if(chas('empresas.title')) render_clients(cv('empresas.title'),cn('empresas.title'),12);
@@ -45,7 +45,7 @@ if(chas('operacion.title')){
   echo '<div class="ejes2 swipe" data-swipe style="--n:'.max(1,min(4,count($__e))).'">';
   foreach($__e as $i){
     echo '<article class="eje2 reveal">';
-    if(chas("operacion.e{$i}_img")) echo '<figure>'.pic(cv("operacion.e{$i}_img"),strip_tags(cv("operacion.e{$i}_title")),'(max-width:600px) 100vw, (max-width:1080px) 50vw, 25vw','loading="lazy"').'</figure>';
+    if(chas("operacion.e{$i}_img")) echo '<figure>'.pic(cv("operacion.e{$i}_img"),strip_tags(L(cv("operacion.e{$i}_title"),cn("operacion.e{$i}_title"))),'(max-width:600px) 100vw, (max-width:1080px) 50vw, 25vw','loading="lazy"').'</figure>';
     echo '<h3 '.ca("operacion.e{$i}_title").'>'.ct("operacion.e{$i}_title").'</h3>';
     if(chas("operacion.e{$i}_text")) echo '<p '.ca("operacion.e{$i}_text").'>'.ct("operacion.e{$i}_text").'</p>';
     echo '</article>';
@@ -81,12 +81,12 @@ if(chas('renta.title')){
   if($__hayVideo){
     echo '<figure class="renta-video reveal">';
     // Sin autoplay: app6.js lo arranca al entrar en pantalla (y nunca con movimiento reducido).
-    echo '<video muted loop playsinline preload="none" poster="'.esc($__vb.'-16x9.webp').'" aria-label="'.esc(strip_tags(cv('renta.title'))).'" data-renta-video>';
+    echo '<video muted loop playsinline preload="none" poster="'.esc($__vb.'-16x9.webp').'" aria-label="'.esc(strip_tags(L(cv('renta.title'),cn('renta.title')))).'" data-renta-video>';
     if(is_file($__root.$__vb.'-4x5.mp4')) echo '<source src="'.esc($__vb.'-4x5.mp4').'" type="video/mp4" media="(max-width: 700px)">';
     echo '<source src="'.esc($__vb.'-16x9.mp4').'" type="video/mp4"></video>';
     // Texto equivalente al video para lectores de pantalla y buscadores
-    if($piezas){ echo '<figcaption class="sr-only">'; foreach($piezas as $k) echo esc(strip_tags(cv($k))).'. '; echo esc(strip_tags(cv('renta.resultado','Una sola renta mensual'))).'.</figcaption>'; }
-    echo '<button type="button" class="renta-pausa" data-renta-pausa aria-label="Pausar animación">'.aldea_icon('pause').'</button>';
+    if($piezas){ echo '<figcaption class="sr-only">'; foreach($piezas as $k) echo esc(strip_tags(L(cv($k),cn($k)))).'. '; echo esc(strip_tags(L(cv('renta.resultado','Una sola renta mensual'),cn('renta.resultado','One monthly rent')))).'.</figcaption>'; }
+    echo '<button type="button" class="renta-pausa" data-renta-pausa aria-label="'.L('Pausar animación','Pause animation').'">'.aldea_icon('pause').'</button>';
     echo '</figure>';
   } elseif($piezas){
     // Respaldo: la ecuacion en HTML
@@ -120,8 +120,8 @@ if(chas('proyecto.title') && $__g){
   if($__n>$__v) echo '<button type="button" class="sec-link" data-gal-todas>'.aldea_icon('grid').'<span data-es="Ver las '.$__n.' fotos" data-en="See all '.$__n.' photos">Ver las '.$__n.' fotos</span></button>';
   echo '</div><div class="mosaic m'.$__v.' reveal">';
   for($k=0;$k<$__v;$k++){
-    echo '<figure><button type="button" data-i="'.$k.'" aria-label="Ampliar foto '.($k+1).'">'
-        .pic($__items[$k]['src'],strip_tags(cv('proyecto.title')).', foto '.($k+1),$k===0?'(max-width:760px) 100vw, 50vw':'(max-width:760px) 50vw, 25vw','loading="lazy"').'</button></figure>';
+    echo '<figure><button type="button" data-i="'.$k.'" aria-label="'.L('Ampliar foto','Enlarge photo').' '.($k+1).'">'
+        .pic($__items[$k]['src'],strip_tags(L(cv('proyecto.title'),cn('proyecto.title'))).', '.L('foto','photo').' '.($k+1),$k===0?'(max-width:760px) 100vw, 50vw':'(max-width:760px) 50vw, 25vw','loading="lazy"').'</button></figure>';
   }
   echo '</div></div></section>';
 }
@@ -140,7 +140,7 @@ if(chas('servicios.title')){
 /* ---------- 8. TECNOLOGIA, SEGURIDAD E INFRAESTRUCTURA ---------- */
 if(chas('tech.title')){
   echo '<section class="section" id="tech"><div class="container duo reveal">';
-  echo '<figure class="duo-media">'.pic(cv('tech.img','/img/corporativas/corp-panoramica.webp'),strip_tags(cv('tech.title')),'(max-width:900px) 100vw, 58vw','loading="lazy"').'</figure>';
+  echo '<figure class="duo-media">'.pic(cv('tech.img','/img/corporativas/corp-panoramica.webp'),strip_tags(L(cv('tech.title'),cn('tech.title'))),'(max-width:900px) 100vw, 58vw','loading="lazy"').'</figure>';
   echo '<div class="duo-copy"><h2 '.ca('tech.title').'>'.ct('tech.title').'</h2>';
   if(chas('tech.text')) echo '<p class="lead" '.ca('tech.text').'>'.ct('tech.text').'</p>';
   echo '<ul class="ilist top" style="--cd:1;--ct:1;--cm:1">';
@@ -154,7 +154,7 @@ if(chas('tech.title')){
 // Telefono y correo salen de Ajustes: un solo lugar para las 9 paginas
 $tel=setting('phone','+52 449 454 0709'); $telh='tel:'.preg_replace('/[^0-9+]/','',$tel);
 echo '<section class="section bg-soft" id="formulario"><div class="container"><div class="formx reveal">';
-echo '<figure class="formx-media">'.pic(cv('form.img','/img/corporativas/corp-cabinas.webp'),'Oficina corporativa de Aldea','(max-width:900px) 100vw, 45vw','loading="lazy"').'</figure>';
+echo '<figure class="formx-media">'.pic(cv('form.img','/img/corporativas/corp-cabinas.webp'),L('Oficina corporativa de Aldea','Aldea corporate office'),'(max-width:900px) 100vw, 45vw','loading="lazy"').'</figure>';
 echo '<div class="formx-body"><h2 '.ca('form.title','Cuéntanos tu proyecto').'>'.ct('form.title','Cuéntanos tu proyecto').'</h2>';
 if(chas('form.text')) echo '<p class="lead" '.ca('form.text').'>'.ct('form.text').'</p>';
 echo '<form class="contact-form corp-form" onsubmit="return aldeaSubmit(event)" data-source="oficinas-corporativas" data-utm>';

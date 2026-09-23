@@ -36,7 +36,7 @@ $__arrow=aldea_icon('arrow-right');
 $__slides=[];
 foreach(['photo_a','photo_b','photo_c','photo_d'] as $__k){ $__u=himg('hero.'.$__k,''); if($__u!=='')$__slides[]=$__u; }
 if(!$__slides)$__slides=['/img/home-hero.webp'];
-foreach($__slides as $__i=>$__u) echo pic_arte($__u,$__i===0?'Espacios de trabajo Aldea':'','100vw','class="nhero-img'.($__i===0?' on':'').'"'.($__i===0?' fetchpriority="high"':' loading="lazy"'));
+foreach($__slides as $__i=>$__u) echo pic_arte($__u,$__i===0?L('Espacios de trabajo Aldea','Aldea workspaces'):'','100vw','class="nhero-img'.($__i===0?' on':'').'"'.($__i===0?' fetchpriority="high"':' loading="lazy"'));
 ?>
     <span class="nhero-scrim"></span>
   </div>
@@ -63,7 +63,7 @@ foreach($__slides as $__i=>$__u) echo pic_arte($__u,$__i===0?'Espacios de trabaj
 $__sol=cms_pdo()->query("SELECT * FROM solutions WHERE published=1 AND in_menu=1 ORDER BY sort,id LIMIT 4")->fetchAll();
 echo '<div class="sgrid swipe" data-swipe style="--n:'.max(1,count($__sol)).'">';
 foreach($__sol as $s){
-  echo '<a class="scard reveal" href="/'.esc($s['slug']).'/"><div class="scard-img">'.pic($s['hero_image'],($s['hero_image_alt']??'')?:$s['title_es'],'(max-width:560px) 100vw, (max-width:1080px) 50vw, 25vw','loading="lazy"').'</div>'
+  echo '<a class="scard reveal" href="/'.esc($s['slug']).'/"><div class="scard-img">'.pic($s['hero_image'],L(($s['hero_image_alt']??'')?:$s['title_es'],$s['title_en']??''),'(max-width:560px) 100vw, (max-width:1080px) 50vw, 25vw','loading="lazy"').'</div>'
       .'<div class="scard-b"><h3 data-es="'.esc($s['title_es']).'" data-en="'.esc($s['title_en']?:$s['title_es']).'">'.esc($s['title_es']).'</h3>'
       .'<p data-es="'.esc($s['excerpt_es']).'" data-en="'.esc($s['excerpt_en']?:$s['excerpt_es']).'">'.esc($s['excerpt_es']).'</p>'
       .'<span class="lcard-go"><span data-es="Conoce más" data-en="Learn more">Conoce más</span>'.$__arrow.'</span></div></a>';
@@ -74,7 +74,7 @@ echo '</div>';
 
 <!-- 4. SERVICIOS INCLUIDOS: foto grande y lista de iconos -->
 <section class="section bg-soft" id="amenidades"><div class="container duo rev reveal">
-<figure class="duo-media tall"><?=pic(himg('amenidades.img','/img/sedes/leon/lounge.webp'),'Áreas comunes de Aldea','(max-width:900px) 100vw, 58vw','loading="lazy"')?></figure>
+<figure class="duo-media tall"><?=pic(himg('amenidades.img','/img/sedes/leon/lounge.webp'),L('Áreas comunes de Aldea','Common areas at Aldea'),'(max-width:900px) 100vw, 58vw','loading="lazy"')?></figure>
 <div class="duo-copy">
 <h2 <?=ha('amenidades.title','Tú te ocupas de tu empresa. Nosotros de tu oficina.')?>><?=ht('amenidades.title','Tú te ocupas de tu empresa. Nosotros de tu oficina.')?></h2>
 <?php if(hhas('amenidades.lead')): ?><p class="lead" <?=ha('amenidades.lead')?>><?=ht('amenidades.lead')?></p><?php endif; ?>
@@ -95,7 +95,7 @@ echo '</ul>';
 
 <!-- 6. OFICINAS CORPORATIVAS: banda de foto a sangre -->
 <section class="band" id="corporativas">
-<?=pic(himg('corporativas.img','/img/corporativas/proyecto/planta-abierta.webp'),'Oficina corporativa desarrollada por Aldea','100vw','loading="lazy"')?>
+<?=pic(himg('corporativas.img','/img/corporativas/proyecto/planta-abierta.webp'),L('Oficina corporativa desarrollada por Aldea','Corporate office developed by Aldea'),'100vw','loading="lazy"')?>
 <div class="container"><div class="band-copy reveal">
 <h2 <?=ha('corporativas.title','Oficinas Corporativas a la Medida')?>><?=ht('corporativas.title','Oficinas Corporativas a la Medida')?></h2>
 <p <?=ha('corporativas.text1','Diseñamos, adecuamos, equipamos y operamos espacios de trabajo exclusivos para grandes equipos.')?>><?=ht('corporativas.text1','Diseñamos, adecuamos, equipamos y operamos espacios de trabajo exclusivos para grandes equipos.')?></p>
@@ -133,7 +133,7 @@ foreach($__nums as $__n){
 
 <!-- 9. FORMULARIO -->
 <section class="section bg-soft contact" id="contacto"><div class="container"><div class="formx reveal">
-<figure class="formx-media"><?=pic(himg('contacto.img','/img/sedes/ags/recepcion.webp'),'Recepción de Aldea','(max-width:900px) 100vw, 45vw','loading="lazy"')?></figure>
+<figure class="formx-media"><?=pic(himg('contacto.img','/img/sedes/ags/recepcion.webp'),L('Recepción de Aldea','Aldea reception'),'(max-width:900px) 100vw, 45vw','loading="lazy"')?></figure>
 <div class="formx-body">
 <h2 <?=ha('contacto.title','Hablemos sobre tu próximo espacio de trabajo')?>><?=ht('contacto.title','Hablemos sobre tu próximo espacio de trabajo')?></h2>
 <p class="lead" <?=ha('contacto.lead','Déjanos tus datos y nuestro equipo comercial se pondrá en contacto contigo para conocer lo que necesitas.')?>><?=ht('contacto.lead','Déjanos tus datos y nuestro equipo comercial se pondrá en contacto contigo para conocer lo que necesitas.')?></p>

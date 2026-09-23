@@ -21,7 +21,7 @@ echo '<h1 data-es="'.esc($sol['title_es']).'" data-en="'.esc($sol['title_en']).'
 echo '<p class="lead" data-es="'.esc($sol['excerpt_es']).'" data-en="'.esc($sol['excerpt_en']).'">'.esc($sol['excerpt_es']).'</p>';
 echo '<div class="hero-cta"><a href="/contacto/" class="btn btn-accent" data-es="Solicitar cotizacion" data-en="Request a quote">Solicitar cotizacion</a></div></div>';
 if(count($imgs)>1){ echo '<div class="sg-thumbs">'; foreach($imgs as $k=>$u) echo '<button class="sg-thumb'.($k===0?' on':'').'"><img src="'.esc($u).'"></button>'; echo '</div>'; }
-echo '<button class="sg-expand" aria-label="Pantalla completa"><svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3"/></svg></button>';
+echo '<button class="sg-expand" aria-label="'.L('Pantalla completa','Full screen').'"><svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3"/></svg></button>';
 echo '</div></div></section>';
 echo '<section class="section"><div class="container"><div class="solwhy reveal"><span class="chip" data-es="Por que Aldea" data-en="Why Aldea">Por que Aldea</span><h2 style="margin-top:.8rem" data-es="'.esc($sol['title_es']).'" data-en="'.esc($sol['title_en']).'">'.esc($sol['title_es']).'</h2>';
 echo '<p data-es="'.esc($sol['body_es']).'" data-en="'.esc($sol['excerpt_en']).'">'.esc($sol['body_es']?:$sol['excerpt_es']).'</p><ul class="checklist">';

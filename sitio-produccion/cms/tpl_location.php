@@ -26,8 +26,8 @@ echo '<p class="lochero-addr" data-es="'.esc($addr).'" data-en="'.esc($__adren).
 echo '<div class="hero-cta reveal" style="margin-top:1.4rem"><a href="/contacto/" class="btn btn-accent" data-es="Agenda tu visita" data-en="Book a visit">Agenda tu visita</a><a href="#precios" class="btn btn-ghost" data-es="Ver precios" data-en="See pricing">Ver precios</a></div></div>';
 echo '<div class="lochero-gal reveal"><div class="lg-stage">';
 foreach($gal as $k=>$u) echo '<img class="lg-img'.($k===0?' on':'').'" src="'.esc($u).'" '.($k===0?'loading="eager"':'loading="lazy"').'>';
-echo '<button class="lg-nav lg-prev" aria-label="Anterior">'.$L.'</button><button class="lg-nav lg-next" aria-label="Siguiente">'.$R.'</button><span class="lg-count"><b>1</b>/'.count($gal).'</span></div>';
-echo '<div class="lg-thumbs">'; foreach($gal as $k=>$u) echo '<button class="lg-thumb'.($k===0?' on':'').'" aria-label="Foto '.($k+1).'"><img src="'.esc($u).'"></button>'; echo '</div></div></div></section>';
+echo '<button class="lg-nav lg-prev" aria-label="'.L('Anterior','Previous').'">'.$L.'</button><button class="lg-nav lg-next" aria-label="'.L('Siguiente','Next').'">'.$R.'</button><span class="lg-count"><b>1</b>/'.count($gal).'</span></div>';
+echo '<div class="lg-thumbs">'; foreach($gal as $k=>$u) echo '<button class="lg-thumb'.($k===0?' on':'').'" aria-label="'.L('Foto','Photo').' '.($k+1).'"><img src="'.esc($u).'"></button>'; echo '</div></div></div></section>';
 // SPLIT "La sede"
 echo '<section class="section"><div class="container split reveal"><div><span class="chip" data-es="La sede" data-en="The location">La sede</span><h2 style="margin-top:.8rem">'.esc($loc['name']).'</h2>';
 echo '<p data-es="'.esc($loc['intro_es']).'" data-en="'.esc($__inten).'">'.esc($loc['intro_es']).'</p><p style="color:var(--muted)"><b data-es="Direccion:" data-en="Address:">Direccion:</b> '.esc($addr).'</p>';

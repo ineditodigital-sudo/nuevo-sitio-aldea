@@ -5,6 +5,8 @@ function setLang(lang){
   document.querySelectorAll('#lang button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-lang')===lang);});
   try{localStorage.setItem('aldea_lang',lang);}catch(e){}
 }
+// Texto segun el idioma de la pagina, para las etiquetas que arma este script
+function tx(es,en){return document.documentElement.lang==='en'?en:es;}
 (function(){var box=document.getElementById('lang');var urlLang=document.documentElement.getAttribute('lang')||'es';setLang(urlLang);if(!box)return;box.querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(e){var l=b.getAttribute('data-lang');if(!l)return;var url=box.getAttribute('data-'+l+'-url');if(url&&l!==urlLang){location.href=url;}else{setLang(l);}});});})();
 
 var hdr=document.getElementById('hdr');
@@ -43,7 +45,7 @@ function aldeaSubmit(ev){
   fetch('/send.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
    .then(function(r){return r.json();})
    .then(function(res){
-     if(res&&res.ok){window.location.href='/formulario-enviado/';return;}
+     if(res&&res.ok){window.location.href=(document.documentElement.lang==='en'?'/en':'')+'/formulario-enviado/';return;}
      else{throw new Error();}
    })
    .catch(function(){if(msg){msg.textContent=lang==='en'?'Could not send. Please try again or call us.':'No se pudo enviar. Intenta de nuevo o ll\u00e1manos.';msg.style.color='#c0392b';}})
@@ -120,10 +122,10 @@ document.querySelectorAll('.lochero-gal').forEach(function(gal){
 // galeria de soluciones + lightbox
 (function(){
   var lbx=document.createElement('div'); lbx.className='lbx';
-  lbx.innerHTML='<button class="lbx-close" aria-label="Cerrar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>'+
-    '<button class="lbx-nav lbx-prev" aria-label="Anterior"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>'+
+  lbx.innerHTML='<button class="lbx-close" aria-label="'+tx('Cerrar','Close')+'"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>'+
+    '<button class="lbx-nav lbx-prev" aria-label="'+tx('Anterior','Previous')+'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>'+
     '<img class="lbx-img" src="" alt=""/>'+
-    '<button class="lbx-nav lbx-next" aria-label="Siguiente"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>'+
+    '<button class="lbx-nav lbx-next" aria-label="'+tx('Siguiente','Next')+'"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>'+
     '<span class="lbx-count"><b>1</b>/<span class="lbx-total">1</span></span>';
   document.body.appendChild(lbx);
   var lImg=lbx.querySelector('.lbx-img'),lCur=lbx.querySelector('.lbx-count b'),lTot=lbx.querySelector('.lbx-total');
@@ -220,11 +222,11 @@ document.querySelectorAll('[data-rail]').forEach(function(r){
   var ultimoFoco=null;
 
   var box=document.createElement('div'); box.className='lgx'; box.hidden=true;
-  box.setAttribute('role','dialog'); box.setAttribute('aria-modal','true'); box.setAttribute('aria-label','Galería');
-  box.innerHTML='<button class="lgx-x" aria-label="Cerrar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>'+
-    '<button class="lgx-nav lgx-prev" aria-label="Anterior"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>'+
+  box.setAttribute('role','dialog'); box.setAttribute('aria-modal','true'); box.setAttribute('aria-label',tx('Galería','Gallery'));
+  box.innerHTML='<button class="lgx-x" aria-label="'+tx('Cerrar','Close')+'"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>'+
+    '<button class="lgx-nav lgx-prev" aria-label="'+tx('Anterior','Previous')+'"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>'+
     '<div class="lgx-stage"></div>'+
-    '<button class="lgx-nav lgx-next" aria-label="Siguiente"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>'+
+    '<button class="lgx-nav lgx-next" aria-label="'+tx('Siguiente','Next')+'"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>'+
     '<span class="lgx-count"><b>1</b>/'+items.length+'</span>';
   document.body.appendChild(box);
   var stage=box.querySelector('.lgx-stage'), cur=box.querySelector('.lgx-count b'), i=0;
@@ -253,9 +255,9 @@ document.querySelectorAll('[data-rail]').forEach(function(r){
 
   // Vista "todas las fotos"
   var vista=document.createElement('div'); vista.className='gview'; vista.hidden=true;
-  vista.setAttribute('role','dialog'); vista.setAttribute('aria-modal','true');
+  vista.setAttribute('role','dialog'); vista.setAttribute('aria-modal','true'); vista.setAttribute('aria-label',tx('Todas las fotos','All photos'));
   var titulo=cont.getAttribute('data-titulo')||'';
-  var h='<div class="gview-bar"><b>'+titulo.replace(/</g,'&lt;')+'</b><button class="gview-x" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="gview-grid">';
+  var h='<div class="gview-bar"><b>'+titulo.replace(/</g,'&lt;')+'</b><button class="gview-x" aria-label="'+tx('Cerrar','Close')+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="gview-grid">';
   items.forEach(function(it,k){ if(it.tipo!=='video') h+='<button type="button" data-k="'+k+'"><img src="'+(it.sm||it.src)+'" alt="" loading="lazy"></button>'; });
   vista.innerHTML=h+'</div>';
   document.body.appendChild(vista);

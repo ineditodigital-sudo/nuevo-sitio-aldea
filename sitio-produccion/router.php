@@ -17,6 +17,7 @@ try{
   if($slug==='lo-que-ofrecemos'){ include __DIR__.'/cms/tpl_sol_index.php'; exit; }
   if($slug==='ubicaciones'){ include __DIR__.'/cms/tpl_loc_index.php'; exit; }
   if($slug==='blog'){ include __DIR__.'/cms/tpl_blog_index.php'; exit; }
+  if($slug==='formulario-enviado'){ include __DIR__.'/cms/tpl_gracias.php'; exit; } // gracias tras enviar un formulario
   $st=$pdo->prepare("SELECT * FROM solutions WHERE slug=? AND published=1"); $st->execute([$slug]); $sol=$st->fetch();
   if($sol){ include __DIR__.'/cms/tpl_solution.php'; exit; }
   $st=$pdo->prepare("SELECT * FROM locations WHERE slug=? AND published=1"); $st->execute([$slug]); $loc=$st->fetch();
@@ -27,4 +28,13 @@ try{
   if($pg){ include __DIR__.'/cms/tpl_page.php'; exit; }
   if(serve_static($slug)) exit;
   include __DIR__.'/cms/tpl_404.php';
-}catch(Throwable $e){ if(!serve_static($slug)){ http_response_code(500); echo 'Error: '.htmlspecialchars($e->getMessage()); } }
+}catch(Throwable $e){
+  // Sin base de datos: el error va al log del servidor (mostrarlo podria revelar datos de la conexion)
+  // y el visitante ve la copia estatica de la pagina; si no la hay, la del Inicio con estado 503.
+  error_log('Aldea router: '.$e->getMessage());
+  if(!serve_static($slug)){
+    http_response_code(503); header('Retry-After: 300');
+    $__ix=$_SERVER['DOCUMENT_ROOT'].'/index.html';
+    if(is_file($__ix)) readfile($__ix); else echo 'Estamos haciendo mantenimiento. Intenta de nuevo en unos minutos.';
+  }
+}

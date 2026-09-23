@@ -73,8 +73,8 @@ foreach($items as $k=>$p){
   if($p['tipo']!=='img') continue;
   // En el telefono la galeria es alta (58 % de la pantalla) y la foto se recorta a lo alto: pide la de 1920 px
   $sizes=$k===0?'(max-width:760px) 150vw, 50vw':'(max-width:760px) 150vw, 25vw';
-  echo '<button type="button" class="sgal-it" data-i="'.$k.'" aria-label="'.esc($name).': foto '.($k+1).' de '.$nf.'">'
-      .pic($p['src'],$name.', foto '.($k+1),$sizes,$k===0?'fetchpriority="high"':'loading="lazy"').'</button>';
+  echo '<button type="button" class="sgal-it" data-i="'.$k.'" aria-label="'.esc($name).': '.L('foto','photo').' '.($k+1).' '.L('de','of').' '.$nf.'">'
+      .pic($p['src'],$name.', '.L('foto','photo').' '.($k+1),$sizes,$k===0?'fetchpriority="high"':'loading="lazy"').'</button>';
 }
 echo '</div>';
 if($nf>1) echo '<span class="sgal-count" aria-hidden="true"><b>1</b> / '.$nf.'</span>';
@@ -125,7 +125,7 @@ if(lhas('espacios.title')){
     $val=lv("espacios.p{$i}_valor",lv("espacios.p{$i}_title"));
     $precio=trim((string)$precios[$i]);
     echo '<article class="esp-card reveal">';
-    echo '<div class="esp-img">'.pic($__espImg[$i],strip_tags(lv("espacios.p{$i}_title")),'(max-width:640px) 100vw, (max-width:980px) 50vw, '.($__c===3?'420px':'650px'),'loading="lazy"').'</div>';
+    echo '<div class="esp-img">'.pic($__espImg[$i],strip_tags(L(lv("espacios.p{$i}_title"),ln("espacios.p{$i}_title"))),'(max-width:640px) 100vw, (max-width:980px) 50vw, '.($__c===3?'420px':'650px'),'loading="lazy"').'</div>';
     echo '<div class="esp-body"><h3 '.la("espacios.p{$i}_title").'>'.lt("espacios.p{$i}_title").'</h3>';
     echo '<p '.la("espacios.p{$i}_text").'>'.lt("espacios.p{$i}_text").'</p>';
     if(lhas("espacios.p{$i}_meta")) echo '<span class="esp-dato">'.aldea_icon('users').'<span '.la("espacios.p{$i}_meta").'>'.lt("espacios.p{$i}_meta").'</span></span>';
@@ -152,7 +152,7 @@ if(count($__rail)>=3){
   echo '</div><div class="rail" data-rail style="--item:min(620px,84vw)"><div class="rail-track">';
   foreach($__rail as $k){
     $p=$items[$k];
-    echo '<button type="button" class="rail-photo" data-gal-i="'.$k.'" aria-label="Ampliar foto '.($k+1).'">'.pic($p['src'],$name.', foto '.($k+1),'(max-width:760px) 84vw, 620px','loading="lazy"').'</button>';
+    echo '<button type="button" class="rail-photo" data-gal-i="'.$k.'" aria-label="'.L('Ampliar foto','Enlarge photo').' '.($k+1).'">'.pic($p['src'],$name.', '.L('foto','photo').' '.($k+1),'(max-width:760px) 84vw, 620px','loading="lazy"').'</button>';
   }
   echo '</div>'.rail_ctrl().'</div></div></section>';
 }
@@ -178,7 +178,7 @@ if(lhas('mapa.title')){
   echo '<a class="sec-link" href="https://www.google.com/maps/dir/?api=1&amp;destination='.$q.'" target="_blank" rel="noopener">'.aldea_icon('route').'<span data-es="Cómo llegar" data-en="Get directions">Cómo llegar</span></a></div>';
   echo '<div class="locmap-grid reveal">';
   // Debajo del mapa, la direccion: es lo que se ve mientras carga (o si Google Maps no carga)
-  echo '<div class="locmap-map"><div class="locmap-ph" aria-hidden="true">'.aldea_icon('pin').'<span>'.esc($addr).'</span></div><iframe class="map-embed" loading="lazy" title="Mapa de '.esc($name).'" src="https://maps.google.com/maps?q='.$q.'&amp;t=m&amp;z=15&amp;output=embed&amp;iwloc=near"></iframe></div>';
+  echo '<div class="locmap-map"><div class="locmap-ph" aria-hidden="true">'.aldea_icon('pin').'<span>'.esc($addr).'</span></div><iframe class="map-embed" loading="lazy" title="'.L('Mapa de','Map of').' '.esc($name).'" src="https://maps.google.com/maps?q='.$q.'&amp;t=m&amp;z=15&amp;output=embed&amp;iwloc=near"></iframe></div>';
   echo '<div class="locmap-side"><div class="near-grid swipe" data-swipe>';
   // Solo nombres: el brief pide no mostrar tiempos de traslado
   foreach($near as $cat=>$items_){
@@ -235,14 +235,14 @@ echo '</div></div></div></section>';
 
 /* ---------- 11. MODAL: AGENDA TU VISITA ---------- */
 echo '<div class="vmodal" id="vmodal" hidden><div class="vmodal-bg" data-vclose></div><div class="vmodal-card" role="dialog" aria-modal="true" aria-labelledby="vmTitle">';
-echo '<button class="vmodal-x" data-vclose aria-label="Cerrar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>';
+echo '<button class="vmodal-x" data-vclose aria-label="'.L('Cerrar','Close').'"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>';
 echo '<h3 id="vmTitle" '.la('visita.title','Agenda tu visita').'>'.lt('visita.title','Agenda tu visita').'</h3>';
 echo '<p '.la('visita.lead','Elige el día y horario que mejor te acomode y te esperamos en la sede.').'>'.lt('visita.lead','Elige el día y horario que mejor te acomode y te esperamos en la sede.').'</p>';
 echo '<form class="contact-form" onsubmit="return aldeaSubmit(event)" data-source="'.esc($loc['slug']).'-visita" data-utm>';
 echo '<input type="hidden" name="form_type" value="visita">';
 echo '<input type="hidden" name="location" value="'.esc($name).'">';
-echo '<div class="vmodal-2"><input name="visit_date" type="date" required aria-label="Fecha">';
-echo '<select name="visit_time" required aria-label="Horario"><option value="" disabled selected data-es="Horario" data-en="Time">Horario</option>';
+echo '<div class="vmodal-2"><input name="visit_date" type="date" required aria-label="'.L('Fecha','Date').'">';
+echo '<select name="visit_time" required aria-label="'.L('Horario','Time').'"><option value="" disabled selected data-es="Horario" data-en="Time">Horario</option>';
 foreach(['09:00','10:00','11:00','12:00','13:00','16:00','17:00','18:00'] as $hh) echo '<option value="'.$hh.'">'.$hh.'</option>';
 echo '</select></div>';
 echo '<input name="name" type="text" required placeholder="Nombre" data-ph-es="Nombre" data-ph-en="Name" autocomplete="name">';

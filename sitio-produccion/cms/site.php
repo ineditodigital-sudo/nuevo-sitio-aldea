@@ -4,6 +4,8 @@ require_once __DIR__.'/icons.php';
 function esc($s){ return htmlspecialchars((string)$s,ENT_QUOTES,'UTF-8'); }
 function site_lang(){ return $GLOBALS['SITE_LANG'] ?? 'es'; }
 function L($es,$en){ return site_lang()==='en' ? ($en!==''&&$en!==null?$en:$es) : $es; }
+// Texto alterno de imagen: en /en/ usa el ingles guardado; si no hay, $en_def (y solo al final el espanol)
+function alt2($es,$en='',$en_def=''){ return site_lang()==='en' ? (trim((string)$en)!==''?$en:($en_def!==''?$en_def:$es)) : $es; }
 function tr_en($h){
   // texto bilingue: reemplaza el contenido por la version EN
   $h=preg_replace_callback('/(\sdata-es="[^"]*"\s+data-en="([^"]*)"[^>]*>)([^<]*)</s', function($m){ return $m[1].$m[2].'<'; }, $h);
@@ -159,7 +161,7 @@ function site_header(){
       .'<a class="nav-dato" href="mailto:'.esc($__mail).'">'.aldea_icon('mail').'<span>'.esc($__mail).'</span></a></div>';
   $__l=site_lang();$__es=$GLOBALS['cur_es_path']??'/';$__en=$GLOBALS['cur_en_path']??'/en/';
   echo '</nav><div class="hdr-act"><div class="lang" id="lang" data-es-url="'.esc($__es).'" data-en-url="'.esc($__en).'"><button data-lang="es" class="'.($__l==='es'?'on':'').'">ES</button><span>/</span><button data-lang="en" class="'.($__l==='en'?'on':'').'">EN</button></div>';
-  echo '<a href="/contacto/" class="btn btn-primary hdr-cta" data-es="Cotizar" data-en="Get a quote">Cotizar</a><button class="burger" id="burger" aria-label="Menú" aria-controls="nav" aria-expanded="false"><span></span><span></span><span></span></button></div></div></header>';
+  echo '<a href="/contacto/" class="btn btn-primary hdr-cta" data-es="Cotizar" data-en="Get a quote">Cotizar</a><button class="burger" id="burger" aria-label="'.L('Menú','Menu').'" aria-controls="nav" aria-expanded="false"><span></span><span></span><span></span></button></div></div></header>';
 }
 // Imagen con tamanos alternos: si junto a /img/.../foto.webp existen foto-sm.webp (960 px)
 // y foto-xl.webp (2560 px), el navegador descarga el que corresponde a la pantalla.
@@ -193,8 +195,8 @@ function page_hero($img,$alt,$inner){
 }
 // Carrusel: flechas bajo la pista. Las activa app6.js ([data-rail]).
 function rail_ctrl(){
-  return '<div class="rail-ctrl"><button type="button" class="rail-btn" data-rail-prev aria-label="Anterior">'.aldea_icon('arrow-left').'</button>'
-        .'<button type="button" class="rail-btn" data-rail-next aria-label="Siguiente">'.aldea_icon('arrow-right').'</button></div>';
+  return '<div class="rail-ctrl"><button type="button" class="rail-btn" data-rail-prev aria-label="'.L('Anterior','Previous').'">'.aldea_icon('arrow-left').'</button>'
+        .'<button type="button" class="rail-btn" data-rail-next aria-label="'.L('Siguiente','Next').'">'.aldea_icon('arrow-right').'</button></div>';
 }
 // Columnas sin huecos: escoge cuantas columnas dividen la lista completa (escritorio / tableta / movil).
 function cols_vars($n){
@@ -219,7 +221,7 @@ function loc_cards($exclude='',$style='',$cta_es='Ver sede',$cta_en='See locatio
   foreach($locs as $l){
     $soon=$l['soon']?'<span class="lcard-soon" data-es="Próximamente" data-en="Coming soon">Próximamente</span>':'';
     echo '<a class="lcard reveal" href="/'.esc($l['slug']).'/">'
-        .'<div class="lcard-img">'.pic($l['hero_image'],($l['hero_image_alt']??'')?:$l['name'],'(max-width:520px) 100vw, (max-width:980px) 50vw, 25vw','loading="lazy"').'</div>'
+        .'<div class="lcard-img">'.pic($l['hero_image'],L(($l['hero_image_alt']??'')?:$l['name'],$l['name'].', '.($l['city_en']?:$l['city_es'])),'(max-width:520px) 100vw, (max-width:980px) 50vw, 25vw','loading="lazy"').'</div>'
         .'<div><span class="lcard-city" data-es="'.esc($l['city_es']).'" data-en="'.esc($l['city_en']?:$l['city_es']).'">'.esc($l['city_es']).'</span>'
         .'<'.$h.'>'.esc($l['name']).'</'.$h.'>'.$soon
         .'<span class="lcard-go"><span data-es="'.esc($cta_es).'" data-en="'.esc($cta_en?:$cta_es).'">'.esc($cta_es).'</span>'.aldea_icon('arrow-right').'</span></div></a>';
@@ -237,8 +239,8 @@ function iniciales($nombre){
 // formulario y el pie. $prin y $sec son botones ya armados (con data-es / data-en).
 function barra_movil($prin,$sec=''){
   $tel=setting('phone','+52 449 454 0709');
-  echo '<div class="mbar" id="mbar" role="group" aria-label="Acciones rápidas">'
-      .'<a class="mbar-tel" href="tel:'.esc(preg_replace('/[^0-9+]/','',$tel)).'" aria-label="Llamar a Aldea">'.aldea_icon('phone').'</a>'
+  echo '<div class="mbar" id="mbar" role="group" aria-label="'.L('Acciones rápidas','Quick actions').'">'
+      .'<a class="mbar-tel" href="tel:'.esc(preg_replace('/[^0-9+]/','',$tel)).'" aria-label="'.L('Llamar a Aldea','Call Aldea').'">'.aldea_icon('phone').'</a>'
       .$sec.$prin.'</div>';
 }
 // URL de la landing de Oficinas Corporativas (editable en Ajustes con la clave corp_url)

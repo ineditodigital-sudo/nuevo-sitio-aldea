@@ -66,7 +66,7 @@ function page_about($B){
 
   // --- 2) Las personas son lo mas importante ---
   echo '<section class="section bg-soft" id="personas"><div class="container duo reveal">';
-  echo '<figure class="duo-media">'.pic(pgv($B,'int_img','/img/about.webp'),pgv($B,'int_img_alt','Equipo de Aldea'),'(max-width:900px) 100vw, 58vw','loading="lazy"').'</figure>';
+  echo '<figure class="duo-media">'.pic(pgv($B,'int_img','/img/about.webp'),alt2(pgv($B,'int_img_alt','Equipo de Aldea'),$B['int_img_alt']['value_en']??'','The Aldea team'),'(max-width:900px) 100vw, 58vw','loading="lazy"').'</figure>';
   echo '<div class="duo-copy">';
   echo bl('h2',$B,'int_titulo','');
   echo bl('p',$B,'int_texto','');
@@ -96,7 +96,7 @@ function page_about($B){
     $gh=bl('h2',$B,'gal_titulo','').bl('p',$B,'gal_texto',' class="lead"');
     if(trim($gh)!=='') echo '<div class="sec-head reveal">'.$gh.'</div>';
     echo '<div class="mosaic m'.$v.' reveal">';
-    for($k=0;$k<$v;$k++) echo '<figure><button type="button" data-i="'.$k.'" aria-label="Ampliar foto '.($k+1).'">'.pic($items[$k]['src'],$items[$k]['alt'],$k===0?'(max-width:760px) 100vw, 50vw':'(max-width:760px) 50vw, 25vw','loading="lazy"').'</button></figure>';
+    for($k=0;$k<$v;$k++) echo '<figure><button type="button" data-i="'.$k.'" aria-label="'.L('Ampliar foto','Enlarge photo').' '.($k+1).'">'.pic($items[$k]['src'],$items[$k]['alt'],$k===0?'(max-width:760px) 100vw, 50vw':'(max-width:760px) 50vw, 25vw','loading="lazy"').'</button></figure>';
     echo '</div></div></section>';
   }
   return true;
@@ -106,7 +106,7 @@ function page_about($B){
 function page_contact($B){
   if(!isset($B['write_titulo'])) return false;
   echo '<section class="section"><div class="container"><div class="formx reveal">';
-  echo '<figure class="formx-media">'.pic(pgv($B,'form_img','/img/sedes/slp/recepcion.webp'),'Recepción de Aldea','(max-width:900px) 100vw, 45vw','loading="lazy"').'</figure>';
+  echo '<figure class="formx-media">'.pic(pgv($B,'form_img','/img/sedes/slp/recepcion.webp'),L('Recepción de Aldea','Aldea reception'),'(max-width:900px) 100vw, 45vw','loading="lazy"').'</figure>';
   echo '<div class="formx-body">';
   echo bl('h2',$B,'write_titulo','');
   echo bl('p',$B,'write_texto',' class="lead"');
@@ -142,7 +142,17 @@ $rendered = page_about($B);
 if(!$rendered) $rendered = page_contact($B);
 if(!$rendered) $rendered = page_faq($B);
 if($rendered){ page_cta($B); }
-elseif(isset($B['body'])){ echo $B['body']['value_es']; } // las legales ya traen su seccion y contenedor
+elseif(isset($B['body'])){ // las legales ya traen su seccion y contenedor
+  $__ben=trim((string)($B['body']['value_en']??''));
+  if(site_lang()==='en' && $__ben!=='') echo $__ben;
+  elseif(site_lang()==='en'){
+    // Sin version en ingles: se muestra el texto en espanol y se avisa arriba, dentro del mismo contenedor
+    $__nota='<p class="legal-nota" lang="en">This document is only available in Spanish.</p>';
+    $__b=preg_replace('#(<div class="[^"]*\bprose\b[^"]*">)#','$1'.$__nota,(string)$B['body']['value_es'],1,$__c);
+    echo '<div lang="es">'.($__c?$__b:'<div class="container">'.$__nota.'</div>'.$__b).'</div>';
+  }
+  else echo $B['body']['value_es'];
+}
 echo '</div>';
 echo '</main>';
 site_footer(); site_scripts();
