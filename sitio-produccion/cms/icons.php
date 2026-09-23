@@ -70,6 +70,7 @@ function aldea_icon_lib(){
    'arrow-left'=>'<path d="M5 12l14 0"/> <path d="M5 12l6 6"/> <path d="M5 12l6 -6"/>',
    'chevron-left'=>'<path d="M15 6l-6 6l6 6"/>',
    'chevron-right'=>'<path d="M9 6l6 6l-6 6"/>',
+   'chevron-down'=>'<path d="M6 9l6 6l6 -6"/>',
    'pause'=>'<path d="M6 6a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v12a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1l0 -12"/> <path d="M14 6a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v12a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1l0 -12"/>',
    'x'=>'<path d="M18 6l-12 12"/> <path d="M6 6l12 12"/>',
    'plus'=>'<path d="M12 5l0 14"/> <path d="M5 12l14 0"/>',

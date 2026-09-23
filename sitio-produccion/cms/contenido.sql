@@ -1168,11 +1168,11 @@ INSERT INTO `locations` (`id`,`slug`,`name`,`city_es`,`city_en`,`title_es`,`titl
 -- testimonials: 5 filas
 DELETE FROM `testimonials`;
 INSERT INTO `testimonials` (`id`,`name`,`company`,`client_id`,`quote_es`,`quote_en`,`avatar`,`sort`,`published`,`company_logo`,`avatar_alt`,`company_logo_alt`) VALUES
-(1,'Eitzel Galindo','Edenred',NULL,'Nos encantó que Aldea estuviera tan bien ubicado. Tenemos todo cerca y eso hace la vida diaria mucho más práctica.',NULL,'/img/av-eitzel.webp',10,1,'/img/clientes/edenred.webp',NULL,NULL),
-(2,'Eduardo Velázquez','Banco Azteca',NULL,'Venir a trabajar sin pensar en el café, la limpieza o la impresora no tiene precio. Todo está listo y eso nos da paz mental.',NULL,'/img/av-eduardo.webp',1,1,'/img/clientes/azteca.webp',NULL,NULL),
-(3,'Enrique del Campo','Cemex',NULL,'Lo que más nos gusta es el trato del equipo. Te resuelven rápido y con buena actitud. Se siente que les importa ayudarte.',NULL,'/img/av-enrique.webp',2,1,'/img/clientes/cemex.webp',NULL,NULL),
-(4,'Miguel Barrientos','Opzione',NULL,'Cuando empezamos éramos solo tres personas. Ahora somos seis y seguimos en Aldea. Han sido muy flexibles y nos han acompañado en cada etapa.',NULL,'/img/wp/2025/07/Miguel-Barrientos-300x300.webp',3,1,'/img/clientes/opzione.webp',NULL,NULL),
-(5,'Salvador Marín','Royale',NULL,'Teníamos requisitos muy específicos de red, y en Aldea nos apoyaron a configurar nuestra VPN sin problema. Contar con internet de respaldo nos da tranquilidad.',NULL,'/img/wp/2025/07/Salvador-Marin-300x300.webp',10,1,'/img/clientes/royale.webp',NULL,NULL);
+(1,'Eitzel Galindo','Edenred',NULL,'Nos encantó que Aldea estuviera tan bien ubicado. Tenemos todo cerca y eso hace la vida diaria mucho más práctica.',NULL,'/img/testimonios/eitzel-galindo.webp',10,1,'/img/clientes/edenred.webp',NULL,NULL),
+(2,'Eduardo Velázquez','Banco Azteca',NULL,'Venir a trabajar sin pensar en el café, la limpieza o la impresora no tiene precio. Todo está listo y eso nos da paz mental.',NULL,'/img/testimonios/eduardo-velazquez.webp',1,1,'/img/clientes/azteca.webp',NULL,NULL),
+(3,'Enrique del Campo','Cemex',NULL,'Lo que más nos gusta es el trato del equipo. Te resuelven rápido y con buena actitud. Se siente que les importa ayudarte.',NULL,'/img/testimonios/enrique-del-campo.webp',2,1,'/img/clientes/cemex.webp',NULL,NULL),
+(4,'Miguel Barrientos','Opzione',NULL,'Cuando empezamos éramos solo tres personas. Ahora somos seis y seguimos en Aldea. Han sido muy flexibles y nos han acompañado en cada etapa.',NULL,'/img/testimonios/miguel-barrientos.webp',3,1,'/img/clientes/opzione.webp',NULL,NULL),
+(5,'Salvador Marín','Royale',NULL,'Teníamos requisitos muy específicos de red, y en Aldea nos apoyaron a configurar nuestra VPN sin problema. Contar con internet de respaldo nos da tranquilidad.',NULL,'/img/testimonios/salvador-marin.webp',10,1,'/img/clientes/royale.webp',NULL,NULL);
 
 -- clients: 14 filas
 DELETE FROM `clients`;

@@ -10,8 +10,18 @@ function setLang(lang){
 var hdr=document.getElementById('hdr');
 if(hdr){var os=function(){hdr.classList.toggle('scr',window.scrollY>20);};os();window.addEventListener('scroll',os,{passive:true});}
 var burger=document.getElementById('burger'),nav=document.getElementById('nav');
-if(burger&&nav){burger.addEventListener('click',function(){nav.classList.toggle('open');});
-  nav.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){if(a.parentElement&&a.parentElement.classList.contains('hdr-drop')&&window.innerWidth<=980)return;nav.classList.remove('open');});});}
+if(burger&&nav){
+  // Menu movil a pantalla completa: bloquea el scroll de fondo, el header pasa a blanco y cierra con Escape.
+  var setNav=function(abierto){
+    nav.classList.toggle('open',abierto);
+    burger.setAttribute('aria-expanded',abierto?'true':'false');
+    document.body.classList.toggle('nav-open',abierto);
+    if(hdr) hdr.classList.toggle('scr',abierto||window.scrollY>20);
+  };
+  burger.addEventListener('click',function(){setNav(!nav.classList.contains('open'));});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&nav.classList.contains('open')){setNav(false);burger.focus();}});
+  window.addEventListener('resize',function(){if(window.innerWidth>980&&nav.classList.contains('open'))setNav(false);});
+  nav.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){if(a.parentElement&&a.parentElement.classList.contains('hdr-drop')&&window.innerWidth<=980)return;setNav(false);});});}
 
 var PRICES={ags:{privada:'7,400',cowork:'2,700',virtual:'2,400',soon:false},leon:{privada:'8,600',cowork:'3,100',virtual:'2,400',soon:false},slp:{privada:'8,600',cowork:'3,100',virtual:'2,400',soon:false},qro:{privada:'10,800',cowork:'3,100',virtual:'2,400',soon:true}};
 function setCity(city){var btn=document.querySelector('#cityTabs button[data-city="'+city+'"]');var d=PRICES[city];if(btn&&btn.getAttribute('data-p')){d={privada:btn.getAttribute('data-p'),cowork:btn.getAttribute('data-w'),virtual:btn.getAttribute('data-v'),soon:btn.getAttribute('data-soon')==='1'};}if(!d)return;var pp=document.getElementById('p-privada'),pc=document.getElementById('p-cowork'),pv=document.getElementById('p-virtual'),sn=document.getElementById('soonNote');if(pp)pp.textContent=d.privada;if(pc)pc.textContent=d.cowork;if(pv)pv.textContent=d.virtual;if(sn)sn.hidden=!d.soon;document.querySelectorAll('#cityTabs button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-city')===city);});}
@@ -85,7 +95,10 @@ function aldeaSubmit(ev){
 })();
 
 // hdr-drop toggle movil
-document.querySelectorAll('.hdr-drop').forEach(function(drop){var t=drop.querySelector('a');if(t)t.addEventListener('click',function(e){if(window.innerWidth<=980){e.preventDefault();drop.classList.toggle('open');}});});
+// En el menu movil, el enlace y la flecha abren y cierran el submenu
+document.querySelectorAll('.hdr-drop').forEach(function(drop){var t=drop.querySelector('a'),ar=drop.querySelector('.hdr-ar');if(!t)return;
+  var tog=function(e){if(window.innerWidth<=980){e.preventDefault();var ab=drop.classList.toggle('open');t.setAttribute('aria-expanded',ab?'true':'false');}};
+  t.addEventListener('click',tog);if(ar)ar.addEventListener('click',tog);});
 
 // galeria interactiva ubicaciones
 document.querySelectorAll('.lochero-gal').forEach(function(gal){
@@ -346,4 +359,40 @@ document.querySelectorAll('.esp-cta').forEach(function(b){
       var h=document.createElement('input'); h.type='hidden'; h.name=k; h.value=datos[k]; f.appendChild(h);
     });
   });
+})();
+
+// Carruseles tactiles en movil ([data-swipe]): linea de progreso bajo la fila. Solo se ve
+// cuando la fila de verdad se desliza (en escritorio son rejillas y la linea queda oculta).
+(function(){
+  document.querySelectorAll('[data-swipe]').forEach(function(f){
+    var bar=document.createElement('div'); bar.className='swipe-bar'; bar.setAttribute('aria-hidden','true'); bar.hidden=true;
+    var t=document.createElement('i'); bar.appendChild(t); f.insertAdjacentElement('afterend',bar);
+    var pend=false;
+    var pinta=function(){ pend=false;
+      var max=f.scrollWidth-f.clientWidth;
+      if(max<=2){ bar.hidden=true; return; }
+      bar.hidden=false;
+      var w=f.clientWidth/f.scrollWidth, x=Math.min(1,Math.max(0,f.scrollLeft/max));
+      t.style.width=(w*100)+'%';
+      t.style.transform='translateX('+(x*(1/w-1)*100)+'%)';
+    };
+    f.addEventListener('scroll',function(){ if(!pend){ pend=true; requestAnimationFrame(pinta); } },{passive:true});
+    window.addEventListener('resize',pinta);
+    pinta();
+  });
+})();
+
+// Barra de acciones en movil (#mbar): aparece cuando los botones del inicio ya quedaron arriba
+// y se esconde mientras el formulario o el pie estan en pantalla (ahi ya estan esas acciones).
+(function(){
+  var bar=document.getElementById('mbar'); if(!bar||!('IntersectionObserver' in window)) return;
+  var inicio=document.querySelector('.hero-cta');
+  var fines=[document.getElementById('formulario'),document.querySelector('.ftr')].filter(Boolean);
+  var pasado=!inicio, visibles=0;
+  var pinta=function(){ var on=pasado&&visibles===0; bar.classList.toggle('on',on); if(on) bar.removeAttribute('inert'); else bar.setAttribute('inert',''); };
+  if(inicio) new IntersectionObserver(function(es){ var e=es[es.length-1]; pasado=!e.isIntersecting&&e.boundingClientRect.top<0; pinta(); }).observe(inicio);
+  var estado=new WeakMap();
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ var antes=estado.get(e.target)||false; if(e.isIntersecting!==antes){ visibles+=e.isIntersecting?1:-1; estado.set(e.target,e.isIntersecting); } }); pinta(); });
+  fines.forEach(function(el){ io.observe(el); });
+  pinta();
 })();

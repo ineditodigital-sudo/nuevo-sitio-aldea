@@ -196,6 +196,8 @@ if($qs){
   echo '</div></div></section>';
 }
 
+// Movil: barra fija con la accion principal
+if(shas('hero.cta1')) barra_movil('<a href="'.esc(sh_('hero.cta1','#formulario')).'" class="btn btn-accent" '.sa('hero.cta1').'>'.st('hero.cta1').'</a>');
 echo '</main>';
 site_footer();
 site_scripts();

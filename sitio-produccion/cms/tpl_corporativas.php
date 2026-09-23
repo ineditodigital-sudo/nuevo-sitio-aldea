@@ -42,7 +42,7 @@ if(chas('operacion.title')){
   if(chas('operacion.text')) echo '<p class="lead" '.ca('operacion.text').'>'.ct('operacion.text').'</p>';
   echo '</div>';
   $__e=[]; for($i=1;$i<=6;$i++){ if(chas("operacion.e{$i}_title")) $__e[]=$i; }
-  echo '<div class="ejes2" style="--n:'.max(1,min(4,count($__e))).'">';
+  echo '<div class="ejes2 swipe" data-swipe style="--n:'.max(1,min(4,count($__e))).'">';
   foreach($__e as $i){
     echo '<article class="eje2 reveal">';
     if(chas("operacion.e{$i}_img")) echo '<figure>'.pic(cv("operacion.e{$i}_img"),strip_tags(cv("operacion.e{$i}_title")),'(max-width:600px) 100vw, (max-width:1080px) 50vw, 25vw','loading="lazy"').'</figure>';
@@ -188,6 +188,8 @@ if($qs){
   echo '</div></div></section>';
 }
 
+// Movil: barra fija con la accion principal
+if(chas('hero.cta1')) barra_movil('<a href="'.esc(ch_('hero.cta1','#formulario')).'" class="btn btn-accent" '.ca('hero.cta1').'>'.ct('hero.cta1').'</a>');
 echo '</main>';
 site_footer();
 site_scripts();

@@ -137,11 +137,11 @@ function site_header(){
   echo '<header class="hdr" id="hdr"><div class="container hdr-in"><a href="/" class="hdr-logo"><img src="/img/logo-azul.svg" alt="Aldea"></a><nav class="hdr-nav" id="nav">';
   foreach($nav as $n){
     if($n['href']==='/lo-que-ofrecemos/'){
-      echo '<div class="hdr-drop"><a href="/lo-que-ofrecemos/" data-es="'.esc($n['label_es']).'" data-en="'.esc($n['label_en']).'">'.esc($n['label_es']).'</a><span class="hdr-ar">&#9662;</span><div class="hdr-menu">';
+      echo '<div class="hdr-drop"><a href="/lo-que-ofrecemos/" data-es="'.esc($n['label_es']).'" data-en="'.esc($n['label_en']).'">'.esc($n['label_es']).'</a><span class="hdr-ar" aria-hidden="true">'.aldea_icon('chevron-down').'</span><div class="hdr-menu"><div class="hdr-menu-in">';
       foreach($sol as $x) echo '<a href="/'.esc($x['slug']).'/" data-es="'.esc($x['title_es']).'" data-en="'.esc($x['title_en']?:$x['title_es']).'">'.esc($x['title_es']).'</a>';
-      echo '</div></div>';
+      echo '</div></div></div>';
     } elseif($n['href']==='/ubicaciones/'){
-      echo '<div class="hdr-drop"><a href="/ubicaciones/" data-es="'.esc($n['label_es']).'" data-en="'.esc($n['label_en']).'">'.esc($n['label_es']).'</a><span class="hdr-ar">&#9662;</span><div class="hdr-menu">';
+      echo '<div class="hdr-drop"><a href="/ubicaciones/" data-es="'.esc($n['label_es']).'" data-en="'.esc($n['label_en']).'">'.esc($n['label_es']).'</a><span class="hdr-ar" aria-hidden="true">'.aldea_icon('chevron-down').'</span><div class="hdr-menu"><div class="hdr-menu-in">';
       // El brief del Home pide "Ciudad - Sede" en el desplegable
       foreach($loc as $x){
         $sede=preg_replace('/^Aldea\s+/u','',(string)$x['name']);
@@ -149,12 +149,17 @@ function site_header(){
         $en=($x['city_en']?:$x['city_es']).($sede!==''?' — '.$sede:'');
         echo '<a href="/'.esc($x['slug']).'/" data-es="'.esc($es).'" data-en="'.esc($en).'">'.esc($es).'</a>';
       }
-      echo '<a href="/ubicaciones/" class="hdr-all" data-es="Ver todas las ubicaciones" data-en="See all locations">Ver todas las ubicaciones</a></div></div>';
+      echo '<a href="/ubicaciones/" class="hdr-all" data-es="Ver todas las ubicaciones" data-en="See all locations">Ver todas las ubicaciones</a></div></div></div>';
     } else echo '<a href="'.esc($n['href']).'" data-es="'.esc($n['label_es']).'" data-en="'.esc($n['label_en']).'">'.esc($n['label_es']).'</a>';
   }
+  // Solo en el menu movil (a pantalla completa): la accion principal y los datos de contacto al pie.
+  $__tel=setting('phone','+52 449 454 0709'); $__mail=setting('email','contacto@aldea.work');
+  echo '<div class="nav-extra"><a href="/contacto/" class="btn btn-accent" data-es="Cotizar" data-en="Get a quote">Cotizar</a>'
+      .'<a class="nav-dato" href="tel:'.esc(preg_replace('/[^0-9+]/','',$__tel)).'">'.aldea_icon('phone').'<span>'.esc($__tel).'</span></a>'
+      .'<a class="nav-dato" href="mailto:'.esc($__mail).'">'.aldea_icon('mail').'<span>'.esc($__mail).'</span></a></div>';
   $__l=site_lang();$__es=$GLOBALS['cur_es_path']??'/';$__en=$GLOBALS['cur_en_path']??'/en/';
   echo '</nav><div class="hdr-act"><div class="lang" id="lang" data-es-url="'.esc($__es).'" data-en-url="'.esc($__en).'"><button data-lang="es" class="'.($__l==='es'?'on':'').'">ES</button><span>/</span><button data-lang="en" class="'.($__l==='en'?'on':'').'">EN</button></div>';
-  echo '<a href="/contacto/" class="btn btn-primary hdr-cta" data-es="Cotizar" data-en="Get a quote">Cotizar</a><button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button></div></div></header>';
+  echo '<a href="/contacto/" class="btn btn-primary hdr-cta" data-es="Cotizar" data-en="Get a quote">Cotizar</a><button class="burger" id="burger" aria-label="Menú" aria-controls="nav" aria-expanded="false"><span></span><span></span><span></span></button></div></div></header>';
 }
 // Imagen con tamanos alternos: si junto a /img/.../foto.webp existen foto-sm.webp (960 px)
 // y foto-xl.webp (2560 px), el navegador descarga el que corresponde a la pantalla.
@@ -194,10 +199,11 @@ function jsonld_breadcrumbs($items){
 }
 // Tarjetas de sede: la foto manda; ciudad, nombre y un enlace debajo.
 // $cta_es/$cta_en cambian la etiqueta ("Ver sede", "Ver oficinas"...). $style se conserva por compatibilidad.
-function loc_cards($exclude='',$style='',$cta_es='Ver sede',$cta_en='See location',$h='h3'){
+function loc_cards($exclude='',$style='',$cta_es='Ver sede',$cta_en='See location',$h='h3',$swipe=true){
   $locs=cms_pdo()->query("SELECT * FROM locations WHERE published=1 ORDER BY sort,id")->fetchAll();
   $locs=array_values(array_filter($locs,function($l)use($exclude){ return $l['slug']!==$exclude; }));
-  echo '<div class="lgrid'.(count($locs)===3?' n3':'').'">';
+  // En movil se desliza de lado (salvo en /ubicaciones/, donde las sedes son el contenido principal)
+  echo '<div class="lgrid'.(count($locs)===3?' n3':'').($swipe?' swipe" data-swipe>':'">');
   foreach($locs as $l){
     $soon=$l['soon']?'<span class="lcard-soon" data-es="Próximamente" data-en="Coming soon">Próximamente</span>':'';
     echo '<a class="lcard reveal" href="/'.esc($l['slug']).'/">'
@@ -207,6 +213,21 @@ function loc_cards($exclude='',$style='',$cta_es='Ver sede',$cta_en='See locatio
         .'<span class="lcard-go"><span data-es="'.esc($cta_es).'" data-en="'.esc($cta_en?:$cta_es).'">'.esc($cta_es).'</span>'.aldea_icon('arrow-right').'</span></div></a>';
   }
   echo '</div>';
+}
+// Iniciales para cuando una opinion todavia no tiene foto ("Eitzel Galindo" -> "EG").
+function iniciales($nombre){
+  $p=preg_split('/\s+/u',trim(strip_tags((string)$nombre)),-1,PREG_SPLIT_NO_EMPTY);
+  if(!$p) return '';
+  return mb_strtoupper(mb_substr($p[0],0,1).(count($p)>1?mb_substr($p[count($p)-1],0,1):''));
+}
+// Barra de acciones fija en movil (sedes, corporativas y soluciones): llamar y una o dos acciones,
+// al alcance del pulgar. app6.js la muestra al pasar los botones del inicio y la esconde en el
+// formulario y el pie. $prin y $sec son botones ya armados (con data-es / data-en).
+function barra_movil($prin,$sec=''){
+  $tel=setting('phone','+52 449 454 0709');
+  echo '<div class="mbar" id="mbar" role="group" aria-label="Acciones rápidas">'
+      .'<a class="mbar-tel" href="tel:'.esc(preg_replace('/[^0-9+]/','',$tel)).'" aria-label="Llamar a Aldea">'.aldea_icon('phone').'</a>'
+      .$sec.$prin.'</div>';
 }
 // URL de la landing de Oficinas Corporativas (editable en Ajustes con la clave corp_url)
 function corp_url(){ return setting('corp_url','/oficinas-personalizadas/'); }

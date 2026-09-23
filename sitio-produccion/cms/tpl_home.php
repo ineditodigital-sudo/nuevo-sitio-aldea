@@ -61,7 +61,7 @@ foreach($__slides as $__i=>$__u) echo pic($__u,$__i===0?'Espacios de trabajo Ald
 <a class="sec-link" href="/lo-que-ofrecemos/"><span data-es="Ver todos los espacios" data-en="See all workspaces">Ver todos los espacios</span><?=$__arrow?></a></div>
 <?php
 $__sol=cms_pdo()->query("SELECT * FROM solutions WHERE published=1 AND in_menu=1 ORDER BY sort,id LIMIT 4")->fetchAll();
-echo '<div class="sgrid" style="--n:'.max(1,count($__sol)).'">';
+echo '<div class="sgrid swipe" data-swipe style="--n:'.max(1,count($__sol)).'">';
 foreach($__sol as $s){
   echo '<a class="scard reveal" href="/'.esc($s['slug']).'/"><div class="scard-img">'.pic($s['hero_image'],($s['hero_image_alt']??'')?:$s['title_es'],'(max-width:560px) 100vw, (max-width:1080px) 50vw, 25vw','loading="lazy"').'</div>'
       .'<div class="scard-b"><h3 data-es="'.esc($s['title_es']).'" data-en="'.esc($s['title_en']?:$s['title_es']).'">'.esc($s['title_es']).'</h3>'
@@ -107,10 +107,10 @@ echo '</ul>';
 $__t=cms_pdo()->query("SELECT t.*, c.logo AS clogo FROM testimonials t LEFT JOIN clients c ON c.id=t.client_id WHERE t.published=1 ORDER BY t.sort,t.id LIMIT 3")->fetchAll();
 if($__t){
   echo '<section class="section bg-soft" id="testimonios"><div class="container"><div class="sec-head reveal"><h2 '.ha('testimonios.title','Lo que dicen nuestros clientes').'>'.ht('testimonios.title','Lo que dicen nuestros clientes').'</h2></div>';
-  echo '<div class="tgrid reveal" style="--n:'.count($__t).'">';
+  echo '<div class="tgrid swipe reveal" data-swipe style="--n:'.count($__t).'">';
   foreach($__t as $t){ $av=$t['avatar']?:''; $co=($t['company_logo']??'')?:($t['clogo']?:'');
     echo '<figure class="tq"><blockquote data-es="'.esc($t['quote_es']).'" data-en="'.esc($t['quote_en']?:$t['quote_es']).'">'.esc($t['quote_es']).'</blockquote><figcaption>'
-        .($av?'<img src="'.esc($av).'" alt="" loading="lazy">':'').'<span><b>'.esc($t['name']).'</b><small>'.esc($t['company']).'</small></span>'
+        .($av?'<img src="'.esc($av).'" alt="" width="48" height="48" loading="lazy">':'<span class="tq-ini" aria-hidden="true">'.esc(iniciales($t['name'])).'</span>').'<span><b>'.esc($t['name']).'</b><small>'.esc($t['company']).'</small></span>'
         .($co?'<img class="tco" src="'.esc($co).'" alt="'.esc($t['company']).'" loading="lazy">':'').'</figcaption></figure>'; }
   echo '</div></div></section>';
 }

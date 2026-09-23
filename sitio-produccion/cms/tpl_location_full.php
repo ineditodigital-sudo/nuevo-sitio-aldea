@@ -118,7 +118,7 @@ if(lhas('espacios.title')){
   echo '<section class="section bg-soft" id="espacios"><div class="container"><div class="sec-head reveal">';
   // Rejilla exacta: 4 tarjetas en 2 x 2, 3 en una fila, 2 en una fila, 1 horizontal
   $__nEsp=count($__espImg); $__c=$__nEsp===3?3:($__nEsp===1?1:2);
-  echo '<h2 '.la('espacios.title').'>'.lt('espacios.title').'</h2></div><div class="esp-list'.($__c===1?' c1':'').'" style="--c:'.$__c.'">';
+  echo '<h2 '.la('espacios.title').'>'.lt('espacios.title').'</h2></div><div class="esp-list swipe'.($__c===1?' c1':'').'" data-swipe style="--c:'.$__c.'">';
   for($i=1;$i<=4;$i++){
     if(!lhas("espacios.p{$i}_title")) continue;
     $val=lv("espacios.p{$i}_valor",lv("espacios.p{$i}_title"));
@@ -178,7 +178,7 @@ if(lhas('mapa.title')){
   echo '<div class="locmap-grid reveal">';
   // Debajo del mapa, la direccion: es lo que se ve mientras carga (o si Google Maps no carga)
   echo '<div class="locmap-map"><div class="locmap-ph" aria-hidden="true">'.aldea_icon('pin').'<span>'.esc($addr).'</span></div><iframe class="map-embed" loading="lazy" title="Mapa de '.esc($name).'" src="https://maps.google.com/maps?q='.$q.'&amp;t=m&amp;z=15&amp;output=embed&amp;iwloc=near"></iframe></div>';
-  echo '<div class="locmap-side"><div class="near-grid">';
+  echo '<div class="locmap-side"><div class="near-grid swipe" data-swipe>';
   // Solo nombres: el brief pide no mostrar tiempos de traslado
   foreach($near as $cat=>$items_){
     echo '<div class="near"><h3>'.esc($cat).'</h3><ul>';
@@ -193,10 +193,16 @@ $tq=llist('testi.q',3);
 if($tq){
   echo '<section class="section bg-soft" id="testimonios"><div class="container"><div class="sec-head reveal">';
   echo '<h2 '.la('testi.title','Lo que dicen nuestros clientes').'>'.lt('testi.title','Lo que dicen nuestros clientes').'</h2></div>';
-  echo '<div class="tgrid reveal" style="--n:'.count($tq).'">';
+  // Foto y logo de cada opinion: salen de Testimonios (el mismo registro que usa el inicio), por nombre.
+  $__tp=[]; foreach(cms_pdo()->query("SELECT t.name,t.avatar,t.company_logo,c.logo AS clogo FROM testimonials t LEFT JOIN clients c ON c.id=t.client_id") as $r) $__tp[mb_strtolower(trim((string)$r['name']))]=$r;
+  echo '<div class="tgrid swipe reveal" data-swipe style="--n:'.count($tq).'">';
   foreach($tq as $k){ $n=substr($k,strlen('testi.q'));
-    echo '<figure class="tq"><blockquote '.la($k).'>'.lt($k).'</blockquote>'
-        .'<figcaption><span><b '.la('testi.n'.$n).'>'.lt('testi.n'.$n).'</b><small '.la('testi.e'.$n).'>'.lt('testi.e'.$n).'</small></span></figcaption></figure>'; }
+    $__p=$__tp[mb_strtolower(trim(strip_tags((string)lv('testi.n'.$n))))]??null;
+    $__av=$__p['avatar']??''; $__co=$__p?(($__p['company_logo']??'')?:($__p['clogo']??'')):'';
+    echo '<figure class="tq"><blockquote '.la($k).'>'.lt($k).'</blockquote><figcaption>'
+        .($__av?'<img src="'.esc($__av).'" alt="" width="48" height="48" loading="lazy">':'<span class="tq-ini" aria-hidden="true">'.esc(iniciales(lv('testi.n'.$n))).'</span>')
+        .'<span><b '.la('testi.n'.$n).'>'.lt('testi.n'.$n).'</b><small '.la('testi.e'.$n).'>'.lt('testi.e'.$n).'</small></span>'
+        .($__co?'<img class="tco" src="'.esc($__co).'" alt="" loading="lazy">':'').'</figcaption></figure>'; }
   echo '</div></div></section>';
 }
 
@@ -266,6 +272,9 @@ echo '<a class="sec-link" href="/ubicaciones/"><span data-es="Ver ubicaciones" d
 loc_cards($loc['slug']);
 echo '</div></section>';
 
+// Movil: barra fija con las dos acciones del inicio (visita y cotizacion)
+barra_movil('<button type="button" class="btn btn-accent" data-visita '.la('hero.cta1','Agenda tu visita').'>'.lt('hero.cta1','Agenda tu visita').'</button>',
+            '<a href="#formulario" class="btn btn-ghost" '.la('hero.cta2','Cotizar').'>'.lt('hero.cta2','Cotizar').'</a>');
 echo '</main>';
 site_footer();
 site_scripts();

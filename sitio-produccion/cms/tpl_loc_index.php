@@ -4,7 +4,7 @@ site_header();
 jsonld_breadcrumbs([['Inicio','/'],['Ubicaciones','/ubicaciones/']]);
 echo '<main>';
 banner('','','Encuentra tu Aldea','Find your Aldea','Estamos presentes en cuatro ciudades del Bajío. Elige tu ubicación y conoce nuestros espacios.','We are present in four cities across the Bajío. Choose your location and discover our spaces.','/img/sedes/slp/coworking-panoramica.webp');
-echo '<section class="section"><div class="container">'; loc_cards('','','Ver sede','See location','h2'); echo '</div></section>';
+echo '<section class="section"><div class="container">'; loc_cards('','','Ver sede','See location','h2',false); echo '</div></section>';
 render_clients();
 readfile(__DIR__.'/blk_cta.html');
 echo '</main>';

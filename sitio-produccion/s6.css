@@ -826,3 +826,136 @@ body:has(.phero) .hdr:not(.scr) .hdr-ar{color:#fff}
 .reveal:nth-child(5) img,.reveal figure:nth-child(5) img{--rd:.32s}
 .reveal .tq img,.reveal.pre .tq img{clip-path:none;scale:1}
 @media(prefers-reduced-motion:reduce){.reveal.pre img{clip-path:none;scale:1}.reveal.vis img{transition:transform .7s cubic-bezier(.23,1,.32,1)}}
+
+/* =====================================================================
+   MOVIL 2026-09: secciones con diseno propio para el telefono, no el de
+   escritorio apilado. Menu a pantalla completa, barra de acciones al
+   alcance del pulgar, colecciones de tarjetas que se deslizan de lado.
+   ===================================================================== */
+
+/* Opiniones: siempre con la foto de quien opina (iniciales solo si aun no hay foto) */
+.tq figcaption img:not(.tco){width:48px;height:48px;border-radius:50%;object-fit:cover;flex:none;background:var(--soft)}
+.tq-ini{width:48px;height:48px;border-radius:50%;flex:none;display:grid;place-items:center;background:var(--blue-100);color:var(--navy-800);font-family:var(--fh);font-weight:600;font-size:.95rem;letter-spacing:.02em}
+
+/* Desplegables del header: flecha dibujada (antes, el glifo unicode) */
+.hdr-ar{display:inline-flex;align-items:center;justify-content:center;font-size:0;line-height:0}
+.hdr-ar svg{width:14px;height:14px}
+.hdr-menu-in{display:contents}
+.nav-extra,.mbar,.swipe-bar{display:none}
+
+@media(max-width:980px){
+  /* Menu a pantalla completa: opciones de 60 px, submenus en acordeon y la accion principal al pie */
+  .hdr-nav{inset:76px 0 0 0;height:calc(100dvh - 76px);max-height:none;display:flex;flex-direction:column;align-items:stretch;gap:0;padding:.3rem var(--gut) max(1.4rem,env(safe-area-inset-bottom));overflow-y:auto;overscroll-behavior:contain;background:#fff;box-shadow:none;border-top:1px solid var(--line);transform:translateY(-10px);opacity:0;visibility:hidden;transition:opacity .2s ease,transform .32s cubic-bezier(.23,1,.32,1),visibility 0s linear .32s}
+  .hdr-nav.open{transform:none;opacity:1;visibility:visible;transition:opacity .2s ease,transform .32s cubic-bezier(.23,1,.32,1),visibility 0s}
+  .hdr-nav>a,.hdr-drop>a:first-of-type{display:flex;align-items:center;min-height:60px;padding:0;font-family:var(--fh);font-size:1.3rem;font-weight:500;letter-spacing:-.01em;color:var(--navy-900)}
+  body:has(.phero) .hdr:not(.scr) .hdr-nav>a,body:has(.phero) .hdr:not(.scr) .hdr-drop>a,.has-nhero .hdr:not(.scr) .hdr-nav>a,.has-nhero .hdr:not(.scr) .hdr-drop>a{color:var(--navy-900)}
+  .hdr-nav>a,.hdr-drop{border-bottom:1px solid var(--line)}
+  .hdr-drop{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;width:100%;gap:0}
+  .hdr-ar{display:inline-flex;width:44px;height:44px;margin:0;color:var(--navy-800);cursor:pointer;transition:transform .3s cubic-bezier(.23,1,.32,1)}
+  body:has(.phero) .hdr:not(.scr) .hdr-ar{color:var(--navy-800)}
+  .hdr-ar svg{width:20px;height:20px}
+  .hdr-drop.open .hdr-ar{transform:rotate(180deg)}
+  .hdr-menu,.hdr-drop.open .hdr-menu{grid-column:1/-1;display:grid;grid-template-rows:0fr;max-height:none;padding:0;overflow:hidden;transition:grid-template-rows .3s cubic-bezier(.23,1,.32,1)}
+  .hdr-drop.open .hdr-menu{grid-template-rows:1fr}
+  .hdr-menu-in{display:block;min-height:0;overflow:hidden}
+  .hdr-menu a{display:flex;align-items:center;min-height:48px;padding:0 0 0 .9rem;border-radius:0;font-size:1.05rem;color:var(--navy-700);background:none}
+  .hdr-menu a:last-child{margin-bottom:.5rem}
+  .hdr-menu .hdr-all{font-family:var(--fh);font-weight:600;color:var(--blue-600)}
+  .nav-extra{display:grid;gap:.2rem;margin-top:auto;padding-top:1.8rem}
+  .nav-extra .btn{width:100%;min-height:52px;margin-bottom:.8rem;font-size:1rem}
+  .hdr-nav .nav-extra .btn-accent,.hdr-nav .nav-extra .btn-accent:hover{color:#fff}
+  .nav-dato{display:flex;align-items:center;gap:.75rem;min-height:44px;font-family:var(--fh);font-weight:500;color:var(--navy-800)}
+  .nav-dato svg{width:20px;height:20px;color:var(--blue-600);flex:none}
+  body.nav-open{overflow:hidden}
+  .burger{width:44px;height:44px;align-items:center;justify-content:center;padding:0}
+  .burger span{transform-origin:center;transition:transform .3s cubic-bezier(.23,1,.32,1),opacity .2s ease,background .35s ease}
+  .burger[aria-expanded=true] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .burger[aria-expanded=true] span:nth-child(2){opacity:0}
+  .burger[aria-expanded=true] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+}
+@media(max-width:980px) and (prefers-reduced-motion:reduce){.hdr-nav,.hdr-nav.open,.hdr-menu,.hdr-ar,.burger span{transition:none}}
+
+/* Barra de acciones fija (sedes, corporativas, soluciones): llamar + cotizar / agendar visita */
+@media(max-width:760px){
+  .mbar{position:fixed;left:0;right:0;bottom:0;z-index:80;display:flex;align-items:center;gap:.6rem;padding:.65rem var(--gut) max(.65rem,env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line);box-shadow:0 -10px 28px rgba(15,28,48,.08);transform:translateY(110%);transition:transform .32s cubic-bezier(.23,1,.32,1)}
+  .mbar.on{transform:none}
+  .mbar .btn{flex:1 1 0;min-width:0;min-height:48px;padding-inline:.9rem;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mbar-tel{flex:0 0 48px;height:48px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--navy-800)}
+  .mbar-tel svg{width:20px;height:20px}
+  .mbar-tel:active{transform:scale(.96)}
+  body.nav-open .mbar{transform:translateY(110%)}
+}
+@media(max-width:760px) and (prefers-reduced-motion:reduce){.mbar{transition:none}}
+
+@media(max-width:640px){
+  /* Colecciones de tarjetas: se deslizan de lado, con el borde de la siguiente a la vista */
+  .swipe{display:flex;grid-template-columns:none;gap:.85rem;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gut);padding-inline:var(--gut);margin-inline:calc(-1 * var(--gut));scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .swipe::-webkit-scrollbar{display:none}
+  .swipe>*{flex:0 0 84%;min-width:0;scroll-snap-align:start}
+  .swipe.tgrid>*{flex-basis:88%}
+  .esp-list.swipe .esp-card:last-child:nth-child(odd),.esp-list.swipe.c1 .esp-card{display:flex;grid-column:auto}
+  .lgrid.swipe .lcard-img{aspect-ratio:4/5}
+  .ejes2.swipe .eje2 figure{aspect-ratio:4/5}
+  /* Linea de progreso bajo cada carrusel (decorativa: el contenido se recorre con el dedo) */
+  .swipe-bar{display:block;position:relative;height:3px;margin-top:1.1rem;border-radius:3px;background:var(--line);overflow:hidden}
+  .swipe-bar[hidden]{display:none}
+  .swipe-bar i{position:absolute;inset:0 auto 0 0;border-radius:3px;background:var(--navy-800)}
+  .bg-navy .swipe-bar{background:rgba(255,255,255,.18)}
+  .bg-navy .swipe-bar i{background:#fff}
+
+  /* Pie: dos columnas de enlaces en lugar de una lista de 16 renglones */
+  .ftr-grid-4{grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem 1.25rem}
+  .ftr-brand{grid-column:1/-1}
+  .ftr-col a{min-height:36px;display:flex;align-items:center}
+
+  /* Cifras: la ultima impar ocupa el renglon completo (sin hueco en la rejilla) */
+  .nums2>div:last-child:nth-child(odd){grid-column:1/-1}
+
+  /* Pasos: numero en un circulo sobre la linea, titulo junto a el */
+  .steps{border-left:0;margin-left:0}
+  .steps li{padding:0 0 1.5rem 2.9rem;min-height:44px}
+  .steps li::after{display:none}
+  .steps li::before{position:absolute;left:0;top:-.1rem;width:30px;height:30px;margin:0;border-radius:50%;display:grid;place-items:center;background:#fff;border:1px solid #cfd7e3;font-size:.9rem}
+  .steps li:not(:last-child){background:linear-gradient(var(--line),var(--line)) 14.5px 32px/1px calc(100% - 30px) no-repeat}
+  .bg-soft .steps li::before{background:var(--soft)}
+
+  /* "Que incluye": dos columnas de renglones cortos */
+  .inc2 .rows{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:1rem}
+  .inc2 .rows li{align-items:flex-start;font-size:.95rem;gap:.55rem;padding:.85rem 0}
+  .inc2 .rows li>svg{width:18px;height:18px;margin-top:.1rem}
+
+  /* Precios: letra pequena legible */
+  .esp-precio small{font-size:.84rem}
+}
+
+/* Campos de formulario: 16 px para que el iPhone no haga zoom al tocarlos */
+.cf-month input{font-size:16px}
+.cf-month span{font-size:.85rem}
+
+/* Enlaces de texto sueltos: area tactil comoda sin cambiar su aspecto */
+@media(pointer:coarse){.sec-link{padding-block:.65rem}}
+
+/* Cifras en movil: dos columnas (la ultima impar ocupa el renglon, ver arriba) */
+@media(max-width:640px){
+  .nums2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .nums2>div,.nums2>div:nth-child(3n+1){border-left:0;padding-left:0}
+  .nums2>div:nth-child(2n){border-left:1px solid var(--line);padding-left:1.1rem}
+}
+/* Tableta (641 a 980 px): rejillas exactas, sin celdas vacias */
+@media(min-width:641px) and (max-width:980px){
+  .lgrid.n3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .nums2{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .nums2>div{grid-column:span 2}
+  .nums2>div:nth-child(4):nth-last-child(2),.nums2>div:nth-child(5):last-child{grid-column:span 3}
+}
+
+@media(max-width:640px){
+  /* Cifras en movil: una lista (numero a la izquierda, etiqueta a la derecha), sin celdas sueltas */
+  .nums2{grid-template-columns:1fr;row-gap:0}
+  .nums2>div,.nums2>div:nth-child(2n),.nums2>div:nth-child(3n+1),.nums2>div:last-child:nth-child(odd){grid-column:auto;display:flex;align-items:baseline;justify-content:space-between;gap:1rem;padding:.95rem 0;border-left:0;border-bottom:1px solid var(--line)}
+  .nums2 b{font-size:2.1rem}
+  .nums2>div>span{text-align:right;margin:0}
+  /* Cerca de la sede: hospedaje, restaurantes y zona en tarjetas que se deslizan junto al mapa */
+  .locmap-side .near-grid.swipe{display:flex;background:none;border:0;border-radius:0;box-shadow:none;padding:0 var(--gut);gap:.85rem}
+  .near-grid.swipe>*{flex-basis:72%;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:1rem 1.1rem}
+}
