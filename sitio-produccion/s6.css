@@ -959,3 +959,70 @@ body:has(.phero) .hdr:not(.scr) .hdr-ar{color:#fff}
   .locmap-side .near-grid.swipe{display:flex;background:none;border:0;border-radius:0;box-shadow:none;padding:0 var(--gut);gap:.85rem}
   .near-grid.swipe>*{flex-basis:72%;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:1rem 1.1rem}
 }
+
+/* Heroes en telefono: cubren casi toda la pantalla (el Inicio, completa) con la foto recortada
+   en vertical (pic_arte); titulo mas grande y botones a lo ancho, al alcance del pulgar. */
+@media(max-width:640px){
+  .nhero{min-height:100vh;min-height:100svh;padding-top:calc(76px + 2rem);padding-bottom:max(2.4rem,calc(env(safe-area-inset-bottom) + 1.6rem))}
+  .phero{min-height:88vh;min-height:88svh;padding-bottom:max(2.2rem,calc(env(safe-area-inset-bottom) + 1.4rem))}
+  .nhero-copy h1,.phero h1{font-size:clamp(2.35rem,10.4vw,3.1rem);line-height:1.02}
+  .nhero .hero-cta,.phero .hero-cta{margin-top:1.6rem;gap:.7rem}
+  .nhero .hero-cta .btn,.phero .hero-cta .btn{flex:1 1 100%;min-height:52px}
+}
+/* Tableta en vertical: tambien mas alto que en escritorio */
+@media(min-width:641px) and (max-width:980px) and (orientation:portrait){
+  .nhero{min-height:80vh;min-height:80svh}
+  .phero{min-height:72vh;min-height:72svh}
+}
+/* Galeria de la sede en telefono: fotos altas (antes 4:3), el contador y "Ver las N fotos" debajo */
+@media(max-width:760px){
+  .sgal-it,.sgal-it:first-child{aspect-ratio:auto;height:58vh;height:58svh;max-height:560px}
+}
+
+/* =====================================================================
+   MOVIL, segunda pasada: toques comodos, lectura y listas largas
+   ===================================================================== */
+/* Toques de al menos 44 px: ES / EN y los enlaces de contacto sueltos */
+@media(pointer:coarse){
+  .lang button{min-width:40px;min-height:44px;padding:0 .3rem}
+  .formx-alt a,.formx-alt button{display:inline-flex;align-items:center;min-height:44px}
+}
+@media(max-width:640px){
+  .ftr-col a{min-height:44px}
+  /* Franja de cierre: texto y boton a lo ancho */
+  .cta-row>*{flex:1 1 100%}
+  .cta-row .btn{width:100%;min-height:52px}
+
+  /* Blog: el articulo mas reciente en grande; los demas, renglones compactos con foto chica */
+  .blog-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:0}
+  .blog-grid .post-card{flex-direction:row;align-items:center;gap:1rem;padding:1rem 0;background:none;border:0;border-bottom:1px solid var(--line);border-radius:0;box-shadow:none}
+  .blog-grid .post-card:hover{transform:none;box-shadow:none}
+  .blog-grid .post-card .pc-img{flex:0 0 104px;height:104px;aspect-ratio:auto;border-radius:12px}
+  .blog-grid .post-card .pc-b{padding:0;gap:.3rem}
+  .blog-grid .post-card p,.blog-grid .post-card .lcard-go{display:none}
+  .blog-grid .post-card h3{font-size:1.02rem;line-height:1.25}
+  .blog-grid .post-card time{font-size:.85rem}
+  .blog-grid .post-card:first-child{flex-direction:column;align-items:stretch;gap:0;margin-bottom:.6rem;padding:0;background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .blog-grid .post-card:first-child .pc-img{flex:none;width:100%;height:auto;aspect-ratio:16/10;border-radius:0}
+  .blog-grid .post-card:first-child .pc-b{padding:1.1rem 1.2rem 1.3rem;gap:.45rem}
+  .blog-grid .post-card:first-child p,.blog-grid .post-card:first-child .lcard-go{display:block}
+  .blog-grid .post-card:first-child .lcard-go{display:inline-flex}
+  .blog-grid .post-card:first-child h3{font-size:1.3rem}
+
+  /* Lectura (articulos y legales): letra de 17 px, mas contraste y titulos con aire */
+  .prose p,.prose li{font-size:1.0625rem;line-height:1.7;color:#46526a}
+  .prose h2{font-size:1.4rem;line-height:1.2;margin:2.2rem 0 .8rem}
+  .prose h3{font-size:1.15rem;line-height:1.25;margin:1.6rem 0 .6rem}
+
+  /* 404: listas de enlaces con renglones de 44 px */
+  .e404-list{gap:0}
+  .e404-list a{display:flex;align-items:center;min-height:44px}
+  .e404-cols h2{font-size:.82rem}
+}
+@media(max-width:640px){
+  /* Pie: los titulos ocupan dos renglones y se alinean abajo, asi las dos listas de cada fila empiezan parejas */
+  .ftr .ftr-col h2{min-height:2.5em;display:flex;align-items:flex-end}
+}
+@media(pointer:coarse){.hdr-logo{display:inline-flex;align-items:center;min-height:44px}}
+/* El carrusel de lugares cercanos ensanchaba la columna del mapa a 360 px: la columna ya no crece mas que el contenedor */
+@media(max-width:900px){.locmap-grid{grid-template-columns:minmax(0,1fr)}.locmap-side{min-width:0}}

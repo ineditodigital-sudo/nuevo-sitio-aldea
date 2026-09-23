@@ -36,7 +36,7 @@ $__arrow=aldea_icon('arrow-right');
 $__slides=[];
 foreach(['photo_a','photo_b','photo_c','photo_d'] as $__k){ $__u=himg('hero.'.$__k,''); if($__u!=='')$__slides[]=$__u; }
 if(!$__slides)$__slides=['/img/home-hero.webp'];
-foreach($__slides as $__i=>$__u) echo pic($__u,$__i===0?'Espacios de trabajo Aldea':'','100vw','class="nhero-img'.($__i===0?' on':'').'"'.($__i===0?' fetchpriority="high"':' loading="lazy"'));
+foreach($__slides as $__i=>$__u) echo pic_arte($__u,$__i===0?'Espacios de trabajo Aldea':'','100vw','class="nhero-img'.($__i===0?' on':'').'"'.($__i===0?' fetchpriority="high"':' loading="lazy"'));
 ?>
     <span class="nhero-scrim"></span>
   </div>

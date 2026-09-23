@@ -134,7 +134,7 @@ site_header();
 jsonld_breadcrumbs([['Inicio','/'],[$pg['title_es'],'/'.$pg['slug'].'/']]);
 echo '<main>';
 // El boton del banner se controla con el bloque hero_cta: vacio = sin boton.
-banner('', '', pgv($B,'h1',$pg['title_es']), pgvn($B,'h1',$pg['title_es']), pgv($B,'lead'), pgvn($B,'lead'), pgv($B,'hero_img','/img/sala.webp'),
+banner('', '', pgv($B,'h1',$pg['title_es']), pgvn($B,'h1',$pg['title_es']), pgv($B,'lead'), pgvn($B,'lead'), pgv($B,'hero_img','/img/sedes/leon/sala-de-juntas.webp'),
        pgv($B,'hero_cta','Cotizar'), pgvn($B,'hero_cta','Get a quote'), (isset($B['hero_cta']) && $B['hero_cta']['href']) ? $B['hero_cta']['href'] : '/contacto/');
 // cuerpo: si hay campos estructurados (FAQ) usarlos; si no, el bloque body (legales)
 echo '<div id="pv-body" data-pv="body">';

@@ -174,9 +174,21 @@ function pic($src,$alt='',$sizes='100vw',$extra=''){
   }
   return '<img src="'.esc($src).'"'.($set?' srcset="'.esc(implode(', ',$set)).'" sizes="'.esc($sizes).'"':'').' alt="'.esc($alt).'"'.($extra!==''?' '.$extra:'').'>';
 }
+// Foto de hero con recorte propio para telefono: si junto a foto.webp existe foto-m.webp (vertical
+// 3:5, cortada del original en alta resolucion), el telefono en vertical descarga esa en lugar de
+// la horizontal, que a lo alto de la pantalla se veia borrosa o pesaba demasiado.
+function pic_arte($src,$alt='',$sizes='100vw',$extra=''){
+  $src=(string)$src;
+  $m=preg_replace('/\.(webp|png|jpe?g)$/i','-m.webp',$src);
+  $root=$_SERVER['DOCUMENT_ROOT']??'';
+  if($m!==$src && strpos($src,'/img/')===0 && is_file($root.$m)){
+    return '<picture><source media="(max-width: 700px) and (orientation: portrait)" srcset="'.esc($m).'" type="image/webp">'.pic($src,$alt,$sizes,$extra).'</picture>';
+  }
+  return pic($src,$alt,$sizes,$extra);
+}
 // Banner de pagina: foto a sangre, sin esquinas ni filtro de color. $inner = titulo, texto y botones.
 function page_hero($img,$alt,$inner){
-  echo '<section class="phero" id="hero" data-pv="hero">'.pic($img,$alt,'100vw','class="phero-img" fetchpriority="high"')
+  echo '<section class="phero" id="hero" data-pv="hero">'.pic_arte($img,$alt,'100vw','class="phero-img" fetchpriority="high"')
       .'<div class="container"><div class="phero-copy">'.$inner.'</div></div></section>';
 }
 // Carrusel: flechas bajo la pista. Las activa app6.js ([data-rail]).

@@ -71,7 +71,8 @@ echo '<section class="sgal" id="fotos" data-galeria=\''.esc(json_encode($items,J
 echo '<div class="sgal-grid'.$__cls.'">';
 foreach($items as $k=>$p){
   if($p['tipo']!=='img') continue;
-  $sizes=$k===0?'(max-width:760px) 88vw, 50vw':'(max-width:760px) 88vw, 25vw';
+  // En el telefono la galeria es alta (58 % de la pantalla) y la foto se recorta a lo alto: pide la de 1920 px
+  $sizes=$k===0?'(max-width:760px) 150vw, 50vw':'(max-width:760px) 150vw, 25vw';
   echo '<button type="button" class="sgal-it" data-i="'.$k.'" aria-label="'.esc($name).': foto '.($k+1).' de '.$nf.'">'
       .pic($p['src'],$name.', foto '.($k+1),$sizes,$k===0?'fetchpriority="high"':'loading="lazy"').'</button>';
 }
