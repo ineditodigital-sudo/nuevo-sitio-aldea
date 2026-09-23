@@ -38,3 +38,6 @@ __pycache__/
 # Briefs internos del cliente — material confidencial, no va al repo publico
 BRIEFS CAMBIOS/
 Briefs cambios/
+
+# Copia local del sitio (ver local/README.md): base SQLite generada
+local/*.sqlite

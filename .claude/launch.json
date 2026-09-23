@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "aldea-local",
+      "runtimeExecutable": "php",
+      "runtimeArgs": ["-S", "127.0.0.1:8765", "-t", "sitio-produccion", "local/router.php"],
+      "port": 8765
+    }
+  ]
+}
